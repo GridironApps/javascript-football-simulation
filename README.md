@@ -1,3 +1,5 @@
+An american football simulation written in javascript.
+
 ## Welcome to GitHub Pages
 
 You can use the [editor on GitHub](https://github.com/GridironApps/javascript-football-simulation/edit/master/README.md) to maintain and preview the content for your website in Markdown files.
