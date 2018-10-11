@@ -24,6 +24,10 @@ let config = {
 // create a new game, pass the configuration
 let game = new Phaser.Game(config);
 
+var hb;
+var lb;
+
+
 //load assets
 function preload(){
   //load images
@@ -47,7 +51,7 @@ function create(){
 
   //create HB player using text
   var text = this.add.text(10*in2px, 320/2, 'HB', { font: '6px Arial', fill: '#ffffff' });
-  let hb = this.matter.add.gameObject(text, { shape: { type: 'circle', radius: 6 } });
+  hb = this.matter.add.gameObject(text, { shape: { type: 'circle', radius: 6 } });
   hb.setAngle(90);
   hb.setMass(200);
   hb.setVelocity(2, 0);
@@ -64,6 +68,9 @@ function create(){
   lb.setFriction(0,0,0);
 
   console.log(hb);
+
+  // set bounds so the camera won't go outside the game world
+  var camera = this.cameras.add(0, 0, 720, 320).setZoom(2).setBounds(0, 0, 720, 320).startFollow(hb);
 }
 
 //this will try to run 60 times per second
