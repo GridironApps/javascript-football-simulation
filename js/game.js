@@ -1,16 +1,37 @@
 const in2px = 6; //6 inches per pixel at default zoom
 
-// create a new scene
-let gameScene = new Phaser.Scene('Game');
+// set the configuration of the game
+let config = {
+  type: Phaser.AUTO, // Phaser will use WebGL if available, if not it will use Canvas
+  width: 720,
+  height: 320,
+  scene: {
+    preload: preload,
+    create: create,
+    update: update
+  },
+  physics: {
+    default: 'matter',
+    matter: {
+        gravity: {
+            y: 0
+        },
+        debug: true
+    }
+  }
+};
+
+// create a new game, pass the configuration
+let game = new Phaser.Game(config);
 
 //load assets
-gameScene.preload = function () {
+function preload(){
   //load images
   this.load.image('field', 'assets/football-field.jpg');
 }
 
 //called once after preload ends
-gameScene.create = function () {
+function create(){
   //setup boundaries in the matter.js world
   this.matter.world.setBounds(0, 0, game.config.width, game.config.height).disableGravity();
   
@@ -46,26 +67,6 @@ gameScene.create = function () {
 }
 
 //this will try to run 60 times per second
-gameScene.update = function () {
+function update(){
 
 }
-
-// set the configuration of the game
-let config = {
-  type: Phaser.AUTO, // Phaser will use WebGL if available, if not it will use Canvas
-  width: 720,
-  height: 320,
-  scene: gameScene,
-  physics: {
-    default: 'matter',
-    matter: {
-        gravity: {
-            y: 0
-        },
-        debug: true
-    }
-  }
-};
-
-// create a new game, pass the configuration
-let game = new Phaser.Game(config);
