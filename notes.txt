@@ -1,0 +1,20 @@
+physics
+
+If you use the built in renderer and and built in runner, with default settings this translates to:
+
+1 position = 1px
+1 speed = 1px per step
+1 step = 16.666ms @ 60 Hz = 1/60 s
+
+currently our field is 720 px long 
+6 in per px
+100 yd = 600 px
+6 px = 1 yd
+
+assume velocity of 10 yd/sec
+
+velocity = px/step
+
+turn 10 yd/s to px/step
+
+10 yd/s * 6 px/yd * 1/60 s/step
