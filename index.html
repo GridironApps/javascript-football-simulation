@@ -4,13 +4,29 @@
     <meta charset="UTF-8" />
     <title>Javascript Football Simulation</title>
     <style>
-      canvas {
-        width: 100%;
-      }
-    </style>
+        html,
+        body,
+        #game-container {
+          margin: 0;
+          padding: 0;
+        }
+        #game-container {
+          min-width: 100vw;
+          min-height: 100vh;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+        #game-container>canvas {
+          border-radius: 5px;
+        }
+      </style>
 </head>
 <body>
+  <div id="game-container"></div>
   <script src="js/phaser.js"></script>
+  <script src="js/Player.js"></script>
+  <script src="js/FieldScene.js"></script>
   <script src="js/game.js"></script>
 </body>
 </html>
