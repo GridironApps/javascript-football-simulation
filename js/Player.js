@@ -6,7 +6,8 @@ class Player {
         let text = scene.add.text(x, y, jersey_number, { font: '6px Arial', fill: '#ffffff' });
         this.sprite = scene.matter.add.gameObject(text, { shape: { type: 'circle', radius: 6} })
             .setAngle(90)
-            .setMass(207/32.2); //usain bolt weight in lb divided by gravity
+            .setMass(94) //kg, usain bolt weight 207 converted to kg
+            .setFriction(0.2,0,0.8); //kinetic, air, static friction values (all bounded between 0 and 1)
 
         // Track the arrow keys & WASD
         const {LEFT, RIGHT, UP, DOWN} = Phaser.Input.Keyboard.KeyCodes;
@@ -21,8 +22,8 @@ class Player {
     update() {
         const keys = this.keys;
         const sprite = this.sprite;
-        const forceX = 1/1500; // lbf * px/yd * s/step * s/step
-        const forceY = forceX/2;
+        const forceX = 549; //N of forece, calculated using his 10 m split
+        const forceY = forceX * .707;
         let force_vector = {x: 0, y: 0};
 
         // Apply horizontal acceleration when left or right are applied
@@ -52,7 +53,7 @@ class Player {
         sprite.applyForce(force_vector);
 
         //bound velocities
-        let max_speed = 10 * this.scene.px_per_yd / 60;
+        let max_speed = 12.3 * this.scene.px_per_yd * 1/60;
         let vx = sprite.body.velocity.x;
         if(vx > max_speed){
             sprite.setVelocityX(max_speed);

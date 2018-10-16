@@ -1,7 +1,7 @@
 class FieldScene extends Phaser.Scene {
   constructor() {
     super(); //this is used to call the parent class Phase.Scene
-    this.px_per_yd = 6; //6 pixels per yard at default zoon
+    this.px_per_yd = game.config.width / 120;
   }
 
   //load assets
@@ -14,6 +14,7 @@ class FieldScene extends Phaser.Scene {
   create() {
     //setup boundaries in the matter.js world
     this.matter.world.setBounds(0, 0, game.config.width, game.config.height).disableGravity();
+    console.log(game.config);
     console.log(this.matter.world);
 
     //create background sprite
@@ -23,10 +24,10 @@ class FieldScene extends Phaser.Scene {
     background.setOrigin(0, 0);
 
     //scale background to fit
-    background.setDisplaySize(720, 320);
+    background.setDisplaySize(game.config.width, game.config.height);
 
     //create player from class player using text
-    this.player = new Player(this, 10 * this.px_per_yd, game.config.height / 2, 'UB');
+    this.player = new Player(this, 10 * this.px_per_yd, game.config.height / 2, '⚡');
     console.log(this.player);
 
     //create camera to zoom in and follow player
@@ -46,15 +47,19 @@ class FieldScene extends Phaser.Scene {
     } else if (this.player.sprite.x > 20 * this.px_per_yd && !this.t_10){
       this.t_10 = (new Date() - this.t_start)/1000;
       console.log('10 yard split: ' + this.t_10);
+      console.log('current speed: ' + this.player.sprite.body.velocity.x);
     } else if(this.player.sprite.x > 30 * this.px_per_yd && !this.t_20){
       this.t_20 = (new Date() - this.t_start)/1000;
       console.log('20 yard split: ' + this.t_20);
+      console.log('current speed: ' + this.player.sprite.body.velocity.x);
     } else if(this.player.sprite.x > 50 * this.px_per_yd && !this.t_40){
       this.t_40 = (new Date() - this.t_start)/1000;
       console.log('40 yard time: ' + this.t_40);
+      console.log('current speed: ' + this.player.sprite.body.velocity.x);
     } else if(this.player.sprite.x > 110 * this.px_per_yd && !this.t_100){
       this.t_100 = (new Date() - this.t_start)/1000;
       console.log('100 yard time: ' + this.t_100);
+      console.log('current speed: ' + this.player.sprite.body.velocity.x);
     }
   }
 }
