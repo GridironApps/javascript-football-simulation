@@ -34,7 +34,7 @@ class FieldScene extends Phaser.Scene {
     this.cameras.main.startFollow(this.player.sprite).setZoom(2);
 
     //create a dummy player to run into
-    this.dummy = new Player(this, 40 * this.px_per_yd, game.config.height / 2, '☃');
+    this.dummy = new Player(this, 12 * this.px_per_yd, game.config.height / 2 - 1 * this.px_per_yd, '☃');
 
     // set bounds so the camera won't go outside the game world
     this.cameras.main.setBounds(0, 0, game.config.width, game.config.height);
