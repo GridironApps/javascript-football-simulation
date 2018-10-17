@@ -27,14 +27,11 @@ class FieldScene extends Phaser.Scene {
     background.setDisplaySize(game.config.width, game.config.height);
 
     //create player from class player using text
-    this.player = new Player(this, 10 * this.px_per_yd, game.config.height / 2, '⚡');
+    this.player = new Player(this, 10 * this.px_per_yd, game.config.height / 2, 100, '1');
     console.log(this.player);
 
     //create camera to zoom in and follow player
     this.cameras.main.startFollow(this.player.sprite).setZoom(2);
-
-    //create a dummy player to run into
-    this.dummy = new Player(this, 12 * this.px_per_yd, game.config.height / 2 - 1 * this.px_per_yd, '☃');
 
     // set bounds so the camera won't go outside the game world
     this.cameras.main.setBounds(0, 0, game.config.width, game.config.height);
@@ -42,8 +39,8 @@ class FieldScene extends Phaser.Scene {
 
   //this will try to run 60 times per second
   update() {
-    // Allow the player to respond to key presses and move itself
-    this.player.update();
+    //tell the player what to do
+    this.player.sprint();
 
     if(this.player.sprite.x > 10 * this.px_per_yd && !this.t_start){
       this.t_start = new Date();
