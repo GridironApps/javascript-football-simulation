@@ -1,4 +1,4 @@
-var field_width = 720; //px
+var field_width = 1440; //720; //px
 
 // set the configuration of the game
 let game_config = {

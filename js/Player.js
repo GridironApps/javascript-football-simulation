@@ -1,15 +1,19 @@
 class Player {
-    constructor(scene, id, weight, power, speed, x, y) {
+    constructor(scene, image, id, weight, power, speed, agility, x, y) {
         this.scene = scene;
 
+        //create a dot to put player on, easier to see
+        var dot = scene.add.image(0,0,image).setDisplaySize(1*scene.px_per_yd, 1*scene.px_per_yd);
+
         //create player with given text id
-        var text = scene.add.text(0, 0, id, { font: '6px Arial', fill: '#ffffff' })
+        var text = scene.add.text(0, 0, id, { font: '7px Arial', fill: '#ffffff' })
             .setOrigin(0.5, 0.5);
 
         //create a container at desired location for player
         var container = scene.add.container(x,y);
 
         //put text in container
+        container.add(dot);
         container.add(text);
 
         //enable physics on container
