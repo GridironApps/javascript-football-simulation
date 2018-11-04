@@ -56,10 +56,6 @@ class FieldScene extends Phaser.Scene {
       this.t_40 = (new Date() - this.t_start)/1000;
       console.log('40 yard time: ' + this.t_40);
       console.log('current speed: ' + this.player.sprite.body.velocity.x);
-    } else if(this.player.sprite.x > 110 * this.px_per_yd && !this.t_100){
-      this.t_100 = (new Date() - this.t_start)/1000;
-      console.log('100 yard time: ' + this.t_100);
-      console.log('current speed: ' + this.player.sprite.body.velocity.x);
     }
   }
 }
