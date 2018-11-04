@@ -8,15 +8,11 @@ class FieldScene extends Phaser.Scene {
   preload() {
     //load images
     this.load.image('field', 'assets/football-field.jpg');
+    this.load.image('football','assets/football.png')
   }
 
   //called once after preload ends
   create() {
-    //setup boundaries in the matter.js world
-    this.matter.world.setBounds(0, 0, game.config.width, game.config.height).disableGravity();
-    console.log(game.config);
-    console.log(this.matter.world);
-
     //create background sprite
     let background = this.add.sprite(0, 0, 'field');
 
@@ -42,18 +38,18 @@ class FieldScene extends Phaser.Scene {
     //tell the player what to do
     this.player.sprint();
 
-    if(this.player.sprite.x > 10 * this.px_per_yd && !this.t_start){
+    if (this.player.sprite.x > 10 * this.px_per_yd && !this.t_start) {
       this.t_start = new Date();
-    } else if (this.player.sprite.x > 20 * this.px_per_yd && !this.t_10){
-      this.t_10 = (new Date() - this.t_start)/1000;
+    } else if (this.player.sprite.x > 20 * this.px_per_yd && !this.t_10) {
+      this.t_10 = (new Date() - this.t_start) / 1000;
       console.log('10 yard split: ' + this.t_10);
       console.log('current speed: ' + this.player.sprite.body.velocity.x);
-    } else if(this.player.sprite.x > 30 * this.px_per_yd && !this.t_20){
-      this.t_20 = (new Date() - this.t_start)/1000;
+    } else if (this.player.sprite.x > 30 * this.px_per_yd && !this.t_20) {
+      this.t_20 = (new Date() - this.t_start) / 1000;
       console.log('20 yard split: ' + this.t_20);
       console.log('current speed: ' + this.player.sprite.body.velocity.x);
-    } else if(this.player.sprite.x > 50 * this.px_per_yd && !this.t_40){
-      this.t_40 = (new Date() - this.t_start)/1000;
+    } else if (this.player.sprite.x > 50 * this.px_per_yd && !this.t_40) {
+      this.t_40 = (new Date() - this.t_start) / 1000;
       console.log('40 yard time: ' + this.t_40);
       console.log('current speed: ' + this.player.sprite.body.velocity.x);
     }
