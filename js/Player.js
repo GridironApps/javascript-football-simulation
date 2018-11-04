@@ -1,5 +1,5 @@
 class Player {
-    constructor(scene, id, weight, power, speed, x, y) {
+    constructor(scene, id, weight, power, speed, agility, x, y) {
         this.scene = scene;
 
         //create a dot to put player on, easier to see

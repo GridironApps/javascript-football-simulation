@@ -4,7 +4,6 @@ class Ball {
 
         //create ball sprite at given location
         var sprite = scene.physics.add.image(x, y, 'football').setDisplaySize(1.5*10/3/3*this.scene.px_per_yd,1.5*7/3/3*this.scene.px_per_yd);
-        console.log(sprite);
 
         //create pointer to physics body
         this.body = sprite.body;
