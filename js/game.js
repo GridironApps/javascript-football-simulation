@@ -7,7 +7,7 @@ let game_config = {
   height: field_width * 160/360,
   parent: "game-container",
   backgroundColor: '#013220',
-  scene: SprintTest,
+  scene: FieldScene,
   physics: {
     default: 'arcade',
     matter: {

@@ -22,12 +22,12 @@ class FieldScene extends Phaser.Scene {
     //scale background to fit
     background.setDisplaySize(game.config.width, game.config.height);
 
-    //create player from class player using text
-    this.player = new Player(this, 10 * this.px_per_yd, game.config.height / 2, 100, '1');
-    console.log(this.player);
+    //create ball from Ball class
+    this.ball = new Ball(this, 60 * this.px_per_yd, game.config.height / 2);
+    console.log(this.ball);
 
-    //create camera to zoom in and follow player
-    this.cameras.main.startFollow(this.player.sprite).setZoom(2);
+    //create camera to zoom in and follow ball
+    this.cameras.main.startFollow(this.ball.body).setZoom(2);
 
     // set bounds so the camera won't go outside the game world
     this.cameras.main.setBounds(0, 0, game.config.width, game.config.height);
@@ -35,23 +35,6 @@ class FieldScene extends Phaser.Scene {
 
   //this will try to run 60 times per second
   update() {
-    //tell the player what to do
-    this.player.sprint();
 
-    if (this.player.sprite.x > 10 * this.px_per_yd && !this.t_start) {
-      this.t_start = new Date();
-    } else if (this.player.sprite.x > 20 * this.px_per_yd && !this.t_10) {
-      this.t_10 = (new Date() - this.t_start) / 1000;
-      console.log('10 yard split: ' + this.t_10);
-      console.log('current speed: ' + this.player.sprite.body.velocity.x);
-    } else if (this.player.sprite.x > 30 * this.px_per_yd && !this.t_20) {
-      this.t_20 = (new Date() - this.t_start) / 1000;
-      console.log('20 yard split: ' + this.t_20);
-      console.log('current speed: ' + this.player.sprite.body.velocity.x);
-    } else if (this.player.sprite.x > 50 * this.px_per_yd && !this.t_40) {
-      this.t_40 = (new Date() - this.t_start) / 1000;
-      console.log('40 yard time: ' + this.t_40);
-      console.log('current speed: ' + this.player.sprite.body.velocity.x);
-    }
   }
 }
