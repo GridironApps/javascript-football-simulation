@@ -1,9 +1,9 @@
 class Player {
-    constructor(scene, id, weight, power, speed, agility, x, y) {
+    constructor(scene, image, id, weight, power, speed, agility, x, y) {
         this.scene = scene;
 
         //create a dot to put player on, easier to see
-        var dot = scene.add.image(0,0,'red-dot').setDisplaySize(1*scene.px_per_yd, 1*scene.px_per_yd);
+        var dot = scene.add.image(0,0,image).setDisplaySize(1*scene.px_per_yd, 1*scene.px_per_yd);
 
         //create player with given text id
         var text = scene.add.text(0, 0, id, { font: '7px Arial', fill: '#ffffff' })
