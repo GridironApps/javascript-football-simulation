@@ -8,7 +8,8 @@ class FieldScene extends Phaser.Scene {
   preload() {
     //load images
     this.load.image('field', 'assets/football-field.jpg');
-    this.load.image('football','assets/football.png')
+    this.load.image('football','assets/football.png');
+    this.load.image('red-dot','assets/red-circle-64.png');
   }
 
   //called once after preload ends
@@ -27,10 +28,76 @@ class FieldScene extends Phaser.Scene {
     console.log(this.ball);
 
     //create camera to zoom in and follow ball
-    this.cameras.main.startFollow(this.ball.body).setZoom(2);
+    this.cameras.main.startFollow(this.ball.body).setZoom(1);
 
     // set bounds so the camera won't go outside the game world
     this.cameras.main.setBounds(0, 0, game.config.width, game.config.height);
+
+    // hard coded offense
+    var offense = [
+      {
+        "id": "C",
+        "x": 60,
+        "y": 27
+      },
+      {
+        "id": "LG",
+        "x": 59,
+        "y": 26
+      },
+      {
+        "id": "LT",
+        "x": 59,
+        "y": 25
+      },
+      {
+        "id": "RG",
+        "x": 59,
+        "y": 28
+      },
+      {
+        "id": "RT",
+        "x": 59,
+        "y": 29
+      },
+      {
+        "id": "QB",
+        "x": 55,
+        "y": 27
+      },
+      {
+        "id": "Y",
+        "x": 59,
+        "y": 20
+      },
+      {
+        "id": "H",
+        "x": 59,
+        "y": 34
+      },
+      {
+        "id": "X",
+        "x": 60,
+        "y": 3
+      },
+      {
+        "id": "Z",
+        "x": 60,
+        "y": 50.3
+      },
+      {
+        "id": "F",
+        "x": 59,
+        "y": 11.5
+      }
+    ];    
+    console.log(offense);
+
+    //create offensive group
+    var scene = this;
+    offense.forEach(function(player, index, array){
+      new Player(scene, player.id, 200, 'med', 'low', player.x * scene.px_per_yd, player.y * scene.px_per_yd);
+    });
   }
 
   //this will try to run 60 times per second
