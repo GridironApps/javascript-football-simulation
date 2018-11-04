@@ -37,7 +37,7 @@ class FieldScene extends Phaser.Scene {
     var offense = [
       {
         "id": "C",
-        "x": 60,
+        "x": 59.5,
         "y": 27
       },
       {
@@ -67,27 +67,27 @@ class FieldScene extends Phaser.Scene {
       },
       {
         "id": "Y",
-        "x": 59,
+        "x": 58.5,
         "y": 20
       },
       {
         "id": "H",
-        "x": 59,
+        "x": 58.5,
         "y": 34
       },
       {
         "id": "X",
-        "x": 60,
+        "x": 59.5,
         "y": 3
       },
       {
         "id": "Z",
-        "x": 60,
+        "x": 59.5,
         "y": 50.3
       },
       {
         "id": "F",
-        "x": 59,
+        "x": 58.5,
         "y": 11.5
       }
     ];    
