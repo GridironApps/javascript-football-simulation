@@ -18,3 +18,14 @@ velocity = px/step
 turn 10 yd/s to px/step
 
 10 yd/s * 6 px/yd * 1/60 s/step
+
+
+##Usain Bolt 
+
+mass: 94 kg
+10 m in 1.89  sec
+
+s = s0 + v0*t + 1/2*ac*t^2
+10 = 0 + 0 + 1/2*ac*1.89^2
+ac = 5.6 m/s2
+F = ma = 94 * 5.6 = 526 N

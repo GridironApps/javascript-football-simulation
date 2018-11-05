@@ -28,7 +28,7 @@ class FieldScene extends Phaser.Scene {
     background.setDisplaySize(game.config.width, game.config.height);
 
     //create ball from Ball class
-    this.ball = new Ball(this, 60 * this.px_per_yd, game.config.height / 2);
+    this.ball = new Ball(this, 60 * this.px_per_yd, 27*scene.px_per_yd);
 
     //create camera to zoom in and follow ball
     this.cameras.main.startFollow(this.ball.body).setZoom(1);
