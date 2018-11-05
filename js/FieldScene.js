@@ -63,10 +63,15 @@ class FieldScene extends Phaser.Scene {
         });
       }
     });
+
+    //create a tooltip next to mouse cursor
+   this.tooltip = scene.add.text(0, 0, '(0, 0)', { font: '12px Arial', fill: '#ffffff' })
+    .setOrigin(0, 1);
   }
 
   //this will try to run 60 times per second
   update() {
-
+    this.tooltip.setText('(' + Math.round(10*this.input.x / this.px_per_yd)/10 + ', ' + Math.round(10*this.input.y / this.px_per_yd)/10 + ')');
+    this.tooltip.setPosition(this.input.x,this.input.y);
   }
 }
