@@ -1,6 +1,6 @@
 class FieldScene extends Phaser.Scene {
   constructor() {
-    super(); //this is used to call the parent class Phase.Scene
+    super(); //this is used to call the parent class Phaser.Scene
     this.px_per_yd = game.config.width / 120;
   }
 
@@ -28,7 +28,7 @@ class FieldScene extends Phaser.Scene {
     background.setDisplaySize(game.config.width, game.config.height);
 
     //create ball from Ball class
-    this.ball = new Ball(this, 60 * this.px_per_yd, 27*scene.px_per_yd);
+    this.ball = new Ball(this, 60 * this.px_per_yd, 27 * scene.px_per_yd);
 
     //create camera to zoom in and follow ball
     this.cameras.main.startFollow(this.ball.body).setZoom(1);
@@ -45,7 +45,15 @@ class FieldScene extends Phaser.Scene {
         console.log(offense);
         //create offensive group
         offense.data.forEach(function (player, index, array) {
-          new Player(scene, 'red-dot', player.id, player.weight, player.power, player.speed, player.agility, player.x * scene.px_per_yd, player.y * scene.px_per_yd);
+          var attribute = {
+            'jersey': 'red-dot',
+            'position': player.id,
+            'weight': player.weight,
+            'power': player.power,
+            'speed': player.speed,
+            'agility': player.agility
+          };
+          new Player(scene, player.x * scene.px_per_yd, player.y * scene.px_per_yd, attribute);
         });
       }
     });
@@ -59,19 +67,27 @@ class FieldScene extends Phaser.Scene {
         console.log(defense);
         //create defensive group
         defense.data.forEach(function (player, index, array) {
-          new Player(scene, 'blue-dot', player.id, player.weight, player.power, player.speed, player.agility, player.x * scene.px_per_yd, player.y * scene.px_per_yd);
+          var attribute = {
+            'jersey': 'blue-dot',
+            'position': player.id,
+            'weight': player.weight,
+            'power': player.power,
+            'speed': player.speed,
+            'agility': player.agility
+          };
+          new Player(scene, player.x * scene.px_per_yd, player.y * scene.px_per_yd, attribute);
         });
       }
     });
 
     //create a tooltip next to mouse cursor
-   this.tooltip = scene.add.text(0, 0, '(0, 0)', { font: '12px Arial', fill: '#ffffff' })
-    .setOrigin(0, 1);
+    this.tooltip = scene.add.text(0, 0, '(0, 0)', { font: '12px Arial', fill: '#ffffff' })
+      .setOrigin(0, 1);
   }
 
   //this will try to run 60 times per second
   update() {
-    this.tooltip.setText('(' + Math.round(10*this.input.x / this.px_per_yd)/10 + ', ' + Math.round(10*this.input.y / this.px_per_yd)/10 + ')');
-    this.tooltip.setPosition(this.input.x,this.input.y);
+    this.tooltip.setText('(' + Math.round(10 * this.input.x / this.px_per_yd) / 10 + ', ' + Math.round(10 * this.input.y / this.px_per_yd) / 10 + ')');
+    this.tooltip.setPosition(this.input.x, this.input.y);
   }
 }
