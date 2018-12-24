@@ -14,7 +14,7 @@ class Ball {
     }
 
     // instantaniously move the ball to the given coordinate location
-    moveTo(x, y) {
+    instantMoveTo(x, y) {
         this.body.reset(x, y);
     }
 
