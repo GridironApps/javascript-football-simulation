@@ -12,4 +12,14 @@ class Ball {
         this.body.setCollideWorldBounds(true)
             .setMass(1 / 32.2);
     }
+
+    // instantaniously move the ball to the given coordinate location
+    moveTo(x, y) {
+        this.body.reset(x, y);
+    }
+
+    // move the ball to the given coordinate location with given force(?) TODO: update third variable name
+    moveTo(x, y, velocity) {
+        alert("not yet implemented");
+    }
 }
