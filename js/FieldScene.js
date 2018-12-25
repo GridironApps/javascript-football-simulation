@@ -91,7 +91,7 @@ class FieldScene extends Phaser.Scene {
     this.tooltip.setPosition(this.input.x, this.input.y);
 
     if (this.input.activePointer.isDown) {
-      var velocity = 60;
+      var velocity = 120;
       this.ball.moveTo(this.input.x, this.input.y, velocity);
     }
   }
