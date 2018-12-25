@@ -20,6 +20,10 @@ class Ball {
 
     // move the ball to the given coordinate location with given force(?) TODO: update third variable name
     moveTo(x, y, velocity) {
-        alert("not yet implemented");
+        var deltaX = x - this.body.x;
+        var deltaY = y - this.body.y;
+        var totalDist = Math.sqrt(Math.pow(deltaX, 2) + Math.pow(deltaY, 2));
+        //alert("deltaX: " + this.body.x + " - " + x + " = " + deltaX + "\ndeltaY: " + this.body.y + " - " + y + " = " + deltaY);
+        this.body.setVelocity(deltaX / totalDist * velocity, deltaY / totalDist * velocity);
     }
 }
