@@ -17,8 +17,8 @@ class Ball {
         //x and y are mouse pointer locations that are passed in as pixels
         //v is the magnitude of the velocity
 
-        var dx = x - this.body.x;
-        var dy = y - this.body.y;
+        var dx = x - (this.body.x + this.body.halfWidth);
+        var dy = y - (this.body.y + this.body.halfHeight);
         var h = Math.pow((dx*dx + dy*dy),0.5);    
 
         var vx = v*dx/h;
