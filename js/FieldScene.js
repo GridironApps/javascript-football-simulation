@@ -42,28 +42,6 @@ class FieldScene extends Phaser.Scene {
 		this.defTeam = new Team('Defense Team', 'blue-dot');
 		this.defTeam.setDefensiveLineup(scene, 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTJwIgCS-T2qFvOjVAFo0TzBbUHxtWDxy60DWNED1gQeS8V43zI5toweqvyia2uuFK67xUlntvQMDjT/pub?gid=1074706941&single=true&output=csv&headers=false');
 
-		//parse csv file to create defense
-		/*Papa.parse('https://docs.google.com/spreadsheets/d/e/2PACX-1vTJwIgCS-T2qFvOjVAFo0TzBbUHxtWDxy60DWNED1gQeS8V43zI5toweqvyia2uuFK67xUlntvQMDjT/pub?gid=1074706941&single=true&output=csv&headers=false', {
-			download: true,
-			header: true,
-			dynamicTyping: true,
-			complete: function (defense) {
-				console.log(defense);
-				//create defensive group
-				defense.data.forEach(function (player, index, array) {
-					var attribute = {
-						'jersey': 'blue-dot',
-						'position': player.id,
-						'weight': player.weight,
-						'power': player.power,
-						'speed': player.speed,
-						'agility': player.agility
-					};
-					new Player(scene, player.x * scene.px_per_yd, player.y * scene.px_per_yd, attribute);
-				});
-			}
-		}); // */
-
 		//create a tooltip next to mouse cursor
 		this.tooltip = scene.add.text(0, 0, '(0, 0)', { font: '12px Arial', fill: '#ffffff' })
 			.setOrigin(0, 1);
