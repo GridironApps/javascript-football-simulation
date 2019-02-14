@@ -36,8 +36,11 @@ class FieldScene extends Phaser.Scene {
     // set bounds so the camera won't go outside the game world
     this.cameras.main.setBounds(0, 0, game.config.width, game.config.height);
 
+    this.offTeam = new Team('Offense Team', 'red-dot');
+    this.offTeam.setOffensiveLineup(scene, 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTJwIgCS-T2qFvOjVAFo0TzBbUHxtWDxy60DWNED1gQeS8V43zI5toweqvyia2uuFK67xUlntvQMDjT/pub?gid=0&single=true&output=csv&headers=false');
+
     //parse csv file to create offense
-    Papa.parse('https://docs.google.com/spreadsheets/d/e/2PACX-1vTJwIgCS-T2qFvOjVAFo0TzBbUHxtWDxy60DWNED1gQeS8V43zI5toweqvyia2uuFK67xUlntvQMDjT/pub?gid=0&single=true&output=csv&headers=false', {
+    /*Papa.parse('https://docs.google.com/spreadsheets/d/e/2PACX-1vTJwIgCS-T2qFvOjVAFo0TzBbUHxtWDxy60DWNED1gQeS8V43zI5toweqvyia2uuFK67xUlntvQMDjT/pub?gid=0&single=true&output=csv&headers=false', {
       download: true,
       header: true,
       dynamicTyping: true,
@@ -55,8 +58,16 @@ class FieldScene extends Phaser.Scene {
           };
           new Player(scene, player.x * scene.px_per_yd, player.y * scene.px_per_yd, attribute);
         });
+        scene.offense = offense;
+        //alert("scene.offense = " + scene.offense.data);
+        
+        for(let player in scene.offense.data) {
+          scene.physics.add.overlap(scene.offense.data[player], scene.ball, this.catchBall, null, this); 
+          
+        }
+        //scene.physics.add.overlap(scene.offense, scene.ball, this.catchBall, null, this); 
       }
-    });
+    }); // */
 
     //parse csv file to create defense
     Papa.parse('https://docs.google.com/spreadsheets/d/e/2PACX-1vTJwIgCS-T2qFvOjVAFo0TzBbUHxtWDxy60DWNED1gQeS8V43zI5toweqvyia2uuFK67xUlntvQMDjT/pub?gid=1074706941&single=true&output=csv&headers=false', {
@@ -95,6 +106,15 @@ class FieldScene extends Phaser.Scene {
         scene.ball.moveTo(scene.input.x, scene.input.y,velocity);
       }
     });
+
+    //alert("offense: " + scene.offense);
+
+    //this.physics.add.collider(this.ball, this.player);
+
+    /*this.physics.add.overlap(scene.offense, scene.ball, function() {
+      alert("ball caught!");
+      scene.ball.stop();
+    }, null, this); // */
   }
 
   //this will try to run 60 times per second
@@ -102,4 +122,9 @@ class FieldScene extends Phaser.Scene {
     this.tooltip.setText('(' + Math.round(10 * this.input.x / this.px_per_yd) / 10 + ', ' + Math.round(10 * this.input.y / this.px_per_yd) / 10 + ')');
     this.tooltip.setPosition(this.input.x, this.input.y);
   }
+
+  catchBall(player, ball) {
+    ball.stop();
+    alert("ball caught!");
+  } // */
 }
