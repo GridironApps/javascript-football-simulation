@@ -11,6 +11,12 @@ class FieldScene extends Phaser.Scene {
 		this.load.image('football', 'assets/football.png');
 		this.load.image('red-dot', 'assets/red-circle-64.png');
 		this.load.image('blue-dot', 'assets/blue-circle-64.png');
+
+		this.offTeam = new Team('Offense Team', 'red-dot');
+		this.offTeam.setOffensiveLineup(this, 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTJwIgCS-T2qFvOjVAFo0TzBbUHxtWDxy60DWNED1gQeS8V43zI5toweqvyia2uuFK67xUlntvQMDjT/pub?gid=0&single=true&output=csv&headers=false');
+
+		this.defTeam = new Team('Defense Team', 'blue-dot');
+		this.defTeam.setDefensiveLineup(this, 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTJwIgCS-T2qFvOjVAFo0TzBbUHxtWDxy60DWNED1gQeS8V43zI5toweqvyia2uuFK67xUlntvQMDjT/pub?gid=1074706941&single=true&output=csv&headers=false');
 	}
 
 	//called once after preload ends
@@ -36,11 +42,13 @@ class FieldScene extends Phaser.Scene {
 		// set bounds so the camera won't go outside the game world
 		this.cameras.main.setBounds(0, 0, game.config.width, game.config.height);
 
-		this.offTeam = new Team('Offense Team', 'red-dot');
+		/*this.offTeam = new Team('Offense Team', 'red-dot');
 		this.offTeam.setOffensiveLineup(scene, 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTJwIgCS-T2qFvOjVAFo0TzBbUHxtWDxy60DWNED1gQeS8V43zI5toweqvyia2uuFK67xUlntvQMDjT/pub?gid=0&single=true&output=csv&headers=false');
 
 		this.defTeam = new Team('Defense Team', 'blue-dot');
-		this.defTeam.setDefensiveLineup(scene, 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTJwIgCS-T2qFvOjVAFo0TzBbUHxtWDxy60DWNED1gQeS8V43zI5toweqvyia2uuFK67xUlntvQMDjT/pub?gid=1074706941&single=true&output=csv&headers=false');
+		this.defTeam.setDefensiveLineup(scene, 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTJwIgCS-T2qFvOjVAFo0TzBbUHxtWDxy60DWNED1gQeS8V43zI5toweqvyia2uuFK67xUlntvQMDjT/pub?gid=1074706941&single=true&output=csv&headers=false'); // */
+
+		//alert("After player parsing!");
 
 		//create a tooltip next to mouse cursor
 		this.tooltip = scene.add.text(0, 0, '(0, 0)', { font: '12px Arial', fill: '#ffffff' })
