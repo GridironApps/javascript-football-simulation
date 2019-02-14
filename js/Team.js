@@ -22,7 +22,7 @@ class Team {
 				//create offensive group
 				offense.data.forEach(function (player, index, array) {
 					var attribute = {
-						'jersey': 'red-dot',
+						'jersey': team.jersey,
 						'position': player.id,
 						'weight': player.weight,
 						'power': player.power,
@@ -48,7 +48,7 @@ class Team {
 				//create defensive group
 				defense.data.forEach(function (player, index, array) {
 					var attribute = {
-						'jersey': 'blue-dot',
+						'jersey': team.jersey,
 						'position': player.id,
 						'weight': player.weight,
 						'power': player.power,
