@@ -6,7 +6,7 @@ class Team {
 		// lists of 11 players for offense and defense. 
 		// should be eventually replaced with a single roster list and functions to pick the correct players for a givien lineup. 
 		this.offensiveLineup = new Array();
-		this.deffensiveLineup = new Array();
+		this.defensiveLineup = new Array();
 	}
 
 	setOffensiveLineup(scene, linkToParse) {
@@ -30,6 +30,32 @@ class Team {
 						'agility': player.agility
 					};
 					team.offensiveLineup.push(new Player(scene, player.x * scene.px_per_yd, player.y * scene.px_per_yd, attribute));
+				});
+			}
+		});
+	}
+
+	setDefensiveLineup(scene, linkToParse) {
+		var team = this;
+
+		//parse csv file to create defense
+		Papa.parse('https://docs.google.com/spreadsheets/d/e/2PACX-1vTJwIgCS-T2qFvOjVAFo0TzBbUHxtWDxy60DWNED1gQeS8V43zI5toweqvyia2uuFK67xUlntvQMDjT/pub?gid=1074706941&single=true&output=csv&headers=false', {
+			download: true,
+			header: true,
+			dynamicTyping: true,
+			complete: function (defense) {
+				console.log(defense);
+				//create defensive group
+				defense.data.forEach(function (player, index, array) {
+					var attribute = {
+						'jersey': 'blue-dot',
+						'position': player.id,
+						'weight': player.weight,
+						'power': player.power,
+						'speed': player.speed,
+						'agility': player.agility
+					};
+					team.defensiveLineup.push(new Player(scene, player.x * scene.px_per_yd, player.y * scene.px_per_yd, attribute));
 				});
 			}
 		});

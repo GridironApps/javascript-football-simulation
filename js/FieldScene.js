@@ -39,38 +39,11 @@ class FieldScene extends Phaser.Scene {
 		this.offTeam = new Team('Offense Team', 'red-dot');
 		this.offTeam.setOffensiveLineup(scene, 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTJwIgCS-T2qFvOjVAFo0TzBbUHxtWDxy60DWNED1gQeS8V43zI5toweqvyia2uuFK67xUlntvQMDjT/pub?gid=0&single=true&output=csv&headers=false');
 
-		//parse csv file to create offense
-		/*Papa.parse('https://docs.google.com/spreadsheets/d/e/2PACX-1vTJwIgCS-T2qFvOjVAFo0TzBbUHxtWDxy60DWNED1gQeS8V43zI5toweqvyia2uuFK67xUlntvQMDjT/pub?gid=0&single=true&output=csv&headers=false', {
-			download: true,
-			header: true,
-			dynamicTyping: true,
-			complete: function (offense) {
-				console.log(offense);
-				//create offensive group
-				offense.data.forEach(function (player, index, array) {
-					var attribute = {
-						'jersey': 'red-dot',
-						'position': player.id,
-						'weight': player.weight,
-						'power': player.power,
-						'speed': player.speed,
-						'agility': player.agility
-					};
-					new Player(scene, player.x * scene.px_per_yd, player.y * scene.px_per_yd, attribute);
-				});
-				scene.offense = offense;
-				//alert("scene.offense = " + scene.offense.data);
-				
-				for(let player in scene.offense.data) {
-					scene.physics.add.overlap(scene.offense.data[player], scene.ball, this.catchBall, null, this); 
-					
-				}
-				//scene.physics.add.overlap(scene.offense, scene.ball, this.catchBall, null, this); 
-			}
-		}); // */
+		this.defTeam = new Team('Defense Team', 'blue-dot');
+		this.defTeam.setDefensiveLineup(scene, 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTJwIgCS-T2qFvOjVAFo0TzBbUHxtWDxy60DWNED1gQeS8V43zI5toweqvyia2uuFK67xUlntvQMDjT/pub?gid=1074706941&single=true&output=csv&headers=false');
 
 		//parse csv file to create defense
-		Papa.parse('https://docs.google.com/spreadsheets/d/e/2PACX-1vTJwIgCS-T2qFvOjVAFo0TzBbUHxtWDxy60DWNED1gQeS8V43zI5toweqvyia2uuFK67xUlntvQMDjT/pub?gid=1074706941&single=true&output=csv&headers=false', {
+		/*Papa.parse('https://docs.google.com/spreadsheets/d/e/2PACX-1vTJwIgCS-T2qFvOjVAFo0TzBbUHxtWDxy60DWNED1gQeS8V43zI5toweqvyia2uuFK67xUlntvQMDjT/pub?gid=1074706941&single=true&output=csv&headers=false', {
 			download: true,
 			header: true,
 			dynamicTyping: true,
@@ -89,7 +62,7 @@ class FieldScene extends Phaser.Scene {
 					new Player(scene, player.x * scene.px_per_yd, player.y * scene.px_per_yd, attribute);
 				});
 			}
-		});
+		}); // */
 
 		//create a tooltip next to mouse cursor
 		this.tooltip = scene.add.text(0, 0, '(0, 0)', { font: '12px Arial', fill: '#ffffff' })
