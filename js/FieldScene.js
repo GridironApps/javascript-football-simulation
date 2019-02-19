@@ -66,24 +66,20 @@ class FieldScene extends Phaser.Scene {
 			}
 		});
 
-		//alert("offense: " + scene.offense);
-
-		//this.physics.add.collider(this.ball, this.player);
-
-		/*this.physics.add.overlap(scene.offense, scene.ball, function() {
-			alert("ball caught!");
-			scene.ball.stop();
-		}, null, this); // */
+		this.physics.add.overlap(scene.ball, scene.offTeam.offensiveLineup, scene.catchBall, null, this); // */
 	}
 
 	//this will try to run 60 times per second
 	update() {
 		this.tooltip.setText('(' + Math.round(10 * this.input.x / this.px_per_yd) / 10 + ', ' + Math.round(10 * this.input.y / this.px_per_yd) / 10 + ')');
 		this.tooltip.setPosition(this.input.x, this.input.y);
+		this.ball.checkPosession();
 	}
 
-	catchBall(player, ball) {
-		ball.stop();
-		alert("ball caught!");
-	} // */
+	catchBall(ball, catcher) {
+		if (!ball.posessed) {
+			ball.caught(catcher);
+			//alert("ball caught!");
+		}
+	}
 }
