@@ -10,6 +10,10 @@ class Player {
 		this.speed = attributes.speed;
 		this.agility = attributes.agility;
 
+		this.actions = new Array();
+		parseActions(attributes.actions);
+
+
 		//create a dot to put player on, easier to see
 		var dot = scene.add.image(0, 0, this.jersey).setDisplaySize(1 * scene.px_per_yd, 1 * scene.px_per_yd);
 
@@ -35,6 +39,31 @@ class Player {
 			.setCollideWorldBounds(true)
 			.setMass(this.weight / 32.2)
 			.setMaxVelocity(12.3 * this.scene.px_per_yd, 12.3 * this.scene.px_per_yd);
+	}
+
+	parseActions(actionString) {
+		var nextAction = actionString.indexOf("[");
+		while (nextAction > -1) {
+			var endAction = actionString.indexOf("]", nextAction);
+			var endActType = actionString.indexOf(",", nextAction);
+			var actionOthers = null;
+			if (endActType > endAction) {
+				endActType = endAction;
+			}
+			else {
+				actionOthers = actionString.substring(endActType+1, endAction);
+			}
+			var actionType = actionString.substring(nextAction+1, endActType);
+			if (actionType == "throw") {
+				// make a throw action
+			}
+			else if (actionType == "move") {
+				// make a move action
+			}
+			else if (actionType == "stop") {
+				// make a stop action
+			}
+		}
 	}
 
 	sprint() {
