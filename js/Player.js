@@ -11,7 +11,7 @@ class Player {
 		this.agility = attributes.agility;
 
 		this.actions = new Array();
-		parseActions(attributes.actions);
+		this.parseActions(attributes.actions);
 
 
 		//create a dot to put player on, easier to see
@@ -53,16 +53,23 @@ class Player {
 			else {
 				actionOthers = actionString.substring(endActType+1, endAction);
 			}
+
+			// determine which type of action, create it, and add it to the actions queue
 			var actionType = actionString.substring(nextAction+1, endActType);
 			if (actionType == "throw") {
-				// make a throw action
+				this.actions.push(new ThrowAction(actionOthers));
 			}
 			else if (actionType == "move") {
-				// make a move action
+				this.actions.push(new MoveAction(actionOthers));
 			}
 			else if (actionType == "stop") {
-				// make a stop action
+				this.actions.push(new StopAction());
 			}
+			else {
+				// unknown input, do nothing (error state once implementation is complete)
+			}
+
+			nextAction = actionString.indexOf("[", endAction);
 		}
 	}
 
