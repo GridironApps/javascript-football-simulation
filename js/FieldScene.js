@@ -77,4 +77,16 @@ class FieldScene extends Phaser.Scene {
 			//alert("ball caught!");
 		}
 	}
+
+	pxToYards(pixels) {
+		var yards = Math.round(10 * pixels / this.px_per_yd) / 10;
+		//console.log(pixels + "pixels -> " + yards + " yards");
+		return yards;
+	}
+
+	yardsToPx(yards) {
+		var pixels = yards * this.px_per_yd;
+		//console.log(yards + "yards -> " + pixels + " pixels");
+		return pixels;
+	}
 }
