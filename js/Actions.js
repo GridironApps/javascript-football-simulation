@@ -3,6 +3,8 @@
 // a constructor which sets the executing variable to false
 // an execute() function which takes a Player object and the FieldScene object
 
+
+// Move the player from one point to another
 class MoveAction {
 	constructor(coordinateString) {
 		var endFirstVar = coordinateString.indexOf(",");
@@ -29,6 +31,7 @@ class MoveAction {
 	}
 }
 
+// throw a ball to a specified point
 class ThrowAction {
 	constructor(coordinateString) {
 		var endFirstVar = coordinateString.indexOf(",");
@@ -47,6 +50,7 @@ class ThrowAction {
 	}
 }
 
+// make the player come to a stop
 class StopAction {
 	constructor() {
 		this.executing = false;

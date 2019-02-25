@@ -66,6 +66,8 @@ class FieldScene extends Phaser.Scene {
 		this.tooltip.setText('(' + Math.round(10 * this.input.x / this.px_per_yd) / 10 + ', ' + Math.round(10 * this.input.y / this.px_per_yd) / 10 + ')');
 		this.tooltip.setPosition(this.input.x, this.input.y);
 		this.ball.checkPosession();
+
+		// loop through each offensive (and defensive, later) player and execute their top action
 	}
 
 	catchBall(ball, catcher) {
