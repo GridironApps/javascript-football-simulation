@@ -22,11 +22,13 @@ class MoveAction {
 		if (this.executing) {
 			if (player.body.x == this.xcoord && player.body.y == this.ycoord) {
 				// terminate: pop this action off the stack
+				player.actions.shift();
 			}
 		}
 		else {
 			this.executing = true;
 			player.sprint();
+			console.log("running to (" + this.xcoord + ", " + this.ycoord + ")");
 		}
 	}
 }
@@ -46,7 +48,15 @@ class ThrowAction {
 	}
 
 	execute(player, scene) {
-		// throw the ball
+		if (this.executing) {
+			player.actions.shift();
+			console.log("Finished throwing the ball");
+		}
+		else {
+			this.executing = true;
+			scene.ball.moveTo(scene.yardsToPx(this.ballXcoord), scene.yardsToPx(this.ballYcoord), 120);
+			console.log("Throwing the ball to (" + this.ballXcoord + ", " + this.ballYcoord + ")");
+		}
 	}
 }
 
@@ -59,5 +69,6 @@ class StopAction {
 	execute(player, scene) {
 		this.executing = true;
 		player.slow();
+		console.log("Stopping");
 	}
 }

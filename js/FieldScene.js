@@ -53,8 +53,10 @@ class FieldScene extends Phaser.Scene {
 			var velocity = 120; // yd/s
 			if (scene.ball.body.velocity.x != 0 || scene.ball.body.velocity.y != 0) {
 				scene.ball.stop();
+				console.log("ball stopped on click");
 			} else {
 				scene.ball.moveTo(scene.input.x, scene.input.y,velocity);
+				console.log("ball moving to (" + scene.input.x + ", " + scene.input.y + ") on click");
 			}
 		});
 
@@ -64,11 +66,17 @@ class FieldScene extends Phaser.Scene {
 
 	//this will try to run 60 times per second
 	update() {
-		this.tooltip.setText('(' + Math.round(10 * this.input.x / this.px_per_yd) / 10 + ', ' + Math.round(10 * this.input.y / this.px_per_yd) / 10 + ')');
+		var scene = this;
+		this.tooltip.setText('(' + this.pxToYards(this.input.x) + ', ' + this.pxToYards(this.input.y) + ')');
 		this.tooltip.setPosition(this.input.x, this.input.y);
 		this.ball.checkPosession();
 
 		// loop through each offensive (and defensive, later) player and execute their top action
+		this.offTeam.offensiveLineup.forEach(function(player) {
+			if (player.actions.length != 0) {
+				player.actions[0].execute(player, scene);
+			}
+		});
 	}
 
 	catchBall(ball, catcher) {
