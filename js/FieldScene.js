@@ -58,7 +58,8 @@ class FieldScene extends Phaser.Scene {
 			}
 		});
 
-		this.physics.add.overlap(scene.ball, scene.offTeam.offensiveLineup, scene.catchBall, null, this); // */
+		this.physics.add.overlap(scene.ball, scene.offTeam.offensiveLineup, scene.catchBall, null, this);
+		this.physics.add.overlap(scene.ball, scene.defTeam.defensiveLineup, scene.catchBall, null, this);
 	}
 
 	//this will try to run 60 times per second
