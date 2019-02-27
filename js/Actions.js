@@ -67,8 +67,19 @@ class StopAction {
 	}
 
 	execute(player, scene) {
-		this.executing = true;
-		player.slow();
-		console.log("Stopping");
+		if (this.executing) {
+			if (player.body.velocity.x == 0 && player.body.velocity.y == 0) {
+				player.actions.shift();
+				console.log("Player stopped");
+			}
+			else {
+				player.slow();
+			}
+		}
+		else {
+			this.executing = true;
+			player.slow();
+			console.log("Stopping");
+		}
 	}
 }

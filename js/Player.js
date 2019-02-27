@@ -47,7 +47,7 @@ class Player {
 			var endAction = actionString.indexOf("]", nextAction);
 			var endActType = actionString.indexOf(",", nextAction);
 			var actionOthers = null;
-			if (endActType > endAction) {
+			if (endActType <= -1 || endActType > endAction) {
 				endActType = endAction;
 			}
 			else {
