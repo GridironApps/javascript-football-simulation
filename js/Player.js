@@ -13,6 +13,12 @@ class Player {
 		this.actions = new Array();
 		this.parseActions(attributes.actions);
 
+		// how quickly this player decelerates
+		this.decelerationFactor = 0.88;
+
+		// force of acceleration while sprinting 
+		this.sprintForce = 54.9; // 549 N
+
 
 		//create a dot to put player on, easier to see
 		var dot = scene.add.image(0, 0, this.jersey).setDisplaySize(1 * scene.px_per_yd, 1 * scene.px_per_yd);
@@ -38,7 +44,8 @@ class Player {
 		this.body.setCircle(4)
 			.setCollideWorldBounds(true)
 			.setMass(this.weight / 32.2)
-			.setMaxVelocity(12.3 * this.scene.px_per_yd, 12.3 * this.scene.px_per_yd);
+			.setMaxSpeed(12.3 * this.scene.px_per_yd);
+			//.setMaxVelocity(12.3 * this.scene.px_per_yd, 12.3 * this.scene.px_per_yd);
 	}
 
 	parseActions(actionString) {
@@ -58,12 +65,15 @@ class Player {
 			var actionType = actionString.substring(nextAction+1, endActType);
 			if (actionType == "throw") {
 				this.actions.push(new ThrowAction(actionOthers));
+				console.log("Created ThrowAction");
 			}
 			else if (actionType == "move") {
 				this.actions.push(new MoveAction(actionOthers));
+				console.log("Created MoveAction");
 			}
 			else if (actionType == "stop") {
 				this.actions.push(new StopAction());
+				console.log("Created StopAction");
 			}
 			else {
 				// unknown input, do nothing (error state once implementation is complete)
@@ -73,16 +83,17 @@ class Player {
 		}
 	}
 
-	sprint() {
+	// accelerate to top speed towards the given point. Coordinates are relative to the player's current position. 
+	sprint(relativeX, relativeY) {
 		const body = this.body;
 		body.setAcceleration(54.9, 0); //549 N
 	}
 
 	slow() {
 		const body = this.body;
-		console.log(body.velocity.x);
+		//console.log(body.velocity.x);
 		if (body.velocity.x > 1.5 * this.scene.px_per_yd) {
-			body.setVelocityX(body.velocity.x * 0.88);
+			body.setVelocityX(body.velocity.x * this.decelerationFactor);
 		} else {
 			body.stop();
 		}
