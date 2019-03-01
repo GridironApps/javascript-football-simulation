@@ -53,10 +53,10 @@ class FieldScene extends Phaser.Scene {
 			var velocity = 120; // yd/s
 			if (scene.ball.body.velocity.x != 0 || scene.ball.body.velocity.y != 0) {
 				scene.ball.stop();
-				console.log("ball stopped on click");
+				//console.log("ball stopped on click");
 			} else {
 				scene.ball.moveTo(scene.input.x, scene.input.y,velocity);
-				console.log("ball moving to (" + scene.input.x + ", " + scene.input.y + ") on click");
+				//console.log("ball moving to (" + scene.input.x + ", " + scene.input.y + ") on click");
 			}
 		});
 
@@ -73,7 +73,7 @@ class FieldScene extends Phaser.Scene {
 
 		// loop through each offensive (and defensive, later) player and execute their top action
 		this.offTeam.offensiveLineup.forEach(function(player) {
-			if (player.actions.length != 0) {
+			if (player.actions.length > 0) {
 				player.actions[0].execute(player, scene);
 			}
 		});
@@ -82,7 +82,6 @@ class FieldScene extends Phaser.Scene {
 	catchBall(ball, catcher) {
 		if (!ball.posessed) {
 			ball.caught(catcher);
-			//alert("ball caught!");
 		}
 	}
 

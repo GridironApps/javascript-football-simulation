@@ -25,7 +25,7 @@ class Ball {
 
 		var dx = x - (this.body.x + this.body.halfWidth);
 		var dy = y - (this.body.y + this.body.halfHeight);
-		var h = Math.pow((dx*dx + dy*dy),0.5);    
+		var h = Math.pow((dx*dx + dy*dy),0.5);
 
 		var vx = v*dx/h;
 		var vy = v*dy/h;
