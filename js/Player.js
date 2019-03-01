@@ -19,6 +19,9 @@ class Player {
 		// force of acceleration while sprinting 
 		this.sprintForce = 54.9; // 549 N
 
+		// top speed while sprinting
+		this.sprintSpeed = 12.3 * this.scene.px_per_yd;
+
 
 		//create a dot to put player on, easier to see
 		var dot = scene.add.image(0, 0, this.jersey).setDisplaySize(1 * scene.px_per_yd, 1 * scene.px_per_yd);
@@ -44,8 +47,8 @@ class Player {
 		this.body.setCircle(4)
 			.setCollideWorldBounds(true)
 			.setMass(this.weight / 32.2)
-			//.setMaxSpeed(12.3 * this.scene.px_per_yd);
-			.setMaxVelocity(12.3 * this.scene.px_per_yd, 12.3 * this.scene.px_per_yd);
+			//.setMaxSpeed(this.sprintSpeed);
+			.setMaxVelocity(this.sprintSpeed, this.sprintSpeed);
 	}
 
 	parseActions(actionString) {
@@ -65,15 +68,15 @@ class Player {
 			var actionType = actionString.substring(nextAction+1, endActType);
 			if (actionType == "throw") {
 				this.actions.push(new ThrowAction(actionOthers));
-				console.log("Created ThrowAction");
+				//console.log("Created ThrowAction");
 			}
 			else if (actionType == "move") {
 				this.actions.push(new MoveAction(actionOthers));
-				console.log("Created MoveAction");
+				//console.log("Created MoveAction");
 			}
 			else if (actionType == "stop") {
 				this.actions.push(new StopAction());
-				console.log("Created StopAction");
+				//console.log("Created StopAction");
 			}
 			else {
 				// unknown input, do nothing (error state once implementation is complete)
@@ -96,8 +99,11 @@ class Player {
 		var dy = y - (body.y + body.halfHeight);
 		var h = Math.pow((dx*dx + dy*dy),0.5);
 
-		var ax = this.sprintForce * dx / h;
-		var ay = this.sprintForce * dy / h;
+		var vx = this.sprintSpeed * dx/h;
+		var vy = this.sprintSpeed * dy/h;
+
+		var ax = this.sprintForce * (vx - body.velocity.x);
+		var ay = this.sprintForce * (vy - body.velocity.y);
 
 		body.setAcceleration(ax, ay);
 	}
@@ -105,9 +111,9 @@ class Player {
 	slow() {
 		const body = this.body;
 		//console.log(body.velocity.x);
-		if (body.velocity.x > 1.5 * this.scene.px_per_yd || body.velocity.y > 1.5 * this.scene.px_per_yd) {
-			body.setVelocityX(body.velocity.x * this.decelerationFactor);
-			body.setVelocityY(body.velocity.y * this.decelerationFactor);
+		if (Math.abs(body.velocity.x) > 1.5 * this.scene.px_per_yd || Math.abs(body.velocity.y) > 1.5 * this.scene.px_per_yd) {
+			body.setAccelerationX(this.sprintForce * -body.velocity.x);
+			body.setAccelerationY(this.sprintForce * -body.velocity.y);
 		} else {
 			body.stop();
 		}

@@ -26,7 +26,10 @@ class MoveAction {
 			if (this.checkPastTarget(scene.pxToYards(player.body.x), scene.pxToYards(player.body.y))) {
 				// terminate: pop this action off the stack
 				player.actions.shift();
-				console.log("ran past target point");
+				console.log(player.position + " ran past target point");
+			}
+			else {
+				player.sprintTo(scene.yardsToPx(this.xcoord), scene.yardsToPx(this.ycoord));
 			}
 		}
 		else {
@@ -34,28 +37,31 @@ class MoveAction {
 			// get the player's initial position for comparison purposes
 			this.initPlayerX = scene.pxToYards(player.body.x);
 			this.initPlayerY = scene.pxToYards(player.body.y);
+			//console.log("Player started at (" + this.initPlayerX + ", " + this.initPlayerY + ")");
 
 			player.sprintTo(scene.yardsToPx(this.xcoord), scene.yardsToPx(this.ycoord));
-			console.log("running to (" + this.xcoord + ", " + this.ycoord + ")");
+			console.log(player.position + " running to (" + this.xcoord + ", " + this.ycoord + ")");
 		}
 	}
 
-	// check if the given point is at or past the target point
-	checkPastTarget(currentX, currentY) {
+	// check if the given point is at or past the target point (give or take half a yard)
+	checkPastTarget(currentX, currentY, scene) {
 		var xReach;
 		var yReach;
+		var margin = 0.5;
+		//console.log("Player at (" + currentX + ", " + currentY + "), target point is (" + this.xcoord + ", " + this.ycoord + ")");
 		if (this.initPlayerX >= this.xcoord) {
-			xReach = currentX <= this.xcoord;
+			xReach = currentX <= this.xcoord + margin;
 		}
 		else {
-			xReach = currentX >= this.xcoord;
+			xReach = currentX >= this.xcoord - margin;
 		}
 
 		if (this.initPlayerY >= this.ycoord) {
-			yReach = currentY <= this.ycoord;
+			yReach = currentY <= this.ycoord + margin;
 		}
 		else {
-			yReach = currentX >= this.ycoord;
+			yReach = currentY >= this.ycoord - margin;
 		}
 
 		return xReach && yReach;
@@ -79,12 +85,12 @@ class ThrowAction {
 	execute(player, scene) {
 		if (this.executing) {
 			player.actions.shift();
-			console.log("Finished throwing the ball");
+			console.log(player.position + " finished throwing the ball");
 		}
 		else {
 			this.executing = true;
 			scene.ball.moveTo(scene.yardsToPx(this.ballXcoord), scene.yardsToPx(this.ballYcoord), 120);
-			console.log("Throwing the ball to (" + this.ballXcoord + ", " + this.ballYcoord + ")");
+			console.log(player.position + " throwing the ball to (" + this.ballXcoord + ", " + this.ballYcoord + ")");
 		}
 	}
 }
@@ -99,7 +105,7 @@ class StopAction {
 		if (this.executing) {
 			if (player.body.velocity.x == 0 && player.body.velocity.y == 0) {
 				player.actions.shift();
-				console.log("Player stopped");
+				console.log(player.position + " stopped");
 			}
 			else {
 				player.slow();
@@ -108,7 +114,7 @@ class StopAction {
 		else {
 			this.executing = true;
 			player.slow();
-			console.log("Stopping");
+			console.log(player.position + " Stopping");
 		}
 	}
 }
