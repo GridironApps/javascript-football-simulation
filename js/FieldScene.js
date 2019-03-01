@@ -43,7 +43,7 @@ class FieldScene extends Phaser.Scene {
 		this.cameras.main.setBounds(0, 0, game.config.width, game.config.height);
 
 		//create a tooltip next to mouse cursor
-		this.tooltip = scene.add.text(0, 0, '(0, 0)', { font: '12px Arial', fill: '#ffffff' })
+		this.tooltip = scene.add.text(0, 0, '(0, 0)', { font: 'bold 12px Arial', fill: '#000000' })
 			.setOrigin(0, 1);
 
 		//add click handler that moves the ball around
