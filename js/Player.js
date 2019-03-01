@@ -44,8 +44,8 @@ class Player {
 		this.body.setCircle(4)
 			.setCollideWorldBounds(true)
 			.setMass(this.weight / 32.2)
-			.setMaxSpeed(12.3 * this.scene.px_per_yd);
-			//.setMaxVelocity(12.3 * this.scene.px_per_yd, 12.3 * this.scene.px_per_yd);
+			//.setMaxSpeed(12.3 * this.scene.px_per_yd);
+			.setMaxVelocity(12.3 * this.scene.px_per_yd, 12.3 * this.scene.px_per_yd);
 	}
 
 	parseActions(actionString) {
