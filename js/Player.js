@@ -105,8 +105,9 @@ class Player {
 	slow() {
 		const body = this.body;
 		//console.log(body.velocity.x);
-		if (body.velocity.x > 1.5 * this.scene.px_per_yd) {
+		if (body.velocity.x > 1.5 * this.scene.px_per_yd || body.velocity.y > 1.5 * this.scene.px_per_yd) {
 			body.setVelocityX(body.velocity.x * this.decelerationFactor);
+			body.setVelocityY(body.velocity.y * this.decelerationFactor);
 		} else {
 			body.stop();
 		}
