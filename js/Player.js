@@ -83,10 +83,23 @@ class Player {
 		}
 	}
 
-	// accelerate to top speed towards the given point. Coordinates are relative to the player's current position. 
-	sprint(relativeX, relativeY) {
+	sprint() {
 		const body = this.body;
-		body.setAcceleration(54.9, 0); //549 N
+		body.setAcceleration(this.sprintForce, 0);
+	}
+
+	// accelerate to top speed towards the given point
+	sprintTo(x, y) {
+		const body = this.body;
+
+		var dx = x - (body.x + body.halfWidth);
+		var dy = y - (body.y + body.halfHeight);
+		var h = Math.pow((dx*dx + dy*dy),0.5);
+
+		var ax = this.sprintForce * dx / h;
+		var ay = this.sprintforce * dy / h;
+
+		body.setAcceleration(ax, ay);
 	}
 
 	slow() {

@@ -15,21 +15,50 @@ class MoveAction {
 		this.xcoord = parseInt(coordinateString.substring(0, endFirstVar));
 		this.ycoord = parseInt(coordinateString.substring(endFirstVar+1, endSecondVar));
 
+		this.initPlayerX = -1;
+		this.initPlayerY = -1;
+
 		this.executing = false;
 	}
 
 	execute(player, scene) {
 		if (this.executing) {
-			if (player.body.x == this.xcoord && player.body.y == this.ycoord) {
+			if (this.checkPastTarget(scene.pxToYards(player.body.x), scene.pxToYards(player.body.y))) {
 				// terminate: pop this action off the stack
 				player.actions.shift();
+				console.log("ran past target point");
 			}
 		}
 		else {
 			this.executing = true;
-			player.sprint();
+			// get the player's initial position for comparison purposes
+			this.initPlayerX = scene.pxToYards(player.body.x);
+			this.initPlayerY = scene.pxToYards(player.body.y);
+
+			player.sprintTo(scene.yardsToPx(this.xcoord), scene.yardsToPx(this.ycoord));
 			console.log("running to (" + this.xcoord + ", " + this.ycoord + ")");
 		}
+	}
+
+	// check if the given point is at or past the target point
+	checkPastTarget(currentX, currentY) {
+		var xReach;
+		var yReach;
+		if (this.initPlayerX >= this.xcoord) {
+			xReach = currentX <= this.xcoord;
+		}
+		else {
+			xReach = currentX >= this.xcoord;
+		}
+
+		if (this.initPlayerY >= this.ycoord) {
+			yReach = currentY <= this.ycoord;
+		}
+		else {
+			yReach = currentX >= this.ycoord;
+		}
+
+		return xReach && yReach;
 	}
 }
 
