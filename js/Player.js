@@ -97,7 +97,7 @@ class Player {
 		var h = Math.pow((dx*dx + dy*dy),0.5);
 
 		var ax = this.sprintForce * dx / h;
-		var ay = this.sprintforce * dy / h;
+		var ay = this.sprintForce * dy / h;
 
 		body.setAcceleration(ax, ay);
 	}
