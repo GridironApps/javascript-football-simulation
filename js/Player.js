@@ -10,6 +10,19 @@ class Player {
 		this.speed = attributes.speed;
 		this.agility = attributes.agility;
 
+		this.actions = new Array();
+		this.parseActions(attributes.actions);
+
+		// how quickly this player decelerates
+		this.decelerationFactor = 0.88;
+
+		// force of acceleration while sprinting 
+		this.sprintForce = 54.9; // 549 N
+
+		// top speed while sprinting
+		this.sprintSpeed = 12.3 * this.scene.px_per_yd;
+
+
 		//create a dot to put player on, easier to see
 		var dot = scene.add.image(0, 0, this.jersey).setDisplaySize(1 * scene.px_per_yd, 1 * scene.px_per_yd);
 
@@ -34,19 +47,73 @@ class Player {
 		this.body.setCircle(4)
 			.setCollideWorldBounds(true)
 			.setMass(this.weight / 32.2)
-			.setMaxVelocity(12.3 * this.scene.px_per_yd, 12.3 * this.scene.px_per_yd);
+			//.setMaxSpeed(this.sprintSpeed);
+			.setMaxVelocity(this.sprintSpeed, this.sprintSpeed);
+	}
+
+	parseActions(actionString) {
+		var nextAction = actionString.indexOf("[");
+		while (nextAction > -1) {
+			var endAction = actionString.indexOf("]", nextAction);
+			var endActType = actionString.indexOf(",", nextAction);
+			var actionOthers = null;
+			if (endActType <= -1 || endActType > endAction) {
+				endActType = endAction;
+			}
+			else {
+				actionOthers = actionString.substring(endActType+1, endAction);
+			}
+
+			// determine which type of action, create it, and add it to the actions queue
+			var actionType = actionString.substring(nextAction+1, endActType);
+			if (actionType == "throw") {
+				this.actions.push(new ThrowAction(actionOthers));
+				//console.log("Created ThrowAction");
+			}
+			else if (actionType == "move") {
+				this.actions.push(new MoveAction(actionOthers));
+				//console.log("Created MoveAction");
+			}
+			else if (actionType == "stop") {
+				this.actions.push(new StopAction());
+				//console.log("Created StopAction");
+			}
+			else {
+				// unknown input, do nothing (error state once implementation is complete)
+			}
+
+			nextAction = actionString.indexOf("[", endAction);
+		}
 	}
 
 	sprint() {
 		const body = this.body;
-		body.setAcceleration(54.9, 0); //549 N
+		body.setAcceleration(this.sprintForce, 0);
+	}
+
+	// accelerate to top speed towards the given point
+	sprintTo(x, y) {
+		const body = this.body;
+
+		var dx = x - (body.x + body.halfWidth);
+		var dy = y - (body.y + body.halfHeight);
+		var h = Math.pow((dx*dx + dy*dy),0.5);
+
+		var vx = this.sprintSpeed * dx/h;
+		var vy = this.sprintSpeed * dy/h;
+
+		var ax = this.sprintForce * (vx - body.velocity.x);
+		var ay = this.sprintForce * (vy - body.velocity.y);
+
+		body.setAcceleration(ax, ay);
 	}
 
 	slow() {
 		const body = this.body;
-		console.log(body.velocity.x);
-		if (body.velocity.x > 1.5 * this.scene.px_per_yd) {
-			body.setVelocityX(body.velocity.x * 0.88);
+		//console.log(body.velocity.x);
+		if (Math.abs(body.velocity.x) > 1.5 * this.scene.px_per_yd || Math.abs(body.velocity.y) > 1.5 * this.scene.px_per_yd) {
+			body.setAccelerationX(this.sprintForce * -body.velocity.x);
+			body.setAccelerationY(this.sprintForce * -body.velocity.y);
 		} else {
 			body.stop();
 		}

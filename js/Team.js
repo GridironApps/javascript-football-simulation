@@ -27,7 +27,8 @@ class Team {
 						'weight': player.weight,
 						'power': player.power,
 						'speed': player.speed,
-						'agility': player.agility
+						'agility': player.agility,
+						'actions': player.do
 					};
 					team.offensiveLineup.push(new Player(scene, player.x * scene.px_per_yd, player.y * scene.px_per_yd, attribute));
 				});
@@ -53,7 +54,8 @@ class Team {
 						'weight': player.weight,
 						'power': player.power,
 						'speed': player.speed,
-						'agility': player.agility
+						'agility': player.agility,
+						'actions': player.do
 					};
 					team.defensiveLineup.push(new Player(scene, player.x * scene.px_per_yd, player.y * scene.px_per_yd, attribute));
 				});

@@ -25,7 +25,7 @@ class Ball {
 
 		var dx = x - (this.body.x + this.body.halfWidth);
 		var dy = y - (this.body.y + this.body.halfHeight);
-		var h = Math.pow((dx*dx + dy*dy),0.5);    
+		var h = Math.pow((dx*dx + dy*dy),0.5);
 
 		var vx = v*dx/h;
 		var vy = v*dy/h;
@@ -44,15 +44,29 @@ class Ball {
 		this.posessedBy = catcher;
 		this.body.x = catcher.body.x - this.body.halfWidth;
 		this.body.y = catcher.body.y - this.body.halfHeight;
+		console.log("Ball caught by " + catcher.position);
 	}
 
+	// check if the ball is still within the posession of (meaning, still overlaps with) a player
 	checkPosession() {
 		if (this.posessed) {
 			if (!this.scene.physics.world.overlap(this.posessedBy, this)) {
+				console.log("ball released by " + this.posessedBy);
 				this.posessed = false;
 				this.posessedBy = null;
-				//alert("ball released!");
 			}
 		}
-	}// */
+	}
+
+	// check if the ball is posessed by a player and not being thrown, then ensure that the ball is located in the same place as that player
+	moveWithPlayer() {
+		if (this.posessed && this.body.velocity.x == 0 && this.body.velocity.y == 0) {
+			//console.log("ball posessed and motionless");
+			this.body.x = this.posessedBy.body.x - this.body.halfWidth;
+			this.body.y = this.posessedBy.body.y - this.body.halfHeight;
+		}
+		/*else if (this.posessed) {
+			console.log("posessed, but vx = " + this.body.velocity.x + ", vy = " + this.body.velocity.y);
+		} // */
+	}
 }

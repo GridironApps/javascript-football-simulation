@@ -2,6 +2,7 @@ class FieldScene extends Phaser.Scene {
 	constructor() {
 		super(); //this is used to call the parent class Phaser.Scene
 		this.px_per_yd = game.config.width / 120;
+		this.started = 0;
 	}
 
 	//load assets
@@ -43,35 +44,71 @@ class FieldScene extends Phaser.Scene {
 		this.cameras.main.setBounds(0, 0, game.config.width, game.config.height);
 
 		//create a tooltip next to mouse cursor
-		this.tooltip = scene.add.text(0, 0, '(0, 0)', { font: '12px Arial', fill: '#ffffff' })
+		this.tooltip = scene.add.text(0, 0, '(0, 0)', { font: 'bold 12px Arial', fill: '#000000' })
 			.setOrigin(0, 1);
 
 		//add click handler that moves the ball around
 		background.setInteractive();
 		background.on('pointerdown', function () {
 
-			var velocity = 120; // yd/s
-			if (scene.ball.body.velocity.x != 0 || scene.ball.body.velocity.y != 0) {
-				scene.ball.stop();
-			} else {
-				scene.ball.moveTo(scene.input.x, scene.input.y,velocity);
+			if (scene.started) {
+				var velocity = scene.yardsToPx(29); // px/s
+				if (scene.ball.body.velocity.x != 0 || scene.ball.body.velocity.y != 0) {
+					scene.ball.stop();
+					//console.log("ball stopped on click");
+				} else {
+					scene.ball.moveTo(scene.input.x, scene.input.y,velocity);
+					//console.log("ball moving to (" + scene.input.x + ", " + scene.input.y + ") on click");
+				}
 			}
 		});
 
-		this.physics.add.overlap(scene.ball, scene.offTeam.offensiveLineup, scene.catchBall, null, this); // */
+		this.physics.add.overlap(scene.ball, scene.offTeam.offensiveLineup, scene.catchBall, null, this);
+		this.physics.add.overlap(scene.ball, scene.defTeam.defensiveLineup, scene.catchBall, null, this);
+
+		var startButton = document.getElementById("startButton");
+		startButton.onclick = function () {
+			console.log("starting!");
+			scene.started = 1;
+		};
 	}
 
 	//this will try to run 60 times per second
 	update() {
-		this.tooltip.setText('(' + Math.round(10 * this.input.x / this.px_per_yd) / 10 + ', ' + Math.round(10 * this.input.y / this.px_per_yd) / 10 + ')');
+		var scene = this;
+		this.tooltip.setText('(' + this.pxToYards(this.input.x) + ', ' + this.pxToYards(this.input.y) + ')');
 		this.tooltip.setPosition(this.input.x, this.input.y);
-		this.ball.checkPosession();
+
+		if (this.started) {
+			this.ball.moveWithPlayer();
+			this.ball.checkPosession();
+
+			// loop through each offensive (and defensive, later) player and execute their top action
+			this.offTeam.offensiveLineup.forEach(function(player) {
+				if (player.actions.length > 0) {
+					player.actions[0].execute(player, scene);
+				}
+			});
+		}
 	}
 
 	catchBall(ball, catcher) {
 		if (!ball.posessed) {
 			ball.caught(catcher);
-			//alert("ball caught!");
 		}
+	}
+
+	/* Utility functions */
+
+	pxToYards(pixels) {
+		var yards = Math.round(10 * pixels / this.px_per_yd) / 10;
+		//console.log(pixels + "pixels -> " + yards + " yards");
+		return yards;
+	}
+
+	yardsToPx(yards) {
+		var pixels = yards * this.px_per_yd;
+		//console.log(yards + "yards -> " + pixels + " pixels");
+		return pixels;
 	}
 }
