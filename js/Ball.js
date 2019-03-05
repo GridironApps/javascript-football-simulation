@@ -46,6 +46,7 @@ class Ball {
 		this.body.y = catcher.body.y - this.body.halfHeight;
 	}
 
+	// check if the ball is still within the posession of (meaning, still overlaps with) a player
 	checkPosession() {
 		if (this.posessed) {
 			if (!this.scene.physics.world.overlap(this.posessedBy, this)) {
@@ -54,5 +55,5 @@ class Ball {
 				//alert("ball released!");
 			}
 		}
-	}// */
+	}
 }

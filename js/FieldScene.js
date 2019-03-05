@@ -85,6 +85,8 @@ class FieldScene extends Phaser.Scene {
 		}
 	}
 
+	/* Utility functions */
+
 	pxToYards(pixels) {
 		var yards = Math.round(10 * pixels / this.px_per_yd) / 10;
 		//console.log(pixels + "pixels -> " + yards + " yards");
