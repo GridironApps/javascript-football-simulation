@@ -52,7 +52,7 @@ class FieldScene extends Phaser.Scene {
 		background.on('pointerdown', function () {
 
 			if (scene.started) {
-				var velocity = 120; // yd/s
+				var velocity = scene.yardsToPx(29); // px/s
 				if (scene.ball.body.velocity.x != 0 || scene.ball.body.velocity.y != 0) {
 					scene.ball.stop();
 					//console.log("ball stopped on click");
@@ -80,6 +80,7 @@ class FieldScene extends Phaser.Scene {
 		this.tooltip.setPosition(this.input.x, this.input.y);
 
 		if (this.started) {
+			this.ball.moveWithPlayer();
 			this.ball.checkPosession();
 
 			// loop through each offensive (and defensive, later) player and execute their top action

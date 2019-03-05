@@ -26,7 +26,7 @@ class MoveAction {
 			if (this.checkPastTarget(scene.pxToYards(player.body.x), scene.pxToYards(player.body.y))) {
 				// terminate: pop this action off the stack
 				player.actions.shift();
-				console.log(player.position + " ran past target point");
+				console.log(player.position + " reached target point");
 			}
 			else {
 				player.sprintTo(scene.yardsToPx(this.xcoord), scene.yardsToPx(this.ycoord));
@@ -89,7 +89,7 @@ class ThrowAction {
 		}
 		else {
 			this.executing = true;
-			scene.ball.moveTo(scene.yardsToPx(this.ballXcoord), scene.yardsToPx(this.ballYcoord), 120);
+			scene.ball.moveTo(scene.yardsToPx(this.ballXcoord), scene.yardsToPx(this.ballYcoord), scene.yardsToPx(29));
 			console.log(player.position + " throwing the ball to (" + this.ballXcoord + ", " + this.ballYcoord + ")");
 		}
 	}
