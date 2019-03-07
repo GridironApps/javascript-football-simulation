@@ -2,7 +2,7 @@ class FieldScene extends Phaser.Scene {
 	constructor() {
 		super(); //this is used to call the parent class Phaser.Scene
 		this.px_per_yd = game.config.width / 120;
-		this.started = 0;
+		this.started = false;
 	}
 
 	//load assets
@@ -67,19 +67,42 @@ class FieldScene extends Phaser.Scene {
 		this.physics.add.overlap(scene.ball, scene.defTeam.defensiveLineup, scene.catchBall, null, this);
 
 		var startButton = document.getElementById("startButton");
+		var stopButton = document.getElementById("stopButton");
+		stopButton.disabled = true;
+
 		startButton.onclick = function () {
 			console.log("starting!");
-			scene.started = 1;
+			scene.started = true;
+			stopButton.disabled = false;
+			startButton.disabled = true;
 		};
+
+		stopButton.onclick = function() {
+			console.log("stopping!");
+			scene.started = false;
+			startButton.disabled = false;
+			stopButton.disabled = true;
+
+			// stop everything
+			scene.ball.stop();
+			scene.offTeam.offensiveLineup.forEach(function(player) {
+				if (player.actions.length > 0) {
+					player.actions[0].executing = false;
+				}
+				player.body.stop();
+			});
+		}
 	}
 
 	//this will try to run 60 times per second
 	update() {
+		//console.log("pre-update: ball rotation was " + this.ball.body.preRotation + ", now " + this.ball.body.rotation);
 		var scene = this;
 		this.tooltip.setText('(' + this.pxToYards(this.input.x) + ', ' + this.pxToYards(this.input.y) + ')');
 		this.tooltip.setPosition(this.input.x, this.input.y);
 
 		if (this.started) {
+			//console.log("ball rotation was " + this.ball.body.preRotation + ", now " + this.ball.body.rotation);
 			this.ball.moveWithPlayer();
 			this.ball.checkPosession();
 
