@@ -22,6 +22,9 @@ class Player {
 		// top speed while sprinting
 		this.sprintSpeed = 12.3 * this.scene.px_per_yd;
 
+		// speed at which the player throws the ball. 29 yds/sec = 60 mph. 
+		this.throwVelocity = 29; 
+
 
 		//create a dot to put player on, easier to see
 		var dot = scene.add.image(0, 0, this.jersey).setDisplaySize(1 * scene.px_per_yd, 1 * scene.px_per_yd);

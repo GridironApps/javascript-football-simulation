@@ -89,7 +89,7 @@ class ThrowAction {
 		}
 		else {
 			this.executing = true;
-			scene.ball.moveTo(scene.yardsToPx(this.ballXcoord), scene.yardsToPx(this.ballYcoord), scene.yardsToPx(29));
+			scene.ball.moveTo(scene.yardsToPx(this.ballXcoord), scene.yardsToPx(this.ballYcoord), scene.yardsToPx(player.throwVelocity));
 			console.log(player.position + " throwing the ball to (" + this.ballXcoord + ", " + this.ballYcoord + ")");
 		}
 	}
