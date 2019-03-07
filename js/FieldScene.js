@@ -52,13 +52,13 @@ class FieldScene extends Phaser.Scene {
 		background.on('pointerdown', function () {
 
 			if (scene.started) {
-				var velocity = scene.yardsToPx(29); // px/s
+				var velocity = scene.yardsToPx(29); // 29 yds/sec = 60 mph
 				if (scene.ball.body.velocity.x != 0 || scene.ball.body.velocity.y != 0) {
 					scene.ball.stop();
 					//console.log("ball stopped on click");
 				} else {
 					scene.ball.moveTo(scene.input.x, scene.input.y,velocity);
-					//console.log("ball moving to (" + scene.input.x + ", " + scene.input.y + ") on click");
+					console.log("ball moving to (" + scene.input.x + ", " + scene.input.y + ") on click with rotation " + scene.ball.body.rotation);
 				}
 			}
 		});
@@ -96,13 +96,15 @@ class FieldScene extends Phaser.Scene {
 
 	//this will try to run 60 times per second
 	update() {
-		//console.log("pre-update: ball rotation was " + this.ball.body.preRotation + ", now " + this.ball.body.rotation);
+		if (this.started) {
+			console.log("pre-update: ball rotation was " + this.ball.body.preRotation + ", now " + this.ball.body.rotation);
+		}
 		var scene = this;
 		this.tooltip.setText('(' + this.pxToYards(this.input.x) + ', ' + this.pxToYards(this.input.y) + ')');
 		this.tooltip.setPosition(this.input.x, this.input.y);
 
 		if (this.started) {
-			//console.log("ball rotation was " + this.ball.body.preRotation + ", now " + this.ball.body.rotation);
+			//console.log("update: ball rotation was " + this.ball.body.preRotation + ", now " + this.ball.body.rotation);
 			this.ball.moveWithPlayer();
 			this.ball.checkPosession();
 
@@ -112,6 +114,7 @@ class FieldScene extends Phaser.Scene {
 					player.actions[0].execute(player, scene);
 				}
 			});
+			console.log("post-update: ball rotation was " + this.ball.body.preRotation + ", now " + this.ball.body.rotation);
 		}
 	}
 

@@ -16,6 +16,7 @@ class Ball {
 
 		//set a few physics options for the ball
 		this.body.setCollideWorldBounds(true)
+			.setAllowRotation(true)
 			.setMass(1 / 32.2);
 	}
 
@@ -30,7 +31,20 @@ class Ball {
 		var vx = v*dx/h;
 		var vy = v*dy/h;
 
+		this.turnTo(x,y);
+		//console.log("Post-call rotation now " + this.body.rotation);
 		this.body.setVelocity(vx, vy);
+		//console.log("post-velo rotation now " + this.body.rotation);
+	}
+
+	turnTo(x,y) {
+		var currentPoint = new Phaser.Geom.Point(this.body.x + this.body.halfWidth, this.body.y + this.body.halfWidth);
+		var targetPoint = new Phaser.Geom.Point(x, y);
+		var oldRotation = this.body.rotation;
+		var newRotation = Phaser.Math.Angle.BetweenPoints(currentPoint, targetPoint);
+
+		this.body.rotation = newRotation;
+		console.log("turning: rotation was " + oldRotation + ", now " + this.body.rotation);
 	}
 
 	stop(){
@@ -49,9 +63,17 @@ class Ball {
 
 	// check if the ball is still within the posession of (meaning, still overlaps with) a player
 	checkPosession() {
+		//console.log("checking, rotation was " + this.body.preRotation + ", rotation now " + this.body.rotation);
+		if (this.body.rotation != 2) {
+			console.log("checking, rotation was " + this.body.rotation + ", switching to 2");
+			this.body.rotation = 2;
+		}
+		else {
+			console.log("checking, rotation still " + this.body.rotation);
+		} // */
 		if (this.posessed) {
 			if (!this.scene.physics.world.overlap(this.posessedBy, this)) {
-				console.log("ball released by " + this.posessedBy);
+				console.log("ball released by " + this.posessedBy.position);
 				this.posessed = false;
 				this.posessedBy = null;
 			}

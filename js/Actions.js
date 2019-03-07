@@ -26,7 +26,7 @@ class MoveAction {
 			if (this.checkPastTarget(scene.pxToYards(player.body.x), scene.pxToYards(player.body.y))) {
 				// terminate: pop this action off the stack
 				player.actions.shift();
-				console.log(player.position + " reached target point");
+				//console.log(player.position + " reached target point");
 			}
 			else {
 				player.sprintTo(scene.yardsToPx(this.xcoord), scene.yardsToPx(this.ycoord));
@@ -40,7 +40,7 @@ class MoveAction {
 			//console.log("Player started at (" + this.initPlayerX + ", " + this.initPlayerY + ")");
 
 			player.sprintTo(scene.yardsToPx(this.xcoord), scene.yardsToPx(this.ycoord));
-			console.log(player.position + " running to (" + this.xcoord + ", " + this.ycoord + ")");
+			//console.log(player.position + " running to (" + this.xcoord + ", " + this.ycoord + ")");
 		}
 	}
 
@@ -90,7 +90,7 @@ class ThrowAction {
 		else {
 			this.executing = true;
 			scene.ball.moveTo(scene.yardsToPx(this.ballXcoord), scene.yardsToPx(this.ballYcoord), scene.yardsToPx(player.throwVelocity));
-			console.log(player.position + " throwing the ball to (" + this.ballXcoord + ", " + this.ballYcoord + ")");
+			console.log(player.position + " throwing the ball to (" + this.ballXcoord + ", " + this.ballYcoord + ") with rotation value " + scene.ball.body.rotation);
 		}
 	}
 }
@@ -105,7 +105,7 @@ class StopAction {
 		if (this.executing) {
 			if (player.body.velocity.x == 0 && player.body.velocity.y == 0) {
 				player.actions.shift();
-				console.log(player.position + " stopped");
+				//console.log(player.position + " stopped");
 			}
 			else {
 				player.slow();
@@ -114,7 +114,7 @@ class StopAction {
 		else {
 			this.executing = true;
 			player.slow();
-			console.log(player.position + " Stopping");
+			//console.log(player.position + " Stopping");
 		}
 	}
 }
