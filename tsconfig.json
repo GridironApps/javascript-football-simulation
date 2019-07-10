@@ -5,6 +5,7 @@
 		"removeComments": true,
 		"preserveConstEnums": true,
 		"sourceMap": true,
-		"outDir": "generated-js/"
+		"outDir": "generated-js",
+		"rootDir": "ts"
 	}
 }
