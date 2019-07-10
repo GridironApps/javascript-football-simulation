@@ -1,54 +1,104 @@
-class Player {
-    constructor(scene, x, y, attributes, assignments) {
-        this.scene = scene;
+class Player extends p2.Body {
+    jersey; //2 digit number
+    role; //QB, RB, etc.
+    weight; //in pounds
+    forty; //time to run the 40-yard dash in seconds
+
+    constructor(jersey, role, weight, forty) {
+
+        super({
+            mass: weight * 0.453592 //convert lb to kg
+        });
 
         //write attributes to object
-        this.jersey = attributes.jersey;
-        this.position = attributes.position; //FIXME position may not be the best name for this??? ID or role may be better....
-        this.weight = attributes.weight;
-        this.power = attributes.power;
-        this.speed = attributes.speed;
-        this.agility = attributes.agility;
+        this.jersey = jersey;
+        this.role = role; //position is not the best name for this??? ID or role may be better....
+        this.weight = weight;
+        this.forty = forty;
 
-        //create a dot to put player on, easier to see
-        var dot = scene.add.image(0, 0, this.jersey).setDisplaySize(1 * scene.px_per_yd, 1 * scene.px_per_yd);
-
-        //create player with given text id
-        var text = scene.add.text(0, 0, this.position, { font: '7px Arial', fill: '#ffffff' })
-            .setOrigin(0.5, 0.5);
-
-        //create a container at desired location for player
-        var container = scene.add.container(x, y);
-
-        //put text in container
-        container.add(dot);
-        container.add(text);
-
-        //enable physics on container
-        scene.physics.world.enable(container);
-
-        //create pointer to physics body
-        this.body = container.body;
-
-        //give the body a circle collision boundary
-        this.body.setCircle(4)
-            .setCollideWorldBounds(true)
-            .setMass(this.weight / 32.2)
-            .setMaxVelocity(12.3 * this.scene.px_per_yd, 12.3 * this.scene.px_per_yd);
+        // Add a circle shape to the body
+        this.addShape(new p2.Circle({ radius: 1 }));
     }
 
-    sprint() {
-        const body = this.body;
-        body.setAcceleration(54.9, 0); //549 N
+    speed() {
+        return 0.9144 * 40 / this.forty; //speed in m/s 
     }
 
-    slow() {
-        const body = this.body;
-        console.log(body.velocity.x);
-        if (body.velocity.x > 1.5 * this.scene.px_per_yd) {
-            body.setVelocityX(body.velocity.x * 0.88);
-        } else {
-            body.stop();
+    moveTo(destination) { //destination should be a vec2
+
+        //create shortcut for vec2 (http://glmatrix.net/docs/module-vec2.html)
+        var v2 = p2.vec2;
+
+        //check to see if we are at (or close to) the destination
+        if (v2.distance(this.position, destination) > 0.1) {
+
+            //get unit vector
+            var diff = v2.subtract(v2.create(), destination, this.position);
+            var unit_vector = v2.normalize(v2.create(), diff);
+
+            //mutiply by speed to set velocity vector
+            this.velocity = v2.scale(v2.create(), unit_vector, this.speed());
+        }else{
+            this.velocity = v2.zero(v2.create());
         }
+
     }
 }
+
+/**
+    //make world without gravity
+    var world = new p2.World({
+        gravity: [0, 0]
+    });
+
+    //make dot (particle) with a size of 1 unit at 0,0
+    var dot = new p2.Body({
+        mass: 1,
+        position: [0, 0],
+        //give particle velocity of 1 unit in x direction
+        velocity: [1.13, 0],
+        damping: 0
+    });
+
+    // Add a circle shape to the body
+    dot.addShape(new p2.Circle({ radius: 1 }));
+
+    //add dot to world
+    world.addBody(dot);
+
+    //setup runner or update function
+    const FIXED_TIME_STEP = 1; // seconds
+    var running;
+
+    function update() {
+        if (running) {
+            world.step(FIXED_TIME_STEP);
+            update();
+        }
+    }
+
+    //Time how long it takes dot to reach 10 units in x direction
+    var afterUpdate = world.on('postStep', function () {
+        if (dot.position[0] >= 10) {
+
+            console.log('Trial #' + i);
+            console.log('Position: ' + dot.position[0]);
+            console.log('Time: ' + (world.time + FIXED_TIME_STEP));
+            console.log('Velocity: ' + dot.velocity[0]);
+            console.log('');
+
+            //reset dot position
+            dot.position[0] = 0;
+
+            //stop the simulatioh
+            running = false;
+        }
+    });
+
+    //repeat for 10 trials
+    for (var i = 0; i < 10; i++) {
+        //start the simulation
+        running = true;
+        update();
+    }
+*/
