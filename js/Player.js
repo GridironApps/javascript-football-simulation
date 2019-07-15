@@ -43,6 +43,15 @@ class Player extends p2.Body {
         }
 
     }
+
+    makeSprite(){
+        let shape = new PIXI.Graphics();
+        shape.beginFill(0xFF9933);
+        shape.drawCircle(this.position[0], this.position[1], 10);
+        shape.endFill();
+
+        return shape;
+    }
 }
 
 /**
