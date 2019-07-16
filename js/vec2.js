@@ -17,6 +17,3 @@ vec2.copy = function(a){
 vec2.create = function(){
     return p2.vec2.create();
 }
-
-
-

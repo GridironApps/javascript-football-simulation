@@ -4,24 +4,10 @@
  */
 
 /**
- * Temp variables...these will eventually be passed in
- */
-
-const METER_TO_YARD = 1.09361;
-const FOOT_TO_YARD = 1 / 3;
-
-var player = new Player(32, 'RB', 200, 4.50);
-
-var replay_data = {
-    sprite: player.makeSprite(),
-    x: [10,20,30,40,47,55,55],
-    y: [20,20,20,20,27,35,45],
-    t: [0,1,2,3,4,5,6]
-}
-
-/**
  * Conversion constants
  */
+const METER_TO_YARD = 1.09361;
+const FOOT_TO_YARD = 1 / 3;
 const FOOT_TO_PX = 4;
 const YARD_TO_PX = FOOT_TO_PX * 3;
 const METER_TO_PX = FOOT_TO_PX * 3.28084;
@@ -78,7 +64,7 @@ var smoothie = new Smoothie({
     engine: PIXI,
     renderer: renderer,
     root: stage,
-    fps: 1,
+    fps: 10,
     update: update.bind(this)
 });
 

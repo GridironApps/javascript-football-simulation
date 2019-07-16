@@ -21,30 +21,25 @@ class Player extends p2.Body {
     }
 
     speed() {
-        return 0.9144 * 40 / this.forty; //speed in m/s 
+        return 40 / this.forty; //speed in yd/s 
     }
 
-    moveTo(destination) { //destination should be a vec2
+    velocityTo(destination) { //destination should be a vec2
 
         //create shortcut for vec2 (http://glmatrix.net/docs/module-vec2.html)
         var v2 = p2.vec2;
 
-        //check to see if we are at (or close to) the destination
-        if (v2.distance(this.position, destination) > 0.1) {
+        //get unit vector
+        var diff = v2.subtract(v2.create(), destination, this.position);
+        var unit_vector = v2.normalize(v2.create(), diff);
 
-            //get unit vector
-            var diff = v2.subtract(v2.create(), destination, this.position);
-            var unit_vector = v2.normalize(v2.create(), diff);
+        //mutiply by speed to set velocity vector
+        this.velocity = v2.scale(v2.create(), unit_vector, this.speed());
 
-            //mutiply by speed to set velocity vector
-            this.velocity = v2.scale(v2.create(), unit_vector, this.speed());
-        }else{
-            this.velocity = v2.zero(v2.create());
-        }
-
+        return this.velocity;
     }
 
-    makeSprite(){
+    makeSprite() {
         let shape = new PIXI.Graphics();
         shape.beginFill(0xFF9933);
         shape.drawCircle(this.position[0], this.position[1], 10);
