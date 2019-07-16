@@ -21,22 +21,22 @@ class Player extends p2.Body {
         this.starting_position = starting_position;
 
         //update position
-        this.position = vec2(starting_position[0],starting_position[1]);
+        this.position = vec2(starting_position[0], starting_position[1]);
 
         // Add a circle shape to the body
-        this.addShape(new p2.Circle({ radius: 0.8 }));
+        this.addShape(new p2.Circle({ radius: 0.5 }));
 
         //parse script into a series of waypoints....eventually goals
-        for(var i=0;i<script.length;i++){
+        for (var i = 0; i < script.length; i++) {
             var goal = script[i].split(':');
             var cmd = goal[0];
 
-            if(cmd == "GO"){
+            if (cmd == "GO") {
                 var xy = goal[1].split(',');
                 var x = parseFloat(xy[0]);
                 var y = parseFloat(xy[1]);
             }
-            
+
             this.goals.push([
                 this.starting_position[0] + x,
                 this.starting_position[1] + y
@@ -66,11 +66,28 @@ class Player extends p2.Body {
     }
 
     makeSprite() {
+        let dot = new PIXI.Container();
+
         let shape = new PIXI.Graphics();
-        shape.beginFill(0xFF9933);
-        shape.drawCircle(this.position[0], this.position[1], 10);
+        shape.beginFill(0x000000);
+        shape.drawCircle(0, 0, 10);
         shape.endFill();
 
-        return shape;
+        dot.addChild(shape);
+
+        let style = new PIXI.TextStyle({
+            fontFamily: "Arial Black",
+            fontSize: 9,
+            fill: "white"
+        });
+
+        let text = new PIXI.Text(this.role, style);
+        text.anchor.set(0.5);
+
+        dot.addChild(text);
+
+        dot.position.set(this.position[0], this.position[1]);
+
+        return dot;
     }
 }
