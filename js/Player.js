@@ -5,6 +5,7 @@ class Player extends p2.Body {
     forty; //time to run the 40-yard dash in seconds
     starting_position;
     goals = []; //series of goals to complete...for now it's just a bunch of waypoints
+    current_goal;
 
     constructor(jersey, role, weight, forty, starting_position, script) {
 
@@ -41,6 +42,8 @@ class Player extends p2.Body {
                 this.starting_position[1] + y
             ]);
         }
+
+        this.current_goal = this.goals.shift(); //this won't work if we want the ability to go back to previous goals (e.g. state machine)
     }
 
     speed() {

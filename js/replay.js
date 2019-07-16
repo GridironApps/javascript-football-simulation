@@ -37,10 +37,12 @@ img.height = renderer.screen.height;
 img.width = renderer.screen.width;
 stage.addChild(img);
 
-//add the player to the screen
-replay_data.sprite.x = replay_data.x.shift() * YARD_TO_PX;
-replay_data.sprite.y = replay_data.y.shift() * YARD_TO_PX;
-stage.addChild(replay_data.sprite);
+//add the player sprites to the screen
+for(var i=0;i<replay_data.length;i++){
+    replay_data[i].sprite.x = replay_data[i].x.shift() * YARD_TO_PX;
+    replay_data[i].sprite.y = replay_data[i].y.shift() * YARD_TO_PX;
+    stage.addChild(replay_data[i].sprite);
+}
 
 /**
  * Drawing Loop
@@ -48,14 +50,19 @@ stage.addChild(replay_data.sprite);
 
 //update function
 function update() {
-    var x = replay_data.x.shift();
-    var y = replay_data.y.shift();
-    if (typeof x !== 'undefined') {
-        replay_data.sprite.x = x * YARD_TO_PX;
+    //loop through and update position of each sprite
+    for(var i=0;i<replay_data.length;i++){
+        var x = replay_data[i].x.shift();
+        var y = replay_data[i].y.shift();
+        if (typeof x !== 'undefined') {
+            replay_data[i].sprite.x = x * YARD_TO_PX;
+        }
+        if (typeof y !== 'undefined') {
+            replay_data[i].sprite.y = y * YARD_TO_PX;
+        }
     }
-    if (typeof y !== 'undefined') {
-        replay_data.sprite.y = y * YARD_TO_PX;
-    }
+
+    //update screen
     renderer.render(stage);
 }
 
