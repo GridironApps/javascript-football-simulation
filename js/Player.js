@@ -3,8 +3,10 @@ class Player extends p2.Body {
     role; //QB, RB, etc.
     weight; //in pounds
     forty; //time to run the 40-yard dash in seconds
+    starting_position;
+    goals = []; //series of goals to complete...for now it's just a bunch of waypoints
 
-    constructor(jersey, role, weight, forty) {
+    constructor(jersey, role, weight, forty, starting_position, script) {
 
         super({
             mass: weight * 0.453592 //convert lb to kg
@@ -15,9 +17,30 @@ class Player extends p2.Body {
         this.role = role; //position is not the best name for this??? ID or role may be better....
         this.weight = weight;
         this.forty = forty;
+        this.starting_position = starting_position;
+
+        //update position
+        this.position = vec2(starting_position[0],starting_position[1]);
 
         // Add a circle shape to the body
-        this.addShape(new p2.Circle({ radius: 1 }));
+        this.addShape(new p2.Circle({ radius: 0.8 }));
+
+        //parse script into a series of waypoints....eventually goals
+        for(var i=0;i<script.length;i++){
+            var goal = script[i].split(':');
+            var cmd = goal[0];
+
+            if(cmd == "GO"){
+                var xy = goal[1].split(',');
+                var x = parseFloat(xy[0]);
+                var y = parseFloat(xy[1]);
+            }
+            
+            this.goals.push([
+                this.starting_position[0] + x,
+                this.starting_position[1] + y
+            ]);
+        }
     }
 
     speed() {
@@ -48,61 +71,3 @@ class Player extends p2.Body {
         return shape;
     }
 }
-
-/**
-    //make world without gravity
-    var world = new p2.World({
-        gravity: [0, 0]
-    });
-
-    //make dot (particle) with a size of 1 unit at 0,0
-    var dot = new p2.Body({
-        mass: 1,
-        position: [0, 0],
-        //give particle velocity of 1 unit in x direction
-        velocity: [1.13, 0],
-        damping: 0
-    });
-
-    // Add a circle shape to the body
-    dot.addShape(new p2.Circle({ radius: 1 }));
-
-    //add dot to world
-    world.addBody(dot);
-
-    //setup runner or update function
-    const FIXED_TIME_STEP = 1; // seconds
-    var running;
-
-    function update() {
-        if (running) {
-            world.step(FIXED_TIME_STEP);
-            update();
-        }
-    }
-
-    //Time how long it takes dot to reach 10 units in x direction
-    var afterUpdate = world.on('postStep', function () {
-        if (dot.position[0] >= 10) {
-
-            console.log('Trial #' + i);
-            console.log('Position: ' + dot.position[0]);
-            console.log('Time: ' + (world.time + FIXED_TIME_STEP));
-            console.log('Velocity: ' + dot.velocity[0]);
-            console.log('');
-
-            //reset dot position
-            dot.position[0] = 0;
-
-            //stop the simulatioh
-            running = false;
-        }
-    });
-
-    //repeat for 10 trials
-    for (var i = 0; i < 10; i++) {
-        //start the simulation
-        running = true;
-        update();
-    }
-*/
