@@ -9,11 +9,12 @@ const FIXED_TIME_STEP = 0.1; // seconds
 //initialize player
 var players = [
     new Player(32, 'RB', 200, 4.50, [10, 10], ['GO:5,0', 'GO:5,5', 'GO:20,5']), //purposley giving players different number of waypoints
-    new Player(88, 'WR', 180, 4.40, [10, 40], ['GO:20,0', 'GO:18,-2'])
+    new Player(88, 'WR', 180, 4.40, [10, 40], ['GO:20,0', 'GO:18,-2']),
+    new Player(1, 'QB', 220, 5.0, [10, 26], ["GO:-7,0"])
 ];
 
 //add player to world
-players.forEach(function(player){
+players.forEach(function (player) {
     world.addBody(player);
 });
 
