@@ -28,7 +28,7 @@ const renderer = new PIXI.Renderer({
 var stage = new PIXI.Container();
 
 //start by drawing the field to the stage
-drawField(field, stage);
+drawField(field, stage); //TODO might an advantage to drawing the field to one layer and everything else to another layer on top of it
 
 //add the ball to the stage
 
