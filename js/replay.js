@@ -45,7 +45,7 @@ renderer.render(stage);
 function drawField(field, stage) {
 
     //draw a main field
-    let rectangle = new PIXI.Graphics();
+    let rectangle = new PIXI.Graphics(); //using https://github.com/kittykatattack/learningPixi#rectangles
     rectangle.lineStyle(0 * field.border_thickness * FOOT_TO_PX, 0xFFFFFF, 1); //currently not showing border
     rectangle.beginFill(0x526F35);
     rectangle.drawRect(0, 0, field.total_length * FOOT_TO_PX, field.total_width * FOOT_TO_PX);
@@ -54,15 +54,16 @@ function drawField(field, stage) {
 
     //add lines for endzones
     for (yd = 0; yd <= 100; yd += 100) {
-        let line = new PIXI.Graphics();
+        let line = new PIXI.Graphics(); //using https://github.com/kittykatattack/learningPixi#lines
         line.lineStyle(field.goalline_thickness * FOOT_TO_PX, 0xFFFFFF, 1);
         line.moveTo((field.endzone_depth + yd * YARD_TO_FOOT) * FOOT_TO_PX, 0);
         line.lineTo((field.endzone_depth + yd * YARD_TO_FOOT) * FOOT_TO_PX, field.total_width * FOOT_TO_PX);
         stage.addChild(line);
     }
 
-    let yard_markers = {
-        10: '1 0',
+    //creating a map from internal yardage to yardage displayed on the field
+        let yard_markers = {
+        10: '1 0', //the spacing between numbers is used to pad around the yardlines
         20: '2 0',
         30: '3 0',
         40: '4 0',
@@ -79,7 +80,7 @@ function drawField(field, stage) {
         //calculate common x-coordinate
         let x = field.endzone_depth + yd * 3;
 
-        //draw yardline
+        //draw yardline 
         let line = new PIXI.Graphics();
         line.lineStyle(field.line_thickness * FOOT_TO_PX, 0xFFFFFF, 1);
         line.moveTo(x * FOOT_TO_PX, 0);
@@ -88,7 +89,7 @@ function drawField(field, stage) {
 
         //numbers are every 10 yards
         if (yd % 10 == 0) {
-            //add top sideline numbers
+            //add top sideline numbers (using https://github.com/kittykatattack/learningPixi#text)
             var text = new PIXI.Text(yard_markers[yd]);
             //text.width isn't as important as text.height from an alignment standpoint. If we use both, numbers look squished.
             text.height = field.number_height * FOOT_TO_PX;
@@ -99,7 +100,7 @@ function drawField(field, stage) {
             stage.addChild(text);
 
             //add bottom sideline numbers
-            text = new PIXI.Text(yard_markers[yd]);
+            text = new PIXI.Text(yard_markers[yd]); //FIXME had to create a second text class instead of being able to re-use
             text.height = field.number_height * FOOT_TO_PX;
             text.style = { fill: "white", fontFamily: "Arial" };
             text.anchor.set(0.5, 0); //moving anchor to center-top
