@@ -61,13 +61,52 @@ function drawField(field, stage) {
         stage.addChild(line);
     }
 
-    //add yardlines
+    let yard_markers = {
+        10: '1 0',
+        20: '2 0',
+        30: '3 0',
+        40: '4 0',
+        50: '5 0',
+        60: '4 0',
+        70: '3 0',
+        80: '2 0',
+        90: '1 0'
+    };
+
+    //add yardlines and numbers
     for (yd = 5; yd <= 95; yd += 5) {
+
+        //calculate common x-coordinate
+        let x = field.endzone_depth + yd * 3;
+
+        //draw yardline
         let line = new PIXI.Graphics();
         line.lineStyle(field.line_thickness * FOOT_TO_PX, 0xFFFFFF, 1);
-        line.moveTo((field.endzone_depth + yd * 3) * FOOT_TO_PX, 0);
-        line.lineTo((field.endzone_depth + yd * 3) * FOOT_TO_PX, field.total_width * FOOT_TO_PX);
+        line.moveTo(x * FOOT_TO_PX, 0);
+        line.lineTo(x * FOOT_TO_PX, field.total_width * FOOT_TO_PX);
         stage.addChild(line);
+
+        //numbers are every 10 yards
+        if (yd % 10 == 0) {
+            //add top sideline numbers
+            var text = new PIXI.Text(yard_markers[yd]);
+            //text.width isn't as important as text.height from an alignment standpoint. If we use both, numbers look squished.
+            text.height = field.number_height * FOOT_TO_PX;
+            text.style = { fill: "white", fontFamily: "Arial" };
+            text.anchor.set(0.5, 0); //moving anchor to center-top
+            text.position.set(x * FOOT_TO_PX, field.number_top * FOOT_TO_PX);
+            text.rotation = Math.PI; //turn numbers upside down
+            stage.addChild(text);
+
+            //add bottom sideline numbers
+            text = new PIXI.Text(yard_markers[yd]);
+            text.height = field.number_height * FOOT_TO_PX;
+            text.style = { fill: "white", fontFamily: "Arial" };
+            text.anchor.set(0.5, 0); //moving anchor to center-top
+            text.position.set(x * FOOT_TO_PX, (field.total_width - field.number_top) * FOOT_TO_PX);
+            stage.addChild(text);
+        }
+
     }
 
     //add hash marks on bottom
@@ -83,7 +122,7 @@ function drawField(field, stage) {
         //initialize line drawing object
         let line = new PIXI.Graphics();
         line.lineStyle(field.line_thickness * FOOT_TO_PX, 0xFFFFFF, 1);
-        
+
         //draw top sideline hash
         line.moveTo(x * FOOT_TO_PX, 0);
         line.lineTo(x * FOOT_TO_PX, field.hash_length * FOOT_TO_PX);
