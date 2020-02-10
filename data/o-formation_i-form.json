@@ -1,0 +1,50 @@
+{
+    "name": "I Formation",
+    "unit": "feet",
+    "positions": {
+        "QB": {
+            "horizontal" : ["align","ball", 0],
+            "vertical" : ["offset", "C", 0] //I don't think offset 0 will work, behind, left, right instead?
+        },
+        "HB": {
+            "horizontal": ["align", "ball", 0],
+            "vertical": ["align", "ball", -21]
+        },
+        "FB": {
+            "horizontal": ["align", "ball", 0],
+            "vertical": ["align", "ball", -12]
+        },
+        "X": {
+            "horizontal": ["align", "numbers-top", 0],
+            "vertical": ["offset", "ball", -1.5]
+        },
+        "Y": {
+            "horizontal": ["offset", "RT", 2],
+            "vertical": ["offset", "ball", -1.5]
+        },
+        "Z": {
+            "horizontal": ["align", "numbers-bottom", 0],
+            "vertical": ["offset", "ball", -3]
+        },
+        "LT": {
+            "horizontal": ["offset", "LG", -2],
+            "vertical": ["offset", "ball", -1.5]
+        },
+        "LG": {
+            "horizontal": ["offset", "C", -2],
+            "vertical": ["offset", "ball", -1.5]
+        },
+        "C": {
+            "horizontal": ["align", "ball", 0],
+            "vertical": ["offset", "ball", 0]
+        },
+        "RG": {
+            "horizontal": ["offset", "C", 2],
+            "vertical": ["offset", "ball", -1.5]
+        },
+        "RT": {
+            "horizontal": ["offset", "RG", 2],
+            "vertical": ["offset", "ball", 1.5]
+        }
+    }
+}
