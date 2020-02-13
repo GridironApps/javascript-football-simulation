@@ -15,23 +15,23 @@
             "vertical": ["behind", "ball", 12]
         },
         "X": {
-            "horizontal": ["align", "numbers-top", 0],
+            "horizontal": ["right-of", "numbers-left", 0],
             "vertical": ["behind", "ball", 1.5]
         },
         "Y": {
-            "horizontal": ["offset", "RT", 2],
+            "horizontal": ["right-of", "RT", 2],
             "vertical": ["behind", "ball", 1.5]
         },
         "Z": {
-            "horizontal": ["align", "numbers-bottom", 0],
+            "horizontal": ["left-of", "numbers-right", 0],
             "vertical": ["behind", "ball", 3]
         },
         "LT": {
-            "horizontal": ["offset", "LG", -2],
+            "horizontal": ["left-of", "LG", 2],
             "vertical": ["behind", "ball", 1.5]
         },
         "LG": {
-            "horizontal": ["offset", "C", -2],
+            "horizontal": ["left-of", "C", 2],
             "vertical": ["behind", "ball", 1.5]
         },
         "C": {
@@ -39,11 +39,11 @@
             "vertical": ["behind", "ball", 0]
         },
         "RG": {
-            "horizontal": ["offset", "C", 2],
+            "horizontal": ["right-of", "C", 2],
             "vertical": ["behind", "ball", 1.5]
         },
         "RT": {
-            "horizontal": ["offset", "RG", 2],
+            "horizontal": ["right-of", "RG", 2],
             "vertical": ["behind", "ball", 1.5]
         }
     }
