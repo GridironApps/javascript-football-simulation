@@ -1,5 +1,5 @@
 {
-    "name": "I Form Pro Right",
+    "name": "I Form Pro Left",
     "unit": "feet",
     "positions": {
         "QB": {
@@ -16,15 +16,15 @@
         },
         "X": {
             "horizontal": ["left-of", "numbers-left", 0],
-            "vertical": ["behind", "ball", -1.5]
+            "vertical": ["behind", "C", 0]
         },
         "Y": {
-            "horizontal": ["right-of", "RT", 2],
+            "horizontal": ["left-of", "LT", 2],
             "vertical": ["behind", "ball", -1.5]
         },
         "Z": {
             "horizontal": ["right-of", "numbers-right", 0],
-            "vertical": ["behind", "C", 0]
+            "vertical": ["behind", "ball", -1.5]
         },
         "LT": {
             "horizontal": ["left-of", "LG", 2],
