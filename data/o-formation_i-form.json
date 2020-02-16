@@ -24,7 +24,7 @@
         },
         "Z": {
             "horizontal": ["left-of", "numbers-right", 0],
-            "vertical": ["behind", "ball", -3]
+            "vertical": ["behind", "C", 0]
         },
         "LT": {
             "horizontal": ["left-of", "LG", 2],
