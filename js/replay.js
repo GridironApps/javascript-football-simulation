@@ -6,8 +6,6 @@
 /**
  * Conversion constants
  */
-const FOOT_TO_YARD = 1 / 3;
-const YARD_TO_FOOT = 3;
 const FOOT_TO_PX = 4;
 const YARD_TO_PX = FOOT_TO_PX * FOOT_TO_YARD;
 
