@@ -6,11 +6,11 @@
             "horizontal" : ["align","ball", 0],
             "vertical" : ["behind", "C", 0]
         },
-        "HB": {
+        "T": {
             "horizontal": ["align", "ball", 0],
             "vertical": ["behind", "ball", -21]
         },
-        "FB": {
+        "H": {
             "horizontal": ["align", "ball", 0],
             "vertical": ["behind", "ball", -12]
         },
