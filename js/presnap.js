@@ -128,6 +128,8 @@ function setX(player) {
         case "left-of":
             x = leftOf(h[1], h[2], player);
             break;
+        case "apex":
+            x = apex(h[1], h[2]);
         default:
         //do nothing for now
     }

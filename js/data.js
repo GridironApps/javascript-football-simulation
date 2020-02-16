@@ -19,19 +19,19 @@ var field = {
 };
 
 var o_formation = {
-    "name": "I Form Pro Right",
+    "name": "Strong I Pro Right",
     "unit": "feet",
     "positions": {
         "QB": {
-            "horizontal": ["align", "ball", 0],
-            "vertical": ["behind", "C", 0]
+            "horizontal" : ["align","ball", 0],
+            "vertical" : ["behind", "C", 0]
         },
         "T": {
             "horizontal": ["align", "ball", 0],
             "vertical": ["behind", "ball", -21]
         },
         "H": {
-            "horizontal": ["align", "ball", 0],
+            "horizontal": ["apex", "RG", "RT"],
             "vertical": ["behind", "ball", -12]
         },
         "X": {
