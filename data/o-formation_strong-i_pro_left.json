@@ -1,0 +1,50 @@
+{
+    "name": "Strong I Pro Left",
+    "unit": "feet",
+    "positions": {
+        "QB": {
+            "horizontal" : ["align","ball", 0],
+            "vertical" : ["behind", "C", 0]
+        },
+        "T": {
+            "horizontal": ["align", "ball", 0],
+            "vertical": ["behind", "ball", -21]
+        },
+        "H": {
+            "horizontal": ["apex", "LG", "LT"],
+            "vertical": ["behind", "ball", -12]
+        },
+        "X": {
+            "horizontal": ["left-of", "numbers-left", 0],
+            "vertical": ["behind", "C", 0]
+        },
+        "Y": {
+            "horizontal": ["left-of", "LT", 2],
+            "vertical": ["behind", "ball", -1.5]
+        },
+        "Z": {
+            "horizontal": ["right-of", "numbers-right", 0],
+            "vertical": ["behind", "ball", -1.5]
+        },
+        "LT": {
+            "horizontal": ["left-of", "LG", -2],
+            "vertical": ["behind", "ball", -1.5]
+        },
+        "LG": {
+            "horizontal": ["left-of", "C", -2],
+            "vertical": ["behind", "ball", -1.5]
+        },
+        "C": {
+            "horizontal": ["align", "ball", 0],
+            "vertical": ["behind", "ball", 0]
+        },
+        "RG": {
+            "horizontal": ["right-of", "C", 2],
+            "vertical": ["behind", "ball", -1.5]
+        },
+        "RT": {
+            "horizontal": ["right-of", "RG", 2],
+            "vertical": ["behind", "ball", -1.5]
+        }
+    }
+}
