@@ -18,18 +18,19 @@
 //constants
 const FOOT_TO_YARD = 1 / 3;
 const YARD_TO_FOOT = 3;
+const INCH_TO_FOOT = 1 / 12;
 
 //input
 var yardline = 20;
 
 //setup landmarks
-var ball;
-var hash_left;
-var hash_right;
-var numbers_left;
-var numbers_right;
-var sideline_left;
-var sideline_right;
+var ball = {};
+var hash_left = {};
+var hash_right = {};
+var numbers_left = {};
+var numbers_right = {};
+var sideline_left = {};
+var sideline_right = {};
 
 //make x-coord left-right and y-coord up-down but we have to translate/rotate when we replay
 
@@ -44,7 +45,7 @@ ball.back_edge = ball.y - ball.length;
 ball.front_edge = ball.y;
 
 //setup left hash mark
-hash_left.x = field.total_width / 2 - field.hash_width / 2;
+hash_left.x = field.total_width / 2 - field.hash_width / 2; //FIXME this should be the center of the hash
 hash_left.y = ball.y;
 hash_left.back_edge = hash_left.y;
 hash_left.front_edge = hash_left.y;
@@ -91,40 +92,65 @@ sideline_right.front_edge = sideline_right.y;
 sideline_right.left_edge = sideline_right.x;
 sideline_right.right_edge = undefined; //want to make sure we can trigger an error here
 
-//setup offensive players
-var players = o_formation.positions;
-for (var pos in players) {
+//setup offensive player objects
+var offense = {};
+for (var pos in o_formation.positions) {
+    var current_player = o_formation.positions[pos];
 
-    var current_player = players[pos];
+    offense[pos] = new Player(current_player.horizontal, current_player.vertical);
+}
+
+//initialize position of each player in the offense
+for (var pos in offense) {
+
+    var current_player = offense[pos];
 
     //check if player already has a position defined
-    if (current_player.x === 'undefined') {
+    if (typeof (current_player.x) === 'undefined') {
         setX(current_player);
     }
 
-    if (current_player.y === 'undefined') {
-        current_player.y = getY(current_player);
+    if (typeof (current_player.y) === 'undefined') {
+        setY(current_player);
     }
 }
 
 function setX(player) {
-    var h = player.horizontal;
+    var h = player.h_align;
     var x;
     switch (h[0]) {
         case "align":
             x = alignX(h[1], h[2]);
             break;
         case "right-of":
-            x = rightOf(h[1], h[2]);
+            x = rightOf(h[1], h[2], player);
             break;
         case "left-of":
-            x = leftOf(h[1], h[2]);
+            x = leftOf(h[1], h[2], player);
             break;
+        case "apex":
+            x = apex(h[1], h[2]);
         default:
         //do nothing for now
     }
 
     player.x = x;
+}
+
+function setY(player) {
+    var v = player.v_align;
+    switch (v[0]) {
+        case "align":
+            y = alignY(v[1], v[2]);
+            break;
+        case "behind":
+            y = behind(v[1], v[2], player);
+            break;
+        default:
+        //do nothing for now
+    }
+
+    player.y = y;
 }
 
 function getRef(ref) {
@@ -153,8 +179,21 @@ function getRef(ref) {
             break;
         default:
             //assume its a player
-            ref = players[ref];
+            ref = offense[ref];
+
+            //check if player ref has x set
+            if (typeof (ref.x) === 'undefined') {
+                //set the y-coordinate for undefined player
+                setX(ref);
+            }
+
+            //check if player ref has y set
+            if (typeof (ref.y) === 'undefined') {
+                //set the y-coordinate for undefined player
+                setY(ref);
+            }
     }
+
     return ref;
 }
 
@@ -162,61 +201,41 @@ function alignX(ref, dist) {
 
     ref = getRef(ref);
 
-    //check if player ref has x-coord
-    if (ref.x === 'undefined') {
-        //set the x-coordinate for undefined player
-        setX(players[ref]);
-    }
-
     return ref.x + dist;
 }
 
-function rightOf(ref, dist) {
+function rightOf(ref, dist, player) {
 
     ref = getRef(ref);
 
-    //check if player ref has x-coord
-    if (ref.x === 'undefined') {
-        //set the x-coordinate for undefined player
-        setX(players[ref]);
-    }
-
-    return ref.x + dist;
-
+    return ref.right_edge + player.radius + dist;
 }
 
-function leftOf(ref, dist) {
+function leftOf(ref, dist, player) {
 
     ref = getRef(ref);
 
-    //check if player ref has x-coord
-    if (ref.x === 'undefined') {
-        //set the x-coordinate for undefined player
-        setX(players[ref]);
-    }
-
-    return ref.x + dist;
-
+    return ref.left_edge - player.radius + dist;
 }
 
-function getY(player) {
-    var v = player.vertical;
-    switch (v[0]) {
-        case "align":
-            alignY(h[1], h[2]);
-            break;
-        case "behind":
-            behind(h[1], h[2]);
-            break;
-        default:
-        //do nothing for now
-    }
+function apex(ref1, ref2) {
+
+    ref1 = getRef(ref1);
+    ref2 = getRef(ref2);
+
+    return (ref1.x + ref2.x) / 2;
 }
 
 function alignY(ref, dist) {
 
+    ref = getRef(ref);
+
+    return ref.y + dist;
 }
 
-function behind(ref, dist) {
+function behind(ref, dist, player) {
 
+    ref = getRef(ref);
+
+    return ref.back_edge - player.radius + dist;
 }
