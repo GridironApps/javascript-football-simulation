@@ -6,7 +6,7 @@
 /**
  * Conversion constants
  */
-const FOOT_TO_PX = 4;
+const FOOT_TO_PX = 5;
 const YARD_TO_PX = FOOT_TO_PX * FOOT_TO_YARD;
 
 /**
@@ -29,8 +29,28 @@ var stage = new PIXI.Container();
 drawField(field, stage); //TODO might an advantage to drawing the field to one layer and everything else to another layer on top of it
 
 //add the ball to the stage
+let ellipse = new PIXI.Graphics(); //using https://github.com/kittykatattack/learningPixi#ellipses
+ellipse.beginFill(0x8B4513);
+ellipse.drawEllipse(
+    (ball.y + field.endzone_depth) * FOOT_TO_PX,
+    ball.x * FOOT_TO_PX,
+    ball.length * FOOT_TO_PX,
+    ball.width * FOOT_TO_PX
+); //flip x and y since we rotate our sim sideways
+ellipse.endFill();
+stage.addChild(ellipse);
 
 //add the players to the stage
+for (var pos in offense) {
+    let circle = new PIXI.Graphics(); //using https://github.com/kittykatattack/learningPixi#circles
+    circle.beginFill(0x000000);
+    circle.drawCircle(
+        (field.endzone_depth + offense[pos].y) * FOOT_TO_PX,
+        offense[pos].x * FOOT_TO_PX,
+        offense[pos].radius * FOOT_TO_PX);
+    circle.endFill();
+    stage.addChild(circle);
+}
 
 //update the location of the ball and the players
 renderer.render(stage);
@@ -60,7 +80,7 @@ function drawField(field, stage) {
     }
 
     //creating a map from internal yardage to yardage displayed on the field
-        let yard_markers = {
+    let yard_markers = {
         10: '1 0', //the spacing between numbers is used to pad around the yardlines
         20: '2 0',
         30: '3 0',

@@ -18,7 +18,7 @@
 //constants
 const FOOT_TO_YARD = 1 / 3;
 const YARD_TO_FOOT = 3;
-const INCH_TO_FOOT = 1/12;
+const INCH_TO_FOOT = 1 / 12;
 
 //input
 var yardline = 20;
@@ -27,7 +27,7 @@ var yardline = 20;
 var ball = {};
 var hash_left = {};
 var hash_right = {};
-var numbers_left = {} ;
+var numbers_left = {};
 var numbers_right = {};
 var sideline_left = {};
 var sideline_right = {};
@@ -92,27 +92,31 @@ sideline_right.front_edge = sideline_right.y;
 sideline_right.left_edge = sideline_right.x;
 sideline_right.right_edge = undefined; //want to make sure we can trigger an error here
 
-//setup offensive players
-var players = o_formation.positions;
-for (var pos in players) {
+//setup offensive player objects
+var offense = {};
+for (var pos in o_formation.positions) {
+    var current_player = o_formation.positions[pos];
 
-    var current_player = players[pos];
+    offense[pos] = new Player(current_player.horizontal, current_player.vertical);
+}
 
-    //spoof a radius for now
-    current_player.r = 20 * INCH_TO_FOOT / 2; //based on https://assets.usafootball.com/documents/heads-up-football/riddell-youth-pad-fitting-guide.pdf
+//initialize position of each player in the offense
+for (var pos in offense) {
+
+    var current_player = offense[pos];
 
     //check if player already has a position defined
-    if (typeof(current_player.x) === 'undefined') {
+    if (typeof (current_player.x) === 'undefined') {
         setX(current_player);
     }
 
-    if (typeof(current_player.y) === 'undefined') {
+    if (typeof (current_player.y) === 'undefined') {
         setY(current_player);
     }
 }
 
 function setX(player) {
-    var h = player.horizontal;
+    var h = player.h_align;
     var x;
     switch (h[0]) {
         case "align":
@@ -132,7 +136,7 @@ function setX(player) {
 }
 
 function setY(player) {
-    var v = player.vertical;
+    var v = player.v_align;
     switch (v[0]) {
         case "align":
             y = alignY(v[1], v[2]);
@@ -173,20 +177,27 @@ function getRef(ref) {
             break;
         default:
             //assume its a player
-            ref = players[ref];
+            ref = offense[ref];
+
+            //check if player ref has x set
+            if (typeof (ref.x) === 'undefined') {
+                //set the y-coordinate for undefined player
+                setX(ref);
+            }
+
+            //check if player ref has y set
+            if (typeof (ref.y) === 'undefined') {
+                //set the y-coordinate for undefined player
+                setY(ref);
+            }
     }
+
     return ref;
 }
 
 function alignX(ref, dist) {
 
     ref = getRef(ref);
-
-    //check if player ref has x-coord
-    if (typeof(ref.x) === 'undefined') {
-        //set the x-coordinate for undefined player
-        setX(players[ref]);
-    }
 
     return ref.x + dist;
 }
@@ -195,57 +206,27 @@ function rightOf(ref, dist, player) {
 
     ref = getRef(ref);
 
-    //check if player ref has x-coord
-    if (typeof(ref.x) === 'undefined') {
-        //set the x-coordinate for undefined player
-        setX(players[ref]);
-    }
-
-    return ref.right_edge + player.r + dist;
+    return ref.right_edge + player.radius + dist;
 }
 
 function leftOf(ref, dist, player) {
 
     ref = getRef(ref);
 
-    //check if player ref has x-coord
-    if (typeof(ref.x) === 'undefined') {
-        //set the x-coordinate for undefined player
-        setX(players[ref]);
-    }
-
-    return ref.left_edge - player.r + dist;
+    return ref.left_edge - player.radius + dist;
 }
 
 function apex(ref1, ref2) {
+
     ref1 = getRef(ref1);
-
-    //check if player ref has x-coord
-    if (typeof(ref1.x) === 'undefined') {
-        //set the x-coordinate for undefined player
-        setX(players[ref1]);
-    }
-
     ref2 = getRef(ref2);
 
-    //check if player ref has x-coord
-    if (ref2.x === 'undefined') {
-        //set the x-coordinate for undefined player
-        setX(players[ref2]);
-    }
-
-    return (ref1.x + ref2.x)/2;
+    return (ref1.x + ref2.x) / 2;
 }
 
 function alignY(ref, dist) {
 
     ref = getRef(ref);
-
-    //check if player ref has y-coord
-    if (typeof(ref.y) === 'undefined') {
-        //set the y-coordinate for undefined player
-        setY(players[ref]);
-    }
 
     return ref.y + dist;
 }
@@ -254,11 +235,5 @@ function behind(ref, dist, player) {
 
     ref = getRef(ref);
 
-    //check if player ref has y-coord
-    if (typeof(ref.y) === 'undefined') {
-        //set the y-coordinate for undefined player
-        setY(players[ref]);
-    }
-
-    return ref.back_edge - player.r + dist;
+    return ref.back_edge - player.radius + dist;
 }
