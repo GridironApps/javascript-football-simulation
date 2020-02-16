@@ -12,8 +12,8 @@ class Player {
         this.h_align = h;
         this.v_align = v;
         
-        //based on https://assets.usafootball.com/documents/heads-up-football/riddell-youth-pad-fitting-guide.pdf
-        this.radius = 20 / 12 / 2; //TODO make this based on height and weight
+        //this could be based on https://assets.usafootball.com/documents/heads-up-football/riddell-youth-pad-fitting-guide.pdf
+        this.radius = 1.5; //TODO make this based on height and weight
     }
 
     set x(val){
