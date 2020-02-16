@@ -27,11 +27,11 @@
             "vertical": ["behind", "ball", -1.5]
         },
         "LT": {
-            "horizontal": ["left-of", "LG", 2],
+            "horizontal": ["left-of", "LG", -2],
             "vertical": ["behind", "ball", -1.5]
         },
         "LG": {
-            "horizontal": ["left-of", "C", 2],
+            "horizontal": ["left-of", "C", -2],
             "vertical": ["behind", "ball", -1.5]
         },
         "C": {
