@@ -6,7 +6,10 @@
 /**
  * Conversion constants
  */
-const FOOT_TO_PX = 4;
+const FOOT_TO_PX = Math.min(
+    Math.floor(window.innerHeight / field.total_width),
+    Math.floor(window.innerWidth / field.total_length)
+);
 const YARD_TO_PX = FOOT_TO_PX * FOOT_TO_YARD;
 
 /**
