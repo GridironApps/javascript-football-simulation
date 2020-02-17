@@ -41,7 +41,7 @@ ball.length = 11 / 12;
 ball.width = 7 / 12;
 ball.left_edge = ball.x - ball.width / 2;
 ball.right_edge = ball.x + ball.width / 2;
-ball.back_edge = ball.y - ball.length;
+ball.back_edge = ball.y;// - ball.length;
 ball.front_edge = ball.y;
 
 //setup left hash mark
