@@ -178,9 +178,9 @@ for (j = index_LT - 1; j >= 0; j--) {
         break;
     }
 }
-console.log(wideouts_left);
-console.log(ends_left);
-console.log(emlos_left);
+console.log("wr left: " + wideouts_left.join(','));
+console.log("ends left: " + ends_left.join(','));
+console.log("EMLOS left: " + emlos_left);
 
 //find attached and detached on the right
 //set the end man on the line of scrimmage to the RT, can update later if we find another guy
@@ -205,9 +205,9 @@ for (j = index_RT + 1; j < o_players.length; j++) {
         break;
     }
 }
-console.log(emlos_right);
-console.log(ends_right);
-console.log(wideouts_right);
+console.log("EMLOS right: " + emlos_right);
+console.log("ends right: " + ends_right.join(','));
+console.log("wr right: " + wideouts_right.join(','));
 
 var ineligible = ['QB', 'LT', 'LG', 'C', 'RG', 'RT'];
 //backs left of center
@@ -236,9 +236,9 @@ for (j = index_C + 1; j < index_RT; j++) {
         }
     }
 }
-console.log(backs_left);
-console.log(backs_center);
-console.log(backs_right);
+console.log("backs left: " + backs_left.join(','));
+console.log("backs center: " + backs_center.join(','));
+console.log("backs right : " + backs_right.join(','));
 
 function setX(player) {
     var h = player.h_align;
