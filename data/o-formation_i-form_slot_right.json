@@ -16,11 +16,11 @@
         },
         "X": {
             "horizontal": ["left-of", "numbers-left", 0],
-            "vertical": ["behind", "ball", -1.5]
+            "vertical": ["behind", "ball", 0]
         },
         "Y": {
             "horizontal": ["right-of", "RT", 2],
-            "vertical": ["behind", "ball", -1.5]
+            "vertical": ["behind", "ball", 0]
         },
         "Z": {
             "horizontal": ["apex", "X", "LT"],
@@ -28,11 +28,11 @@
         },
         "LT": {
             "horizontal": ["left-of", "LG", -2],
-            "vertical": ["behind", "ball", -1.5]
+            "vertical": ["behind", "ball", 0]
         },
         "LG": {
             "horizontal": ["left-of", "C", -2],
-            "vertical": ["behind", "ball", -1.5]
+            "vertical": ["behind", "ball", 0]
         },
         "C": {
             "horizontal": ["align", "ball", 0],
@@ -40,11 +40,11 @@
         },
         "RG": {
             "horizontal": ["right-of", "C", 2],
-            "vertical": ["behind", "ball", -1.5]
+            "vertical": ["behind", "ball", 0]
         },
         "RT": {
             "horizontal": ["right-of", "RG", 2],
-            "vertical": ["behind", "ball", -1.5]
+            "vertical": ["behind", "ball", 0]
         }
     }
 }

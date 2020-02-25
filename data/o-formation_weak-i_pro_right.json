@@ -1,5 +1,5 @@
 {
-    "name": "Strong I Pro Right",
+    "name": "Weak I Pro Right",
     "unit": "feet",
     "positions": {
         "QB": {
@@ -11,7 +11,7 @@
             "vertical": ["behind", "ball", -21]
         },
         "H": {
-            "horizontal": ["apex", "RG", "RT"],
+            "horizontal": ["apex", "LG", "LT"],
             "vertical": ["behind", "ball", -12]
         },
         "X": {
