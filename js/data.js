@@ -31,16 +31,16 @@ var o_formation = {
             "vertical": ["behind", "ball", -21]
         },
         "H": {
-            "horizontal": ["apex", "RG", "RT"],
-            "vertical": ["behind", "ball", -12]
+            "horizontal": ["right-of", "RT", 1],
+            "vertical": ["behind", "C", 0]
         },
         "X": {
             "horizontal": ["left-of", "numbers-left", 0],
-            "vertical": ["behind", "ball", -1.5]
+            "vertical": ["behind", "ball", -.5]
         },
         "Y": {
-            "horizontal": ["right-of", "RT", 2],
-            "vertical": ["behind", "ball", -1.5]
+            "horizontal": ["right-of", "H", 1],
+            "vertical": ["behind", "ball", -.5]
         },
         "Z": {
             "horizontal": ["right-of", "numbers-right", 0],
@@ -48,23 +48,23 @@ var o_formation = {
         },
         "LT": {
             "horizontal": ["left-of", "LG", -2],
-            "vertical": ["behind", "ball", -1.5]
+            "vertical": ["behind", "ball", -.5]
         },
         "LG": {
             "horizontal": ["left-of", "C", -2],
-            "vertical": ["behind", "ball", -1.5]
+            "vertical": ["behind", "ball", -.5]
         },
         "C": {
             "horizontal": ["align", "ball", 0],
-            "vertical": ["behind", "ball", 0]
+            "vertical": ["behind", "ball", 0.5]
         },
         "RG": {
             "horizontal": ["right-of", "C", 2],
-            "vertical": ["behind", "ball", -1.5]
+            "vertical": ["behind", "ball", -.5]
         },
         "RT": {
             "horizontal": ["right-of", "RG", 2],
-            "vertical": ["behind", "ball", -1.5]
+            "vertical": ["behind", "ball", -.5]
         }
     }
 }
