@@ -3,7 +3,7 @@
 When writing a defensive formation you will have access to the following alignment rules and reference points.
 
 ## Coordinate System
-All coordinates are based on the players local coordinate system (left, right, forward, backward). It assumes the player is facing the line of scrimmage. A defensive player moving left will appear to move to the offenses right. Similarly a defensive player moving backward will be moving away from the line of scrimmage.
+All directions (left, right, forward, backward) are based on the players local coordinate system. It assumes the player is facing the line of scrimmage. A defensive player moving left will appear to move to the offenses right. Similarly a defensive player moving backward will be moving away from the line of scrimmage.
 
 ## Alignment Rules
 The defense can make use of the following concepts to more easily set alignment.
