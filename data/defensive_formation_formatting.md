@@ -43,6 +43,7 @@ The defense can make use of the following concepts to more easily set alignment.
 - hash-right
 
 ### Other Players
+- other defensive players
 - QB
 - LT
 - LG
