@@ -1,0 +1,54 @@
+{
+    "name": "4 Man Over Front",
+    "unit": "feet",
+    "positions": {
+        "SE": [
+            {
+                "criteria": [
+                    "strong-left",
+                    "ends_right.length >= 2"
+                ],
+                "horizontal": ["shade-left", "ends_right[0]", 0],
+                "vertical": ["behind", "ball", 0]
+            },
+            {
+                "criteria": [
+                    "strong-left",
+                    "ends_right.length == 1"
+                ],
+                "horizontal": ["shade-right", "ends_right[0]", 0],
+                "vertical": ["behind", "ball", 0]
+            },
+            {
+                "criteria": [
+                    "strong-left"
+                ],
+                "horizontal": ["shade-left", "RT", 0],
+                "vertical": ["behind", "ball", 0]
+            },
+            {
+                "criteria": [
+                    "strong-right",
+                    "ends_left.length >= 2"
+                ],
+                "horizontal": ["shade-right", "ends_left[end]", 0],
+                "vertical": ["behind", "ball", 0]
+            },
+            {
+                "criteria": [
+                    "strong-right",
+                    "ends_left.length == 1"
+                ],
+                "horizontal": ["shade-left", "ends_left[end]", 0],
+                "vertical": ["behind", "ball", 0]
+            },
+            {
+                "criteria": [
+                    "strong-right"
+                ],
+                "horizontal": ["shade-right", "LT", 0],
+                "vertical": ["behind", "ball", 0]
+            }
+        ]
+    }
+}

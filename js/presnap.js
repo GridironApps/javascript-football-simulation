@@ -240,6 +240,12 @@ console.log("backs left: " + backs_left.join(','));
 console.log("backs center: " + backs_center.join(','));
 console.log("backs right : " + backs_right.join(','));
 
+/**
+ * 
+ * Utility functions
+ */
+
+
 function setX(player) {
     var h = player.h_align;
     var x;
@@ -363,4 +369,12 @@ function behind(ref, dist, player) {
     ref = getRef(ref);
 
     return ref.back_edge - player.radius + dist;
+}
+
+function shadeLeft(ref, dist, player){
+
+}
+
+function shadeRight(ref, dist, player){
+    
 }
