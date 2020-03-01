@@ -1,0 +1,50 @@
+{
+    "name": "54",
+    "unit": "feet",
+    "positions": {
+        "LE": {
+                "horizontal": ["shade-strong", "RT", 0],
+                "vertical": ["behind", "ball", 0]
+        },
+        "N": {
+                "horizontal": ["shade-strong", "C", 0],
+                "vertical": ["behind", "ball", 0]
+        },
+        "RE": {
+                "horizontal": ["shade-strong", "LT", 0],
+                "vertical": ["behind", "ball", 0]
+        },
+        "S": {
+            "horizontal": ["left-of", "numbers-left", 0],
+            "vertical": ["behind", "C", 0]
+        },
+        "M": {
+            "horizontal": ["shade-out", "OG-strong", 0],
+            "vertical": ["behind", "ball", -15]
+        },
+        "W": {
+            "horizontal": ["shade-out", "OG-weak", 0],
+            "vertical": ["behind", "ball", -15]
+        },
+        "B": {
+            "horizontal": ["left-of", "LG", -2],
+            "vertical": ["behind", "ball", -1.5]
+        },
+        "SC": {
+            "horizontal": ["left-of", "C", -2],
+            "vertical": ["behind", "ball", -1.5]
+        },
+        "R": {
+            "horizontal": ["align", "ball", 0],
+            "vertical": ["behind", "ball", 0]
+        },
+        "F": {
+            "horizontal": ["right-of", "C", 2],
+            "vertical": ["behind", "ball", -1.5]
+        },
+        "WC": {
+            "horizontal": ["right-of", "RG", 2],
+            "vertical": ["behind", "ball", -1.5]
+        }
+    }
+}
