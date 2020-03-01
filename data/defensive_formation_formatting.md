@@ -59,3 +59,18 @@ The defense can make use of the following concepts to more easily set alignment:
 - OG-strong (strongside guard)
 - OG-weak (weakside guard)
 - OT-weak (weakside tackle)
+- EMOLS-left(left side TE or RT)
+- EMOLS-right (right side TE or LT)
+- EMOLS-strong (strongside TE or OT)
+- EMOLS-weak (weakside TE or OT)
+- TE-left
+- TE-right
+- TE-strong
+- TE-weak
+- WRx-left (x can be 1, 2, 3, or 4 where 1 is the outside most WR)
+- WRx-right (x can be 1, 2, 3, or 4 where 1 is the outside most WR)
+- WRx-strong (x can be 1, 2, 3, or 4 where 1 is the outside most WR)
+- WRx-weak (x can be 1, 2, 3, or 4 where 1 is the outside most WR)
+- RBs ???
+- Wings/Sniffers ???
+
