@@ -1,0 +1,18 @@
+{
+    "name": "54",
+    "unit": "feet",
+    "positions": {
+        "LE": {
+                "horizontal": ["shade-strong", "RT", 0],
+                "vertical": ["behind", "ball", 0]
+        },
+        "N": {
+                "horizontal": ["shade-strong", "C", 0],
+                "vertical": ["behind", "ball", 0]
+        },
+        "RE": {
+                "horizontal": ["shade-strong", "LT", 0],
+                "vertical": ["behind", "ball", 0]
+        }
+    }
+}

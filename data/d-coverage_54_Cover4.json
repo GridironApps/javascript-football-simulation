@@ -1,19 +1,7 @@
 {
-    "name": "54",
+    "name": "54 Cover 4",
     "unit": "feet",
     "positions": {
-        "LE": {
-                "horizontal": ["shade-strong", "RT", 0],
-                "vertical": ["behind", "ball", 0]
-        },
-        "N": {
-                "horizontal": ["shade-strong", "C", 0],
-                "vertical": ["behind", "ball", 0]
-        },
-        "RE": {
-                "horizontal": ["shade-strong", "LT", 0],
-                "vertical": ["behind", "ball", 0]
-        },
         "S": [
             {
                 "criteria": [
