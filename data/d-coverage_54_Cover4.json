@@ -9,7 +9,7 @@
                     "TE_strong == 0",
                     "RB_all <=1"
                 ],
-                "horizontal": ["align", "WR3_strong", 0],
+                "horizontal": ["align", "WR3-strong", 0],
                 "vertical": ["behind", "ball", -9]
             },
             {
@@ -18,14 +18,14 @@
                     "TE_strong == 0",
                     "RB_all <=1"
                 ],
-                "horizontal": ["apex", "OT_strong", "WR2_strong"],
+                "horizontal": ["apex", "OT-strong", "WR2-strong"],
                 "vertical": ["behind", "ball", -9]
             },
             {
                 "criteria": [
                     "TE_strong >=1"
                 ],
-                "horizontal": ["shade-out","TE_strong",0],
+                "horizontal": ["shade-out","TE-strong",0],
                 "vertical": ["behind", "ball", 0]
             },
             {
@@ -33,7 +33,7 @@
                     "RB_all == 2",
                     "FB_strong >= 0.5"
                 ],
-                "horizontal": ["outside", "OT_strong", 3.5],
+                "horizontal": ["outside", "OT-strong", 3.5],
                 "vertical": ["behind", "ball", 0]
             },
             {
@@ -41,7 +41,7 @@
                     "RB_all == 2",
                     "FB_weak >= 0.5"
                 ],
-                "horizontal": ["outside", "OT_weak", 3.5],
+                "horizontal": ["outside", "OT-weak", 3.5],
                 "vertical": ["behind", "ball", 0]
             },
             {
@@ -50,7 +50,7 @@
                     "TE_weak == 0",
                     "RB_all <=1"
                 ],
-                "horizontal": ["outside", "OT_weak", 9],
+                "horizontal": ["outside", "OT-weak", 9],
                 "vertical": ["behind", "ball", -9]
             }
         ],
@@ -59,7 +59,7 @@
                 "criteria": [
                     "WR_strong >= 3"
                 ],
-                "horizontal": ["shade-out", "OT_strong", 0],
+                "horizontal": ["shade-out", "OT-strong", 0],
                 "vertical": ["behind","ball", -15]
             },
             {
@@ -81,7 +81,7 @@
                     "TE_strong == 0",
                     "RB_all <=1"
                 ],
-                "horizontal": ["align", "WR3_strong", 0],
+                "horizontal": ["align", "WR3-strong", 0],
                 "vertical": ["behind", "ball", -9]
             },
             {
@@ -90,14 +90,14 @@
                     "TE_strong == 0",
                     "RB_all <=1"
                 ],
-                "horizontal": ["apex", "OT_strong", "WR2_strong"],
+                "horizontal": ["apex", "OT-strong", "WR2-strong"],
                 "vertical": ["behind", "ball", -9]
             },
             {
                 "criteria": [
                     "TE_strong >=1"
                 ],
-                "horizontal": ["shade-out","TE_strong",0],
+                "horizontal": ["shade-out","TE-strong",0],
                 "vertical": ["behind", "ball", 0]
             },
             {
@@ -105,7 +105,7 @@
                     "RB_all == 2",
                     "FB_strong >= 0.5"
                 ],
-                "horizontal": ["outside", "OT_strong", 3.5],
+                "horizontal": ["outside", "OT-strong", 3.5],
                 "vertical": ["behind", "ball", 0]
             },
             {
@@ -113,7 +113,7 @@
                     "RB_all == 2",
                     "FB_weak >= 0.5"
                 ],
-                "horizontal": ["outside", "OT_weak", 3.5],
+                "horizontal": ["outside", "OT-weak", 3.5],
                 "vertical": ["behind", "ball", 0]
             },
             {
@@ -122,7 +122,7 @@
                     "TE_weak == 0",
                     "RB_all <=1"
                 ],
-                "horizontal": ["outside", "OT_weak", 9],
+                "horizontal": ["outside", "OT-weak", 9],
                 "vertical": ["behind", "ball", -9]
             }
         ],
