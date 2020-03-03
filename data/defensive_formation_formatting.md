@@ -26,16 +26,16 @@ The following zones are used to group players based on their likely role in the 
 ![player zones diagram](https://docs.google.com/drawings/d/e/2PACX-1vSmNdgwJ5VqTdHT3j4IHF79gIDh5n0sKTZ-c4vs9updak0mop-tRrBRWz7vNb4XNaRdL1ocJ-az5jwq/pub?w=829&h=313)
 
 #### FB Zone
-The FB zone is the width of the tackle box (outside foot of each OT) and extends 5 yards back from the LOS. A player is considered to be in the fullback zone if all parts of their body are inside (or just touching) the tackle box AND any part of their body is touching or in front of the FB/RB divider line (toes <= 5 yards behind the LOS). 
+The FB zone is the width of the tackle box (outside foot of each OT) and extends 5 yards back from the LOS. A player is considered to be in the fullback zone as long as no part of their body is outside the tackle box (outside foot <= edge of tackle box) AND any part of their body is touching or in front of the FB/RB divider line (toes <= 5 yards behind the LOS). 
 
 #### RB Zone
-The RB zone is the width of the tackle box (outside foot of each OT) and starts at 5 yards from the LOS and continues infinitley backward. A players is considered to be in the running back zone if all parts of their body are inside (or just touching) the tackle box AND all parts of their body are behind the FB/RB divider line (toes > 5 yards behind the LOS).
+The RB zone is the width of the tackle box (outside foot of each OT) and starts at 5 yards from the LOS and continues infinitley backward. A players is considered to be in the running back zone as long as no part of their body is outside the tackle box (outside foot <= edge of tackle box) AND all parts of their body are behind the FB/RB divider line (toes > 5 yards behind the LOS).
 
 #### TE Zone
-The TE zone is infinitley deep and has a width starting from the outside foot of the OT and continuing 10 yards towards the sideline. A player is considered to be in the TE zone if any part of their body is inside (but not touching) the TE zone (inside foot < 10 yards past edge of tackle box AND outside foot > edge of tackle box).
+The TE zone is infinitley deep and has a width starting from the outside foot of the OT and continuing 10 yards towards the sideline. A player is considered to be in the TE zone if any part of their body is inside the TE zone (inside foot < 10 yards past edge of tackle box AND outside foot > edge of tackle box).
 
 #### WR Zone
-The WR zone is infinitley deep and has a width starting 10 yards from the outside edge of the tackle box and continues to the sideline. A player is considered to be in the WR zone if all part of their body are inside (or just touching) the WR zone (outside edge >= 1= yards past edge of tackle box).
+The WR zone is infinitley deep and has a width starting 10 yards from the outside edge of the tackle box and continues to the sideline. A player is considered to be in the WR zone if all part of their body are inside (or just touching) the WR zone (inside foot >= 10 yards past edge of tackle box).
 
 #### Left/Right Zone Split
 Players with body parts in both the left and right RB or FB zone will count 0.5 of a person for each zone. A player who's edge is the ONLY thing touching the center line will only count in 1 of the zones.
