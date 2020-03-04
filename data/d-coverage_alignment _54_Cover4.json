@@ -67,6 +67,15 @@
         "B": [
             {
                 "criteria": [
+                    "WR_weak == 3",
+                    "TE_weak == 0",
+                    "RB_all <= 1"
+                ],
+                "horizontal": ["align", "WR3-weak", 0],
+                "vertical": ["behind", "ball", -9]
+            },
+            {
+                "criteria": [
                     "WR_weak == 2",
                     "TE_weak == 0",
                     "RB_all <= 1"
@@ -80,6 +89,13 @@
                 ],
                 "horizontal": ["shade-out", "TE-weak", 0],
                 "vertical": ["behind", "ball", 0]
+            },
+            {
+                "criteria": [
+                    "TE_weak == 2"
+                ],
+                "horizontal": ["align", "TE1-weak", 0],
+                "vertical": ["behind", "ball",  0]
             },
             {
                 "criteria": [
