@@ -41,9 +41,38 @@ The WR zone is infinitley deep and has a width starting 10 yards from the outsid
 Players with body parts in both the left and right RB or FB zone will count 0.5 of a person for each zone. A player who's edge is the ONLY thing touching the center line will only count in 1 of the zones.
 
 ## Alignment Criteria
-To control when certain alignment rules are used you may include a criteria at the beginning of each alignment rule. Alignment rules are evaluated in order and the FIRST match will be used for that player.
+To control when certain alignment rules are used you may include a criteria at the beginning of each alignment rule. Sets of criteria are stored in arrays.
 
-TODO
+**Example**
+```"criteria" : [criteria 1, criteria 2, ...]```
+
+Sets of criteria are evaluated in the order that they appear. The alignment rules associated with the FIRST matching set will be used to align that player. For a criteria to match, ALL criteria in the set must be met. 
+
+### Individual Criteria
+Each individual criteria is limited to comparison of the **count** of players in different player zones to other players counts or to constant values. Standard comparators can be used: 
+- "=="
+- "<="
+- "<"
+- ">"
+- ">="
+
+The player zones available (described earlier) are:
+- RB
+- FB
+- TE
+- WR
+
+Each of these zones can be further reduced using the following selectors:
+- \_left : players in specified zone left side of the center
+- \_right : players in specified zone right side of the center
+- \_strong : players in specified zone on the strong side of the center
+- \_weak : players in specified zone on the weak side of the center
+- \_all (or no selector)
+
+Individual criteria are written as text with spaces seperating the quatities from the comparator.
+
+**Example**
+```"criteria" : ["RB_left <= 1", "TE_strong == WR_strong"]```
 
 ## Alignment Rules
 In order to align players, use the following rules and padding (if available).
