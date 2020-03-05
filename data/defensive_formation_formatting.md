@@ -52,9 +52,9 @@ Sets of criteria are evaluated in the order that they appear. The alignment rule
 Each individual criteria is limited to comparison of the **count** of players in different player zones to other players counts or to constant values. Standard comparators can be used: 
 - "=="
 - "<="
+- ">="
 - "<"
 - ">"
-- ">="
 
 The player zones available (described earlier) are:
 - RB
@@ -107,7 +107,6 @@ In order to align players, use the following rules and padding (if available).
 - hash-right
 
 ### Other Players
-- other defensive players
 - QB
 - LT
 - LG
@@ -123,24 +122,12 @@ In order to align players, use the following rules and padding (if available).
 - OG-strong (strongside guard)
 - OG-weak (weakside guard)
 - OT-weak (weakside tackle)
-- TEx-left (x can be 1, 2, 3, or 4 where 1 is the inside most TE on the left side of the defense)
-- TEx-right (x can be 1, 2, 3, or 4 where 1 is the inside most TE on the right side of the defense)
-- TEx-strong (x can be 1, 2, 3, or 4 where 1 is the inside most TE on the strong side of the defense)
-- TEx-weak (x can be 1, 2, 3, or 4 where 1 is the inside most TE on the weak side of the defense)
+- TEx-left (x can be 1, 2, 3, or 4 where 1 is the outside most TE on the left side of the defense)
+- TEx-right (x can be 1, 2, 3, or 4 where 1 is the outside most TE on the right side of the defense)
+- TEx-strong (x can be 1, 2, 3, or 4 where 1 is the outside most TE on the strong side of the defense)
+- TEx-weak (x can be 1, 2, 3, or 4 where 1 is the outside most TE on the weak side of the defense)
 - WRx-left (x can be 1, 2, 3, or 4 where 1 is the outside most WR on the left side of the defense)
 - WRx-right (x can be 1, 2, 3, or 4 where 1 is the outside most WR of the right side of the defense)
 - WRx-strong (x can be 1, 2, 3, or 4 where 1 is the outside most WR on the strong side)
 - WRx-weak (x can be 1, 2, 3, or 4 where 1 is the outside most WR on the weak side)
-- FB-left
-- FB-right
-- FB-strong
-- FB-weak
-- RB-left
-- RB-right
-- RB-strong
-- RB-weak 
-
-TODO
-
-- what about multiple FBs or 3 backs total or backs in the center
-- Wings/Sniffers ???
+- other defensive players
