@@ -115,7 +115,7 @@ In order to align players, use the following rules and padding (if available).
 - OG-right (offensive guard on the defenses right)
 - OG-strong (strongside guard)
 - OG-weak (weakside guard)
-- C (offensive center, or linemen in the middle of the 5 man line)
+- OC (offensive center, or linemen in the middle of the 5 man line)
 - TEx-left (x can be 1, 2, 3, or 4 where 1 is the outside most TE on the left side of the defense)
 - TEx-right (x can be 1, 2, 3, or 4 where 1 is the outside most TE on the right side of the defense)
 - TEx-strong (x can be 1, 2, 3, or 4 where 1 is the outside most TE on the strong side)
