@@ -95,6 +95,14 @@ In order to align players, use the following rules and padding (if available).
 - align : sets the center of the player inline vertically with the center of a reference
 - behind : sets the front edge of the player inline with the back edge of a reference (note: will use the "front" of an offensive player instead)
 
+### Alignment Padding
+Alignments (horizontal or vertical) can be tweaked using padding. This is typically the third value entered. Padding will be applied in the direction of the alignment. For example padding "left-of" will shift the player to the left, padding "right-of" will shift the player to the right, and padding "outside" will shift the player to the outside. Rules without an intended direction will not apply padding; these include "align" (horizontal or verical) and "apex".
+
+**Example**
+```"horizontal" : ["shade-out", "OT-left", 5]```
+
+The example above will make the player align with an outside shade on the RT (tackle to the left of the defense) and then shift them 5 more feet to the outide of the tackle (likely a 9-tech).
+
 ## Reference Points
 
 ### Landmarks
