@@ -67,7 +67,7 @@ Each of these zones can be further reduced using the following selectors:
 - \_right : players in specified zone right side of the center
 - \_strong : players in specified zone on the strong side of the center
 - \_weak : players in specified zone on the weak side of the center
-- \_all (or no selector)
+- \_all (or no selector) : all players in specified left and right zone (good for getting a true count of the number of RB and FB)
 
 Individual criteria are written as text with spaces seperating the quatities from the comparator.
 
@@ -107,21 +107,15 @@ In order to align players, use the following rules and padding (if available).
 - hash-right
 
 ### Other Players
-- QB
-- LT
-- LG
-- C
-- RG
-- RT
-- X (typically a WR on a side by himself)
-- Y (typically a slot WR or TE)
-- Z (typically a WR on the same side as the Y)
-- H (typically a TE or FB)
-- T (typically a running back)
+- OT-left (offensive tackle on the defenses left)
+- OT-right (offensive tackle on the defenses right)
 - OT-strong (strongside tackle)
+- OT-weak (weakside tackle)
+- OG-left (offensive guard on the defenses left)
+- OG-right (offensive guard on the defenses right)
 - OG-strong (strongside guard)
 - OG-weak (weakside guard)
-- OT-weak (weakside tackle)
+- C (offensive center, or linemen in the middle of the 5 man line)
 - TEx-left (x can be 1, 2, 3, or 4 where 1 is the outside most TE on the left side of the defense)
 - TEx-right (x can be 1, 2, 3, or 4 where 1 is the outside most TE on the right side of the defense)
 - TEx-strong (x can be 1, 2, 3, or 4 where 1 is the outside most TE on the strong side)
