@@ -379,6 +379,16 @@ var d_formation = {
         "RC": [
             {
                 "criteria": [
+                    "WR_left == 1",
+                    "TE_left == 0",
+                    "FB_left == 0",
+                    "RB_left == 0"
+                ],
+                "horizontal": ["shade-in", "WR1-left",0],
+                "vertical": ["behind", "spot", 0]
+            },
+            {
+                "criteria": [
                     "WR_right >= 1"
                 ],
                 "horizontal": ["shade-out", "WR1-right",0],
@@ -402,6 +412,16 @@ var d_formation = {
             }
         ],
         "LC": [
+            {
+                "criteria": [
+                    "WR_left == 1",
+                    "TE_left == 0",
+                    "FB_left == 0",
+                    "RB_left == 0"
+                ],
+                "horizontal": ["shade-in", "WR1-left",0],
+                "vertical": ["behind", "spot", 0]
+            },
             {
                 "criteria": [
                     "WR_left >= 1"
