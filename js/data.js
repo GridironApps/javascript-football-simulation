@@ -320,7 +320,7 @@ var d_formation = {
             {
                 "criteria": [
                     "WR_weak == 0",
-                    "TE_weak >=2"
+                    "TE_weak >= 2"
                 ],
                 "horizontal": ["apex", "TE1-weak", "TE2-weak"],
                 "vertical": ["behind", "spot", 22.5]
@@ -379,7 +379,7 @@ var d_formation = {
             {
                 "criteria": [
                     "WR_right == 0",
-                    "TE_right == >= 1"
+                    "TE_right >= 1"
                 ],
                 "horizontal": ["outside", "TE1-right", 10.5],
                 "vertical": ["behind", "spot", 18]
@@ -404,7 +404,7 @@ var d_formation = {
             {
                 "criteria": [
                     "WR_left == 0",
-                    "TE_left == >= 1"
+                    "TE_left >= 1"
                 ],
                 "horizontal": ["outside", "TE1-left", 10.5],
                 "vertical": ["behind", "spot", 18]
