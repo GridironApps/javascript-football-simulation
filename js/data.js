@@ -390,7 +390,7 @@ var d_formation = {
                     "TE_right >= 1"
                 ],
                 "horizontal": ["outside", "TE1-right", 10.5],
-                "vertical": ["behind", "spot", 18]
+                "vertical": ["behind", "spot", 16.5]
             },
             {
                 "criteria": [
@@ -398,7 +398,7 @@ var d_formation = {
                     "TE_right == 0"
                 ],
                 "horizontal": ["outside", "OT-right", 10.5],
-                "vertical": ["behind", "spot",  18]
+                "vertical": ["behind", "spot",  16.5]
             }
         ],
         "LC": [
@@ -415,7 +415,7 @@ var d_formation = {
                     "TE_left >= 1"
                 ],
                 "horizontal": ["outside", "TE1-left", 10.5],
-                "vertical": ["behind", "spot", 18]
+                "vertical": ["behind", "spot", 16.5]
             },
             {
                 "criteria": [
@@ -423,7 +423,7 @@ var d_formation = {
                     "TE_left == 0"
                 ],
                 "horizontal": ["outside", "OT-left", 10.5],
-                "vertical": ["behind", "spot",  18]
+                "vertical": ["behind", "spot",  16.5]
             }
         ]
     }
