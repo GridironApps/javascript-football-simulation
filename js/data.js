@@ -31,16 +31,16 @@ var o_formation = {
             "vertical": ["behind", "ball", 21]
         },
         "H": {
-            "horizontal": ["right-of", "RT", 2],
-            "vertical": ["behind", "C", 0]
+            "horizontal": ["apex", "LT", "LG"],
+            "vertical": ["behind", "ball", 12]
         },
         "X": {
             "horizontal": ["left-of", "numbers-left", 0],
-            "vertical": ["behind", "ball", .5]
+            "vertical": ["behind", "ball", 0]
         },
         "Y": {
-            "horizontal": ["right-of", "H", 2],
-            "vertical": ["behind", "ball", .5]
+            "horizontal": ["apex", "RT", "RG"],
+            "vertical": ["behind", "ball", 12]
         },
         "Z": {
             "horizontal": ["right-of", "numbers-right", 0],
