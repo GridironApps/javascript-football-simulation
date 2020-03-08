@@ -48,7 +48,7 @@ class Offense {
                     x = alignX(h[1]); //TODO might look into chaining funcitions for padding align().padLeft()
                     break;
                 case "apex":
-                    x = apex(h[1]);
+                    x = apex(h[1],h[2]);
                     break;
                 case "left-of":
                     x = leftOf(h[1], h[2], player);
