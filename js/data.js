@@ -379,12 +379,12 @@ var d_formation = {
         "RC": [
             {
                 "criteria": [
-                    "WR_left == 1",
-                    "TE_left == 0",
-                    "FB_left == 0",
-                    "RB_left == 0"
+                    "WR_right == 1",
+                    "TE_right == 0",
+                    "FB_right == 0",
+                    "RB_right == 0"
                 ],
-                "horizontal": ["shade-in", "WR1-left",0],
+                "horizontal": ["shade-in", "WR1-right",0],
                 "vertical": ["behind", "spot", 0]
             },
             {
