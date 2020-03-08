@@ -32,14 +32,14 @@ var stage = new PIXI.Container();
 drawField(field, stage); //TODO might an advantage to drawing the field to one layer and everything else to another layer on top of it
 
 //add the players to the stage
-for (var pos in offense) {
+for (var pos in offense.players) { //TODO embed this drawing function in the Player object? OR keep sim and replay seperate....
     let circle = new PIXI.Graphics(); //using https://github.com/kittykatattack/learningPixi#circles
     circle.lineStyle(2, 0x000000, 1);
     circle.beginFill(0xFFFFFF);
     circle.drawCircle(
-        (field.endzone_depth + offense[pos].y) * FOOT_TO_PX,
-        offense[pos].x * FOOT_TO_PX,
-        offense[pos].radius * FOOT_TO_PX);
+        (field.endzone_depth + offense.players[pos].y) * FOOT_TO_PX,
+        offense.players[pos].x * FOOT_TO_PX,
+        offense.players[pos].radius * FOOT_TO_PX);
     circle.endFill();
     stage.addChild(circle);
 }
