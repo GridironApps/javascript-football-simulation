@@ -24,15 +24,15 @@ var o_formation = {
     "positions": {
         "QB": {
             "horizontal" : ["align","ball", 0],
-            "vertical" : ["behind", "C", 0]
+            "vertical" : ["behind", "ball", 15]
         },
         "T": {
-            "horizontal": ["align", "ball", 0],
-            "vertical": ["behind", "ball", 21]
+            "horizontal": ["align", "RG", 0],
+            "vertical": ["behind", "ball", 16.5]
         },
         "H": {
-            "horizontal": ["align", "RG", 0],
-            "vertical": ["behind", "ball", 12]
+            "horizontal": ["align", "LG", 0],
+            "vertical": ["behind", "ball", 16.5]
         },
         "X": {
             "horizontal": ["left-of", "numbers-left", 0],

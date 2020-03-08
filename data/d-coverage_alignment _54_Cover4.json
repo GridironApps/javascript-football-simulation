@@ -117,7 +117,7 @@
                 "criteria": [
                     "WR_weak == 1",
                     "TE_weak == 0",
-                    "RB_all <=1"
+                    "RB_all <= 1"
                 ],
                 "horizontal": ["outside", "OT-weak", 7.5],
                 "vertical": ["behind", "ball", 9]
