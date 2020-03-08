@@ -1,0 +1,22 @@
+{
+    "name": "Trips Right Closed",
+    "unit": "feet",
+    "positions": {
+        "H": {
+            "horizontal": ["right-of", "RT", 10],
+            "vertical": ["behind", "C", 0]
+        },
+        "X": {
+            "horizontal": ["left-of", "LT", 2],
+            "vertical": ["shade-back", "C", 0]
+        },
+        "Y": {
+            "horizontal": ["apex", "Z", "H"],
+            "vertical": ["behind", "C", 0]
+        },
+        "Z": {
+            "horizontal": ["right-of", "numbers-right", 0],
+            "vertical": ["behind", "spot", 0]
+        }
+    }
+}
