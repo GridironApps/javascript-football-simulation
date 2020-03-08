@@ -177,7 +177,7 @@ var d_formation = {
                 "criteria": [
                     "TE_weak == 1"
                 ],
-                "horizontal": ["shade-out", "TE-weak", 0],
+                "horizontal": ["shade-out", "TE1-weak", 0],
                 "vertical": ["behind", "ball", 0]
             },
             {
