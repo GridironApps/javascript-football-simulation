@@ -93,7 +93,7 @@ var d_formation = {
                     "RB_all <= 1"
                 ],
                 "horizontal": ["align", "WR3-strong", 0],
-                "vertical": ["behind", "ball", 9]
+                "vertical": ["behind", "ball", 7.5]
             },
             {
                 "criteria": [
@@ -102,7 +102,7 @@ var d_formation = {
                     "RB_all <= 1"
                 ],
                 "horizontal": ["apex", "OT-strong", "WR2-strong"],
-                "vertical": ["behind", "ball", 9]
+                "vertical": ["behind", "ball", 7.5]
             },
             {
                 "criteria": [
@@ -162,7 +162,7 @@ var d_formation = {
                     "RB_all <= 1"
                 ],
                 "horizontal": ["align", "WR3-weak", 0],
-                "vertical": ["behind", "ball", 9]
+                "vertical": ["behind", "ball", 7.5]
             },
             {
                 "criteria": [
@@ -171,7 +171,7 @@ var d_formation = {
                     "RB_all <= 1"
                 ],
                 "horizontal": ["apex", "OT-weak", "WR2-weak"],
-                "vertical": ["behind", "ball", 9]
+                "vertical": ["behind", "ball", 7.5]
             },
             {
                 "criteria": [
@@ -203,7 +203,7 @@ var d_formation = {
                     "RB_all <= 1"
                 ],
                 "horizontal": ["outside", "OT-weak", 7.5],
-                "vertical": ["behind", "ball", 9]
+                "vertical": ["behind", "ball", 7.5]
             }
         ],
         "R": [
