@@ -138,24 +138,24 @@ var d_formation = {
                     "WR_strong >= 3"
                 ],
                 "horizontal": ["shade-out", "OT-strong", 0],
-                "vertical": ["behind","ball", 15]
+                "vertical": ["behind","ball", 12]
             },
             {
                 "criteria": [
                     "WR_strong <= 2"
                 ],
                 "horizontal": ["shade-out", "OG-strong", 0],
-                "vertical": ["behind", "ball", 15]
+                "vertical": ["behind", "ball", 12]
             },
             {
                 "criteria": 'default',
                 "horizontal": ["shade-out", "OG-strong", 0],
-                "vertical": ["behind", "ball", 15]
+                "vertical": ["behind", "ball", 12]
             }
         ],
         "W": {
             "horizontal": ["shade-out", "OG-weak", 0],
-            "vertical": ["behind", "ball", 15]
+            "vertical": ["behind", "ball", 12]
         },
         "B": [
             {
