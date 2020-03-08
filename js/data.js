@@ -132,11 +132,6 @@ var d_formation = {
                 ],
                 "horizontal": ["outside", "OT-strong", 3.5],
                 "vertical": ["behind", "ball", 0]
-            },
-            {
-                "criteria": 'default',
-                "horizontal": ["align", "sideline-left", 0],
-                "vertical": ["behind", "ball", 0]
             }
         ],
         "M": [
@@ -153,11 +148,6 @@ var d_formation = {
                 ],
                 "horizontal": ["shade-out", "OG-strong", 0],
                 "vertical": ["behind", "ball", 12]
-            },
-            {
-                "criteria": 'default',
-                "horizontal": ["align", "sideline-left", 0],
-                "vertical": ["behind", "ball", 0]
             }
         ],
         "W": {
@@ -220,11 +210,6 @@ var d_formation = {
                 "horizontal": ["outside", "OT-weak", 7.5],
                 "vertical": ["behind", "ball", 9]
             },
-            {
-                "criteria": 'default',
-                "horizontal": ["align", "sideline-left", 0],
-                "vertical": ["behind", "ball", 0]
-            }
         ],
         "R": [
             {
@@ -304,11 +289,6 @@ var d_formation = {
                 ],
                 "horizontal": ["shade-out", "OT-strong", 0],
                 "vertical": ["behind", "ball", 22.5]
-            },
-            {
-                "criteria": 'default',
-                "horizontal": ["align", "sideline-left", 0],
-                "vertical": ["behind", "ball", 0]
             }
         ],
         "F": [
@@ -389,11 +369,6 @@ var d_formation = {
                 ],
                 "horizontal": ["shade-out", "OT-weak", 0],
                 "vertical": ["behind", "ball", 22.5]
-            },
-            {
-                "criteria": 'default',
-                "horizontal": ["align", "sideline-left", 0],
-                "vertical": ["behind", "ball", 0]
             }
         ],
         "RC": [
@@ -419,11 +394,6 @@ var d_formation = {
                 ],
                 "horizontal": ["outside", "OT-right", 10.5],
                 "vertical": ["behind", "ball",  18]
-            },
-            {
-                "criteria": 'default',
-                "horizontal": ["align", "sideline-left", 0],
-                "vertical": ["behind", "ball", 0]
             }
         ],
         "LC": [
@@ -449,11 +419,6 @@ var d_formation = {
                 ],
                 "horizontal": ["outside", "OT-left", 10.5],
                 "vertical": ["behind", "ball",  18]
-            },
-            {
-                "criteria": 'default',
-                "horizontal": ["align", "sideline-left", 0],
-                "vertical": ["behind", "ball", 0]
             }
         ]
     }
