@@ -1,6 +1,7 @@
 class Player {
-    constructor(h,v) {
+    constructor(p,h,v) {
         this.unit = 'foot';
+        this.position = p;
         this._x;
         this._y;
         this.height;

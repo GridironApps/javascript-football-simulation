@@ -206,6 +206,8 @@ class Defense {
                 var options = defender;
                 for (var i = 0; i < options.length; i++) {
                     var criteria = options[i].criteria;
+
+                    //default criteria ... mostly for testing
                     if(criteria == 'default'){
                         h_align = options[i].horizontal;
                         v_align = options[i].vertical;
@@ -216,6 +218,12 @@ class Defense {
                     var pass = true;
                     for (var j = 0; j < criteria.length; j++) {
                         var c = criteria[j].split(' ');
+
+                        if(c.length !== 3){
+                            console.error('Criteria "' + criteria[j] + '" for defender "' + pos + '" is not formatted correctly. Skipping to next criteria.');
+                            pass = false;
+                            break;
+                        }
 
                         var val1 = getVal(c[0], this);
                         var val2 = getVal(c[2], this);
@@ -259,7 +267,7 @@ class Defense {
 
                 //adding an elegant message
                 if(typeof(h_align) === 'undefined' || typeof(v_align) === 'undefined'){
-                    console.error('No matching alignment criteria for defender ' + pos + '. Defaulting player to top sideline.');
+                    console.error('No matching alignment criteria for defender "' + pos + '". Defaulting to top sideline.');
                     h_align = ['align','sideline-left'];
                     v_align = ['align', 'ball'];
                 }
@@ -269,7 +277,7 @@ class Defense {
                 v_align = defender.vertical;
             }
             
-            this.players[pos] = new Player(h_align, v_align);
+            this.players[pos] = new Player(pos,h_align, v_align);
         }
 
         //helper function to turn text criteria into floating point numbers
@@ -632,9 +640,17 @@ class Defense {
                 default:
                     //assume its a player 
                     if (getPerspective(ref, def) == 'defense') {
-                        ref = def.players[ref];
+                        var _ref = def.players[ref];
                     } else {
-                        ref = temp_offense[ref];
+                        var _ref = temp_offense[ref];
+                    }
+
+                    //check that we found the ref
+                    if(typeof(_ref) !== 'undefined'){
+                        ref = _ref;
+                    }else{
+                        console.error('Could not find reference "' + ref + '" for defender "' + player.position + '". Defaulting to top sideline.');
+                        ref = landmarks.sideline_left;
                     }
 
                     //check if player ref has x set

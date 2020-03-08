@@ -14,6 +14,7 @@ class Offense {
         this.players = {}; //guys on the field ... using an object so we can map to position tags
         for (var pos in positions) {
             this.players[pos] = new Player(
+                pos,
                 positions[pos].horizontal,
                 positions[pos].vertical
             );
