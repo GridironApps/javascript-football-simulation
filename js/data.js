@@ -36,7 +36,7 @@ var o_formation = {
         },
         "X": {
             "horizontal": ["left-of", "LT", 2],
-            "vertical": ["behind", "spot", 0]
+            "vertical": ["shade-back", "C", 0]
         },
         "Y": {
             "horizontal": ["Apex", "Z", "RT"],

@@ -3,12 +3,12 @@
     "unit": "feet",
     "positions": {
         "LT": {
-            "horizontal": ["left-of", "LG", -2],
-            "vertical": ["behind", "ball", 0]
+            "horizontal": ["left-of", "LG", 2],
+            "vertical": ["shade-back", "C", 0]
         },
         "LG": {
-            "horizontal": ["left-of", "C", -2],
-            "vertical": ["behind", "ball", 0]
+            "horizontal": ["left-of", "C", 2],
+            "vertical": ["shade-back", "C", 0]
         },
         "C": {
             "horizontal": ["align", "ball", 0],
@@ -16,11 +16,11 @@
         },
         "RG": {
             "horizontal": ["right-of", "C", 2],
-            "vertical": ["behind", "ball", 0]
+            "vertical": ["shade-back", "C", 0]
         },
         "RT": {
             "horizontal": ["right-of", "RG", 2],
-            "vertical": ["behind", "ball", 0]
+            "vertical": ["shade-back", "C", 0]
         }
     }
 }
