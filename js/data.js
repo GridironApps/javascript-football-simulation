@@ -24,7 +24,7 @@ var o_formation = {
     "positions": {
         "QB": {
             "horizontal" : ["align","ball", 0],
-            "vertical" : ["behind", "C", 15]
+            "vertical" : ["behind", "ball", 15]
         },
         "T": {
             "horizontal": ["align", "LG", 0],
