@@ -217,10 +217,7 @@ var d_formation = {
         "R": [
             {
                 "criteria": [
-                    "WR_strong >= 2",
-                    "TE_strong <= 1",
-                    "FB_strong <= 1",
-                    "RB_strong <= 1"
+                    "WR_strong >= 2"
                 ],
                 "horizontal": ["inside", "WR2-strong", 4.5],
                 "vertical": ["behind", "ball", 28.5]
