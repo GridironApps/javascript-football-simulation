@@ -125,6 +125,14 @@ var d_formation = {
                 "horizontal": ["outside", "OT-strong", 3.5],
                 "vertical": ["behind", "ball", 0]
             },
+            {
+                "criteria": [
+                    "RB_all == 2",
+                    "RB_strong >= .5"
+                ],
+                "horizontal": ["outside", "OT-strong", 3.5],
+                "vertical": ["behind", "ball", 0]
+            }
         ],
         "M": [
             {
