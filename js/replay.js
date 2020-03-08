@@ -10,6 +10,8 @@ const FOOT_TO_PX = Math.min(
     Math.floor(window.innerHeight / field.total_width),
     Math.floor(window.innerWidth / field.total_length)
 );
+const YARD_TO_FOOT = 3;
+const FOOT_TO_YARD = 1/3;
 const YARD_TO_PX = FOOT_TO_PX * FOOT_TO_YARD;
 
 /**

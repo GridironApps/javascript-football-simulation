@@ -242,7 +242,7 @@ class Offense {
             //check that player is in the tackle box
             if (player.left_edge >= LT.left_edge && player.right_edge <= RT.right_edge) {
                 //check that player is in the backfield
-                if (player.front_edge >= C.back_edge) {
+                if (player.front_edge <= C.back_edge) {
                     player_group.push(player);
                 }
             }

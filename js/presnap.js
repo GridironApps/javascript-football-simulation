@@ -15,15 +15,8 @@
  * 
  */
 
-//constants
-const FOOT_TO_YARD = 1 / 3;
-const YARD_TO_FOOT = 3;
-const INCH_TO_FOOT = 1 / 12;
-
-//input
-var yardline = 20;
-
 //setup objects
 var landmarks = new Landmarks(field); //can add a spot parameter if needed
 var ball = new Ball(landmarks.spot.x, landmarks.spot.y);
 var offense = new Offense(o_formation, landmarks, ball);
+var defense = new Defense(d_formation, landmarks, ball, offense);

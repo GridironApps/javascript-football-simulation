@@ -4,7 +4,7 @@
 */
 
 class Defense {
-    constructor(formation_data, landmarks, ball) {
+    constructor(formation_data, landmarks, ball, offense) {
         this.roster = [];
         this.personnel = '';
         this.formation = formation_data.name;
@@ -19,7 +19,97 @@ class Defense {
             );
         }
 
-        //initialize position of each player in the offense 
+        /*
+            create player groups using Player Zones and the offense
+        */
+
+        const YARD_TO_FOOT = 3;
+        const WR_ZONE_START = 10 * YARD_TO_FOOT;
+        const FB_ZONE_START = 5 * YARD_TO_FOOT;
+
+        var temp_offense = {}; //use this to temporarily store offensive players with custom tags
+
+        //starting with the o-line .. it should have 5 players sorted left-to-right from an offensive perspective        
+        temp_offense['OT-right'] = offense.o_line[0];
+        temp_offense['OG-right'] = offense.o_line[1];
+        temp_offense['OC'] = offense.o_line[2];
+        temp_offense['OG-left'] = offense.o_line[3];
+        temp_offense['OT-left'] = offense.o_line[4];
+
+        //WRs and TEs on the left
+        var wr_left = [];
+        var te_left = [];
+        var o_left = offense.eligible_right; //the offenses right is the defenses left
+        var divider = temp_offense['OT-left'].x + WR_ZONE_START;
+        for (var i = 0; i < o_left.length; i++) { //we are going inside to outside since this is sorted left to right
+            var player = o_left[i];
+            if (rightEdge(player, this) < divider) {
+                te_left.unshift(player); //use unshift so we can make the outside player first in the array
+            } else {
+                wr_left.unshift(player);
+            }
+        }
+
+        //WRs and TEs on the right
+        var wr_right = [];
+        var te_right = [];
+        var o_right = offense.eligible_left; //the offenses left is the defenses right
+        var divider = temp_offense['OT-right'].x - WR_ZONE_START;
+        for (var i = 0; i < o_right.length; i++) { //we are going outside to inside since this is sorted left to right
+            var player = o_right[i];
+            if (leftEdge(player, this) > divider) {
+                te_right.push(player); //use push so we can make the outside player first in the array
+            } else {
+                wr_right.push(player);
+            }
+        }
+
+        //RB and FB
+        var rb_all = [];
+        var fb_all = [];
+        var o_backs = offense.backs; //list is sorted left-to-right and front-to-back from an offensive perspective
+        var divider = ball.front_edge - FB_ZONE_START;
+        for (var i = 0; i < o_backs.length; i++) {
+            var player = o_backs[i];
+            if (player.front_edge < divider) {
+                rb_all.push(player);
+            } else {
+                fb_all.push(player);
+            }
+        }
+
+        //RB left, right, and center
+        var rb_left = [];
+        var rb_center = [];
+        var rb_right = [];
+        for (var i = 0; i < rb_all.length; i++) {
+            var player = rb_all[i];
+            if (rightEdge(player, this) >= ball.x) {
+                rb_left.push(player);
+            } else if (leftEdge(player, this) <= ball.x) {
+                rb_right.push(player);
+            } else {
+                rb_center.push(player);
+            }
+        }
+
+        //FB left, right, and center
+        var fb_left = [];
+        var fb_center = [];
+        var fb_right = [];
+        for (var i = 0; i < fb_all.length; i++) {
+            var player = fb_all[i];
+            if (rightEdge(player, this) >= ball.x) {
+                fb_left.push(player);
+            } else if (leftEdge(player, this) <= ball.x) {
+                fb_right.push(player);
+            } else {
+                fb_center.push(player);
+            }
+        }
+
+        /*
+        //initialize position of each player in the defese
         //we split this up so we don't have to care about the order that the players appear in the object or file
         var players = this.players;
         for (var pos in players) {
@@ -48,7 +138,7 @@ class Defense {
                     x = alignX(h[1]); //TODO might look into chaining funcitions for padding align().padLeft()
                     break;
                 case "apex":
-                    x = apex(h[1],h[2]);
+                    x = apex(h[1], h[2]);
                     break;
                 case "left-of":
                     x = leftOf(h[1], h[2], player);
@@ -201,5 +291,59 @@ class Defense {
             }
             return ref;
         }
+
+        function leftEdge(ref, def) {
+            //figure out perspective of reference (offense or defence)
+            var p = getPerspective(ref, def);
+            if (p == 'defense') {
+                return ref.left_edge;
+            } else { //assume offense
+                return ref.right_edge;
+            }
+        }
+
+        function rightEdge(ref, def) {
+            //figure out perspective of reference (offense or defence)
+            var p = getPerspective(ref, def);
+            if (p == 'defense') {
+                return ref.right_edge;
+            } else { //assume offense
+                return ref.left_edge;
+            }
+        }
+
+        function frontEdge(ref, def) {
+            //figure out perspective of reference (offense or defence)
+            var p = getPerspective(ref, def);
+            if (p == 'defense') {
+                return ref.front_edge;
+            } else { //assume offense
+                return ref.back_edge;
+            }
+        }
+
+        function backEdge(ref, def) {
+            //figure out perspective of reference (offense or defence)
+            var p = getPerspective(ref, def);
+            if (p == 'defense') {
+                return ref.back_edge;
+            } else { //assume offense
+                return ref.front_edge;
+            }
+        }
+
+        function getPerspective(ref, def) {
+            if (ref in def.players) {
+                return 'defense';
+            } else {
+                return 'offense';
+            }
+        }
     }
+
+
+
+
+
+
 }
