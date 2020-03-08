@@ -220,7 +220,7 @@ class Defense {
                         var c = criteria[j].split(' ');
 
                         if(c.length !== 3){
-                            console.error('Criteria "' + criteria[j] + '" for defender ' + pos + ' is not formatted correctly. Skipping to next criteria.');
+                            console.error('Criteria "' + criteria[j] + '" for defender "' + pos + '" is not formatted correctly. Skipping to next criteria.');
                             pass = false;
                             break;
                         }
@@ -267,7 +267,7 @@ class Defense {
 
                 //adding an elegant message
                 if(typeof(h_align) === 'undefined' || typeof(v_align) === 'undefined'){
-                    console.error('No matching alignment criteria for defender ' + defender.position + '. Defaulting to top sideline.');
+                    console.error('No matching alignment criteria for defender "' + pos + '". Defaulting to top sideline.');
                     h_align = ['align','sideline-left'];
                     v_align = ['align', 'ball'];
                 }
@@ -649,7 +649,7 @@ class Defense {
                     if(typeof(_ref) !== 'undefined'){
                         ref = _ref;
                     }else{
-                        console.error('Could not find reference "' + ref + '" for defender ' + player.position + '. Defaulting to top sideline.');
+                        console.error('Could not find reference "' + ref + '" for defender "' + player.position + '". Defaulting to top sideline.');
                         ref = landmarks.sideline_left;
                     }
 
