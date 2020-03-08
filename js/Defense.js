@@ -221,27 +221,45 @@ class Defense {
             helper methods to align players horizontally
         */
 
-        function getX(player) {
+        function getX(player, def) {
             var h = player.h_align;
             var x;
             switch (h[0]) {
                 case "align":
-                    x = alignX(h[1]); //TODO might look into chaining funcitions for padding align().padLeft()
+                    x = alignX(h[1], def); //TODO might look into chaining funcitions for padding align().padLeft()
                     break;
                 case "apex":
-                    x = apex(h[1], h[2]);
+                    x = apex(h[1], h[2], def);
                     break;
                 case "left-of":
-                    x = leftOf(h[1], h[2], player);
+                    x = leftOf(h[1], h[2], player, def);
                     break;
                 case "right-of":
-                    x = rightOf(h[1], h[2], player);
+                    x = rightOf(h[1], h[2], player, def);
+                    break;
+                case "inside":
+                    x = inside(h[1], h[2], player, def);
+                    break;
+                case "outside":
+                    x = outside(h[1], h[2], player, def);
                     break;
                 case "shade-left":
-                    x = shadeLeft(h[1], h[2]);
+                    x = shadeLeft(h[1], h[2], def);
                     break;
                 case "shade-right":
-                    x = shadeRight(h[1], h[2]);
+                    x = shadeRight(h[1], h[2], def);
+                    break;
+                case "shade-in":
+                    x = shadeIn(h[1], h[2], def);
+                    break;
+                case "shade-out":
+                    x = shadeOut(h[1], h[2], def);
+                    break;
+                case "shade-strong":
+                    x = shadeStrong(h[1], h[2], def);
+                    break;
+                case "shade-weak":
+                    x = shadeWeak(h[1], h[2], def);
                     break;
                 default:
                 //do nothing for now
@@ -249,64 +267,152 @@ class Defense {
             return x;
         }
 
-        function alignX(ref) {
-            ref = getRef(ref);
+        function alignX(ref, def) {
+            ref = getRef(ref, def);
 
             return ref.x;
         }
 
-        function apex(ref1, ref2) {
+        function apex(ref1, ref2, def) {
 
-            ref1 = getRef(ref1);
-            ref2 = getRef(ref2);
+            ref1 = getRef(ref1, def);
+            ref2 = getRef(ref2, def);
 
             return (ref1.x + ref2.x) / 2;
         }
 
-        function leftOf(ref, dist, player) {
-            ref = getRef(ref);
+        function leftOf(ref, dist, player, def) {
+            ref = getRef(ref, def);
 
             //dist is (+) left and (-) right
-            return ref.left_edge - player.radius - dist;
+            return leftEdge(ref, def) + player.radius + dist;
         }
 
-        function rightOf(ref, dist, player) {
-            ref = getRef(ref);
+        function rightOf(ref, dist, player, def) {
+            ref = getRef(ref, def);
 
             //dist is (-) left and (+) right
-            return ref.right_edge + player.radius + dist;
+            return rightEdge(ref, def) - player.radius - dist;
         }
 
-        function shadeLeft(ref, dist) {
-            ref = getRef(ref);
+        function inside(ref, dist, player, def) {
+            var _ref = getRef(ref, def);
+
+            //figure out if inside is left or right
+            if (rightEdge(_ref, def) > ball.x) {
+                //ref is to the left, inside is to the right
+                return rightOf(ref, dist, player, def);
+
+            } else if (leftEdge(_ref, def) < ball.x) {
+                //ref is to the right, inside is to the left
+                return leftOf(ref, dist, player, def);
+
+            } else {
+                //do nothing if the ref is inline with the ball ... could default to alignX
+            }
+        }
+
+        function outside(ref, dist, player, def) {
+            var _ref = getRef(ref, def);
+
+            //figure out if outside is left or right
+            if (rightEdge(_ref, def) > ball.x) {
+                //ref is to the left, outside is to the left
+                return leftOf(ref, dist, player, def);
+
+            } else if (leftEdge(_ref, def) < ball.x) {
+                //ref is to the right, outside is to the right
+                return rightOf(ref, dist, player, def);
+
+            } else {
+                //do nothing if the ref is inline with the ball ... could default to alignX
+            }
+        }
+
+        function shadeLeft(ref, dist, def) {
+            ref = getRef(ref, def);
 
             //dist is (+) left and (-) right
-            return ref.left_edge - dist;
+            return leftEdge(ref, def) + dist;
         }
 
-        function shadeRight(ref, dist) {
-            ref = getRef(ref);
+        function shadeRight(ref, dist, def) {
+            ref = getRef(ref, def);
 
             //dist is (-) left and (+) right
-            return ref.right_edge + dist;
+            return rightEdge(ref, def) - dist;
+        }
+
+        function shadeIn(ref, dist, def) {
+            var _ref = getRef(ref, def);
+
+            //figure out if inside is left or right
+            if (rightEdge(_ref, def) > ball.x) {
+                //ref is to the left, inside is to the right
+                return shadeRight(ref, dist, def);
+
+            } else if (leftEdge(_ref, def) < ball.x) {
+                //ref is to the right, inside is to the left
+                return shadeLeft(ref, dist, def);
+
+            } else {
+                //do nothing if the ref is inline with the ball ... could default to alignX
+            }
+
+        }
+
+        function shadeOut(ref, dist, def) {
+            var _ref = getRef(ref, def);
+
+            //figure out if outside is left or right
+            if (rightEdge(_ref, def) > ball.x) {
+                //ref is to the left, outside is to the left
+                return shadeLeft(ref, dist, def);
+
+            } else if (leftEdge(_ref, def) < ball.x) {
+                //ref is to the right, outside is to the right
+                return shadeRight(ref, dist, def);
+
+            } else {
+                //do nothing if the ref is inline with the ball ... could default to alignX
+            }
+
+        }
+
+        function shadeStrong(ref, dist, def) {
+            if (def.strength == 'right') {
+                return shadeRight(ref, dist, def);
+            } else {
+                //assuming this is strong left
+                return shadeLeft(ref, dist, def);
+            }
+        }
+
+        function shadeWeak(ref, dist, def) {
+            if (def.strength == 'left') {
+                return shadeRight(ref, dist, def);
+            } else {
+                //assuming this is strong right
+                return shadeLeft(ref, dist, def);
+            }
         }
 
         /*
             helper methods to align players vertically
         */
 
-        function getY(player) {
+        function getY(player, def) {
             var v = player.v_align;
             var y;
             switch (v[0]) {
                 case "align":
-                    y = alignY(v[1]);
+                    y = alignY(v[1], def);
                     break;
                 case "behind":
-                    y = behind(v[1], v[2], player);
+                    y = behind(v[1], v[2], player, def);
                     break;
                 case "shade-back":
-                    y = shadeBack(v[1], v[2]);
+                    y = shadeBack(v[1], v[2], def);
                     break;
                 default:
                 //do nothing for now
@@ -314,31 +420,31 @@ class Defense {
             return y;
         }
 
-        function alignY(ref) {
-            ref = getRef(ref);
+        function alignY(ref, def) {
+            ref = getRef(ref, def);
 
             return ref.y;
         }
 
-        function behind(ref, dist, player) {
-            ref = getRef(ref);
+        function behind(ref, dist, player, def) {
+            ref = getRef(ref, def);
 
             //dist is (-) forward and (+) backward
-            return ref.back_edge - player.radius - dist;
+            return backEdge(ref, def) + player.radius + dist;
         }
 
-        function shadeBack(ref, dist) {
-            ref = getRef(ref);
+        function shadeBack(ref, dist, def) {
+            ref = getRef(ref, def);
 
             //dist is (-) forward and (+) backward
-            return ref.back_edge - dist;
+            return backEdge(ref, def) + dist;
         }
 
         /*
             helper function to map reference to object
         */
 
-        function getRef(ref) {
+        function getRef(ref, def) {
             switch (ref) {
                 case 'ball':
                     ref = ball;
@@ -365,19 +471,23 @@ class Defense {
                     ref = landmarks.spot;
                     break;
                 default:
-                    //assume its a player
-                    ref = players[ref];
+                    //assume its a player 
+                    if (getPerspective(ref, def) == 'defense') {
+                        ref = def.players[ref];
+                    } else {
+                        ref = temp_offense[ref];
+                    }
 
                     //check if player ref has x set
                     if (typeof (ref.x) === 'undefined') {
                         //set the y-coordinate for undefined player
-                        ref.x = getX(ref);
+                        ref.x = getX(ref, def);
                     }
 
                     //check if player ref has y set
                     if (typeof (ref.y) === 'undefined') {
                         //set the y-coordinate for undefined player
-                        ref.y = getY(ref);
+                        ref.y = getY(ref, def);
                     }
             }
             return ref;
@@ -424,11 +534,12 @@ class Defense {
         }
 
         function getPerspective(ref, def) {
-            if (ref in def.players) {
-                return 'defense';
-            } else {
-                return 'offense';
+            for (pos in def.players) {
+                if (ref === def.players[pos]) {
+                    return 'defense';
+                }
             }
+            return 'offense';
         }
     }
 
