@@ -192,6 +192,7 @@ var d_formation = {
             },
             {
                 "criteria": [
+                    "WR_weak == 1",
                     "RB_all <= 2",
                     "FB_weak >= 0.5"
                 ],
