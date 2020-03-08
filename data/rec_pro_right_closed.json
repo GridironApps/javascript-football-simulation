@@ -1,10 +1,10 @@
 {
-    "name": "Pro Right",
+    "name": "Pro Right Closed",
     "unit": "feet",
     "positions": {
         "X": {
-            "horizontal": ["left-of", "numbers-left", 0],
-            "vertical": ["behind", "spot", 0]
+            "horizontal": ["left-of", "LT", 2],
+            "vertical": ["shade-back", "C", 0]
         },
         "Y": {
             "horizontal": ["right-of", "RT", 2],
