@@ -9,16 +9,6 @@ class Defense {
         this.personnel = '';
         this.formation = formation_data.name;
 
-        //copy alignment instructions to each player ... TODO pull players from roster based on peronnel 
-        var positions = formation_data.positions;
-        this.players = {}; //guys on the field ... using an object so we can map to position tags
-        for (var pos in positions) {
-            this.players[pos] = new Player(
-                positions[pos].horizontal,
-                positions[pos].vertical
-            );
-        }
-
         /*
             create player groups using Player Zones and the offense
         */
@@ -29,10 +19,10 @@ class Defense {
 
         var temp_offense = {}; //use this to temporarily store offensive players with custom tags
 
-        //Re-tag the o-line .. it should have 5 players sorted left-to-right from an offensive perspective        
+        //Re-tag the o-line in case of Tackle over ... it should have 5 players sorted left-to-right from an offensive perspective        
         temp_offense['OT-right'] = offense.o_line[0];
         temp_offense['OG-right'] = offense.o_line[1];
-        temp_offense['OC'] = offense.o_line[2];
+        temp_offense['OC'] = offense.o_line[2]; //FIXME should we look at ball or center in a tackle over situation for left/right
         temp_offense['OG-left'] = offense.o_line[3];
         temp_offense['OT-left'] = offense.o_line[4];
 
@@ -143,7 +133,7 @@ class Defense {
         }
 
         /*
-            Tag players
+            Tag offensive players so we can more easily find them
         */
 
         //O-line
@@ -200,22 +190,184 @@ class Defense {
         }
 
         /*
+            align defensive players
+        */
+
+        //copy alignment instructions to each player based on matching criteria ... TODO pull players from roster based on peronnel 
+        var positions = formation_data.positions;
+        this.players = {}; //guys on the field ... using an object so we can map to position tags
+        for (var pos in positions) {
+            var defender = positions[pos];
+            var h_align;
+            var v_align;
+
+            //work through criteria until we find one that works
+            if (Array.isArray(defender)) {
+                var options = defender;
+                for (var i = 0; i < options.length; i++) {
+                    var criteria = options[i].criteria;
+                    if(criteria == 'default'){
+                        h_align = options[i].horizontal;
+                        v_align = options[i].vertical;
+                        break; //stop on FIRST successful set of criteria ... could change to last if needed
+                    }                    
+
+                    //evaluate each criteria
+                    var pass = true;
+                    for (var j = 0; j < criteria.length; j++) {
+                        var c = criteria[j].split(' ');
+
+                        var val1 = getVal(c[0], this);
+                        var val2 = getVal(c[2], this);
+
+                        switch (c[1]) {
+                            case '=':
+                                pass = pass && (val1 == val2);
+                                break;
+                            case '==':
+                                pass = pass && (val1 == val2);
+                                break;
+                            case '>':
+                                pass = pass && (val1 > val2);
+                                break;
+                            case '<':
+                                pass = pass && (val1 < val2);
+                                break;
+                            case '>=':
+                                pass = pass && (val1 >= val2);
+                                break;
+                            case '<=':
+                                pass = pass && (val1 <= val2);
+                                break;
+                            default:
+                            //do nothing for now
+                        }
+
+                        //once we fail any part of the criteria we are done
+                        if (!pass) {
+                            break;
+                        }
+                    }
+
+                    if (pass) {
+                        h_align = options[i].horizontal;
+                        v_align = options[i].vertical;
+                        break; //stop on FIRST successful set of criteria ... could change to last if needed
+                    }
+
+                }
+
+            } else {
+                h_align = defender.horizontal;
+                v_align = defender.vertical;
+            }
+
+            this.players[pos] = new Player(h_align, v_align);
+        }
+
+        //helper function to turn text criteria into floating point numbers
+        function getVal(val, def) {
+            switch (val) {
+                case "RB":
+                    return rb_all.length;
+                case "RB_all":
+                    return rb_all.length;
+                case "RB_left":
+                    return rb_left.length + rb_center.length / 2;
+                case "RB_right":
+                    return rb_right.length + rb_center.length / 2;
+                case "RB_strong":
+                    if (def.strength == 'right') {
+                        return rb_right.length + rb_center.length / 2;
+                    } else {
+                        return rb_left.length + rb_center.length / 2;
+                    }
+                case "RB_weak":
+                    if (def.strength == 'left') {
+                        return rb_right.length + rb_center.length / 2;
+                    } else {
+                        return rb_left.length + rb_center.length / 2;
+                    }
+                case "FB":
+                    return fb_all.length;
+                case "FB_all":
+                    return fb_all.length;
+                case "FB_left":
+                    return fb_left.length + fb_center.length / 2;
+                case "FB_right":
+                    return fb_right.length + fb_center.length / 2;
+                case "FB_strong":
+                    if (def.strength == 'right') {
+                        return fb_right.length + fb_center.length / 2;
+                    } else {
+                        return fb_left.length + fb_center.length / 2;
+                    }
+                case "FB_weak":
+                    if (def.strength == 'left') {
+                        return fb_right.length + fb_center.length / 2;
+                    } else {
+                        return fb_left.length + fb_center.length / 2;
+                    }
+                case "WR":
+                    return wr_all.length;
+                case "WR_all":
+                    return wr_all.length;
+                case "WR_left":
+                    return wr_left.length;
+                case "WR_right":
+                    return wr_right.length;
+                case "WR_strong":
+                    if (def.strength == 'right') {
+                        return wr_right.length;
+                    } else {
+                        return wr_left.length;
+                    }
+                case "WR_weak":
+                    if (def.strength == 'left') {
+                        return wr_right.length;
+                    } else {
+                        return wr_left.length;
+                    }
+                case "TE":
+                    return te_all.length;
+                case "TE_all":
+                    return te_all.length;
+                case "TE_left":
+                    return te_left.length;
+                case "TE_right":
+                    return te_right.length;
+                case "TE_strong":
+                    if (def.strength == 'right') {
+                        return te_right.length;
+                    } else {
+                        return te_left.length;
+                    }
+                case "TE_weak":
+                    if (def.strength == 'left') {
+                        return te_right.length;
+                    } else {
+                        return te_left.length;
+                    }
+                default:
+                    //assume it's a number
+                    return parseFloat(val);
+            }
+        }
+
         //initialize position of each player in the defese
-        //we split this up so we don't have to care about the order that the players appear in the object or file
-        var players = this.players;
-        for (var pos in players) {
-            var player = players[pos];
+        //we don't have to care about the order that the players appear in the object or file
+        for (var pos in this.players) {
+            var player = this.players[pos];
 
             //check if player already has a position defined
             if (typeof (player.x) === 'undefined') {
-                player.x = getX(player);
+                player.x = getX(player, this);
             }
 
             if (typeof (player.y) === 'undefined') {
-                player.y = getY(player);
+                player.y = getY(player, this);
             }
         }
-        this.players = players;
 
         /*
             helper methods to align players horizontally
@@ -542,10 +694,4 @@ class Defense {
             return 'offense';
         }
     }
-
-
-
-
-
-
 }

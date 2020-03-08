@@ -33,7 +33,7 @@ var stage = new PIXI.Container();
 //start by drawing the field to the stage
 drawField(field, stage); //TODO might an advantage to drawing the field to one layer and everything else to another layer on top of it
 
-//add the players to the stage
+//add offensive players to the stage
 for (var pos in offense.players) { //TODO embed this drawing function in the Player object? OR keep sim and replay seperate....
     let circle = new PIXI.Graphics(); //using https://github.com/kittykatattack/learningPixi#circles
     circle.lineStyle(2, 0x000000, 1);
@@ -42,6 +42,19 @@ for (var pos in offense.players) { //TODO embed this drawing function in the Pla
         (field.endzone_depth + offense.players[pos].y) * FOOT_TO_PX,
         offense.players[pos].x * FOOT_TO_PX,
         offense.players[pos].radius * FOOT_TO_PX);
+    circle.endFill();
+    stage.addChild(circle);
+}
+
+//add defensive players to the stage
+for (var pos in defense.players) { //TODO embed this drawing function in the Player object? OR keep sim and replay seperate....
+    let circle = new PIXI.Graphics(); //using https://github.com/kittykatattack/learningPixi#circles
+    circle.lineStyle(2, 0x000000, 1);
+    circle.beginFill(0x808080);
+    circle.drawCircle(
+        (field.endzone_depth + defense.players[pos].y) * FOOT_TO_PX,
+        defense.players[pos].x * FOOT_TO_PX,
+        defense.players[pos].radius * FOOT_TO_PX);
     circle.endFill();
     stage.addChild(circle);
 }

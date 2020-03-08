@@ -74,15 +74,15 @@ var d_formation = {
     "unit": "feet",
     "positions": {
         "LE": {
-            "horizontal": ["shade-strong", "RT", 0],
+            "horizontal": ["shade-strong", "OT-left", 0],
             "vertical": ["behind", "ball", 0]
         },
         "N": {
-            "horizontal": ["shade-strong", "C", 0],
+            "horizontal": ["shade-strong", "OC", 0],
             "vertical": ["behind", "ball", 0]
         },
         "RE": {
-            "horizontal": ["shade-strong", "LT", 0],
+            "horizontal": ["shade-strong", "OT-right", 0],
             "vertical": ["behind", "ball", 0]
         },
         "S": [
@@ -125,6 +125,11 @@ var d_formation = {
                 ],
                 "horizontal": ["outside", "OT-strong", 3.5],
                 "vertical": ["behind", "ball", 0]
+            },
+            {
+                "criteria": 'default',
+                "horizontal": ["outside", "OT-strong", 3.5],
+                "vertical": ["behind", "ball", 0]
             }
         ],
         "M": [
@@ -139,6 +144,11 @@ var d_formation = {
                 "criteria": [
                     "WR_strong <= 2"
                 ],
+                "horizontal": ["shade-out", "OG-strong", 0],
+                "vertical": ["behind", "ball", 15]
+            },
+            {
+                "criteria": 'default',
                 "horizontal": ["shade-out", "OG-strong", 0],
                 "vertical": ["behind", "ball", 15]
             }
@@ -194,6 +204,11 @@ var d_formation = {
                     "TE_weak == 0",
                     "RB_all <=1"
                 ],
+                "horizontal": ["outside", "OT-weak", 7.5],
+                "vertical": ["behind", "ball", 9]
+            },
+            {
+                "criteria": 'default',
                 "horizontal": ["outside", "OT-weak", 7.5],
                 "vertical": ["behind", "ball", 9]
             }
@@ -276,6 +291,11 @@ var d_formation = {
                 ],
                 "horizontal": ["shade-out", "OT-strong", 0],
                 "vertical": ["behind", "ball", 24]
+            },
+            {
+                "criteria": 'default',
+                "horizontal": ["shade-out", "OT-strong", 0],
+                "vertical": ["behind", "ball", 24]
             }
         ],
         "F": [
@@ -356,6 +376,11 @@ var d_formation = {
                 ],
                 "horizontal": ["shade-out", "OT-weak", 0],
                 "vertical": ["behind", "ball", 24]
+            },
+            {
+                "criteria": 'default',
+                "horizontal": ["shade-out", "OT-weak", 0],
+                "vertical": ["behind", "ball", 24]
             }
         ],
         "RC": [
@@ -381,6 +406,11 @@ var d_formation = {
                 ],
                 "horizontal": ["outside", "OT-right", 10.5],
                 "vertical": ["behind", "ball",  18]
+            },
+            {
+                "criteria": 'default',
+                "horizontal": ["outside", "OT-right", 10.5],
+                "vertical": ["behind", "ball",  18]
             }
         ],
         "LC": [
@@ -404,6 +434,11 @@ var d_formation = {
                     "WR_left == 0",
                     "TE_left == 0"
                 ],
+                "horizontal": ["outside", "OT-left", 10.5],
+                "vertical": ["behind", "ball",  18]
+            },
+            {
+                "criteria": 'default',
                 "horizontal": ["outside", "OT-left", 10.5],
                 "vertical": ["behind", "ball",  18]
             }
