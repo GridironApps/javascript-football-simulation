@@ -14,7 +14,7 @@ class Defense {
         */
 
         const YARD_TO_FOOT = 3;
-        const WR_ZONE_START = 10 * YARD_TO_FOOT;
+        const WR_ZONE_START = 10; //feet
         const FB_ZONE_START = 5 * YARD_TO_FOOT;
 
         var temp_offense = {}; //use this to temporarily store offensive players with custom tags
@@ -30,13 +30,13 @@ class Defense {
         var wr_left = [];
         var te_left = [];
         var o_left = offense.eligible_right; //the offenses right is the defenses left
-        var divider = temp_offense['OT-left'].x + WR_ZONE_START;
+        var divider = temp_offense['OT-left'].right_edge + WR_ZONE_START;
         for (var i = 0; i < o_left.length; i++) { //we are going inside to outside since this is sorted left to right
             var player = o_left[i];
-            if (rightEdge(player, this) < divider) {
-                te_left.unshift(player); //use unshift so we can make the outside player first in the array
+            if (player.right_edge > divider) {
+                wr_left.unshift(player); //use unshift so we can make the outside player first in the array
             } else {
-                wr_left.unshift(player);
+                te_left.unshift(player);
             }
         }
 
@@ -44,13 +44,13 @@ class Defense {
         var wr_right = [];
         var te_right = [];
         var o_right = offense.eligible_left; //the offenses left is the defenses right
-        var divider = temp_offense['OT-right'].x - WR_ZONE_START;
+        var divider = temp_offense['OT-right'].left_edge - WR_ZONE_START;
         for (var i = 0; i < o_right.length; i++) { //we are going outside to inside since this is sorted left to right
             var player = o_right[i];
-            if (leftEdge(player, this) > divider) {
-                te_right.push(player); //use push so we can make the outside player first in the array
+            if (player.left_edge < divider) {
+                wr_right.push(player); //use push so we can make the outside player first in the array
             } else {
-                wr_right.push(player);
+                te_right.push(player);
             }
         }
 
@@ -74,9 +74,9 @@ class Defense {
         var rb_right = [];
         for (var i = 0; i < rb_all.length; i++) {
             var player = rb_all[i];
-            if (rightEdge(player, this) >= ball.x) {
+            if (player.left_edge >= ball.x) {
                 rb_left.push(player);
-            } else if (leftEdge(player, this) <= ball.x) {
+            } else if (player.right_edge <= ball.x) {
                 rb_right.push(player);
             } else {
                 rb_center.push(player);
@@ -89,9 +89,9 @@ class Defense {
         var fb_right = [];
         for (var i = 0; i < fb_all.length; i++) {
             var player = fb_all[i];
-            if (rightEdge(player, this) >= ball.x) {
+            if (player.left_edge >= ball.x) {
                 fb_left.push(player);
-            } else if (leftEdge(player, this) <= ball.x) {
+            } else if (player.right_edge <= ball.x) {
                 fb_right.push(player);
             } else {
                 fb_center.push(player);
