@@ -24,19 +24,19 @@ var o_formation = {
     "positions": {
         "QB": {
             "horizontal" : ["align","ball", 0],
-            "vertical" : ["behind", "ball", 15]
+            "vertical" : ["behind", "spot", 15]
         },
         "T": {
             "horizontal": ["align", "ball", 0],
-            "vertical": ["behind", "ball", 21]
+            "vertical": ["behind", "spot", 21]
         },
         "H": {
             "horizontal": ["align", "RG", 0],
-            "vertical": ["behind", "ball", 15]
+            "vertical": ["behind", "spot", 15]
         },
         "X": {
             "horizontal": ["left-of", "numbers-left", 0],
-            "vertical": ["behind", "ball", 0]
+            "vertical": ["behind", "spot", 0]
         },
         "Y": {
             "horizontal": ["apex", "Z", "RT"],
@@ -44,7 +44,7 @@ var o_formation = {
         },
         "Z": {
             "horizontal": ["right-of", "numbers-right", 0],
-            "vertical": ["behind", "ball", 0]
+            "vertical": ["behind", "spot", 0]
         },
         "LT": {
             "horizontal": ["left-of", "LG", 2],
