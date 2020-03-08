@@ -31,7 +31,7 @@ var o_formation = {
             "vertical": ["behind", "ball", 16.5]
         },
         "H": {
-            "horizontal": ["apex", "Y", "RT"],
+            "horizontal": ["right-of", "RT", 10],
             "vertical": ["behind", "C", 0]
         },
         "X": {
@@ -39,7 +39,7 @@ var o_formation = {
             "vertical": ["behind", "spot", 0]
         },
         "Y": {
-            "horizontal": ["apex", "Z", "RT"],
+            "horizontal": ["apex", "Z", "H"],
             "vertical": ["behind", "C", 0]
         },
         "Z": {
