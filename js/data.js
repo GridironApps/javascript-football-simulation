@@ -27,12 +27,12 @@ var o_formation = {
             "vertical" : ["behind", "ball", 15]
         },
         "T": {
-            "horizontal": ["align", "RG", 0],
-            "vertical": ["behind", "ball", 16.5]
+            "horizontal": ["align", "ball", 0],
+            "vertical": ["behind", "ball", 21]
         },
         "H": {
-            "horizontal": ["align", "LG", 0],
-            "vertical": ["behind", "ball", 16.5]
+            "horizontal": ["align", "RG", 0],
+            "vertical": ["behind", "ball", 15]
         },
         "X": {
             "horizontal": ["left-of", "numbers-left", 0],
