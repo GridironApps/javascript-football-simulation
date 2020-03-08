@@ -320,6 +320,14 @@ var d_formation = {
             {
                 "criteria": [
                     "WR_weak == 0",
+                    "TE_weak == 1"
+                ],
+                "horizontal": ["apex", "TE1-weak", "OT-weak"],
+                "vertical": ["behind", "spot", 22.5]
+            },
+            {
+                "criteria": [
+                    "WR_weak == 0",
                     "TE_weak >= 2"
                 ],
                 "horizontal": ["apex", "TE1-weak", "TE2-weak"],
