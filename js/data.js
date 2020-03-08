@@ -23,12 +23,12 @@ var o_formation = {
     "unit": "feet",
     "positions": {
         "QB": {
-            "horizontal" : ["align","ball"],
-            "vertical" : ["behind", "C", 0]
+            "horizontal" : ["align","ball", 0],
+            "vertical" : ["behind", "C", 15]
         },
         "T": {
-            "horizontal": ["align", "ball"],
-            "vertical": ["behind", "ball", 21]
+            "horizontal": ["align", "OG-strong", 0],
+            "vertical": ["behind", "ball", 16.5]
         },
         "H": {
             "horizontal": ["left-of", "LT", 2],

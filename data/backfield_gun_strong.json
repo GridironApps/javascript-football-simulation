@@ -1,0 +1,14 @@
+{
+    "name": "Gun Strong",
+    "unit": "feet",
+    "positions": {
+        "QB": {
+            "horizontal" : ["align","ball", 0],
+            "vertical" : ["behind", "C", 15]
+        },
+        "T": {
+            "horizontal": ["align", "OG-strong", 0],
+            "vertical": ["behind", "ball", 16.5]
+        }
+    }
+}
