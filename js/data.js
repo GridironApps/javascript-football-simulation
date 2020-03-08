@@ -204,12 +204,7 @@ var d_formation = {
                 ],
                 "horizontal": ["outside", "OT-weak", 7.5],
                 "vertical": ["behind", "ball", 9]
-            },
-            {
-                "criteria": 'default',
-                "horizontal": ["outside", "OT-weak", 7.5],
-                "vertical": ["behind", "ball", 9]
-            },
+            }
         ],
         "R": [
             {
