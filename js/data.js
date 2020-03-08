@@ -31,20 +31,20 @@ var o_formation = {
             "vertical": ["behind", "ball", 16.5]
         },
         "H": {
-            "horizontal": ["left-of", "LT", 2],
-            "vertical": ["shade-back", "C", 0]
+            "horizontal": ["apex", "Y", "RT"],
+            "vertical": ["behind", "C", 0]
         },
         "X": {
             "horizontal": ["left-of", "numbers-left", 0],
-            "vertical": ["behind", "C", 0]
+            "vertical": ["behind", "spot", 0]
         },
         "Y": {
-            "horizontal": ["right-of", "RT", 2],
-            "vertical": ["shade-back", "C", 0]
+            "horizontal": ["apex", "Z", "RT"],
+            "vertical": ["behind", "C", 0]
         },
         "Z": {
             "horizontal": ["right-of", "numbers-right", 0],
-            "vertical": ["behind", "C", 0]
+            "vertical": ["behind", "spot", 0]
         },
         "LT": {
             "horizontal": ["left-of", "LG", 2],
