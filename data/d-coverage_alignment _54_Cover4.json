@@ -94,7 +94,7 @@
                 "criteria": [
                     "TE_weak == 1"
                 ],
-                "horizontal": ["shade-out", "TE-weak", 0],
+                "horizontal": ["shade-out", "TE1-weak", 0],
                 "vertical": ["behind", "ball", 0]
             },
             {
@@ -286,7 +286,7 @@
         "RC": [
             {
                 "criteria": [
-                    "WR_right >=1"
+                    "WR_right >= 1"
                 ],
                 "horizontal": ["shade-out", "WR1-right",0],
                 "vertical": ["behind", "ball", 0]
@@ -311,7 +311,7 @@
         "LC": [
             {
                 "criteria": [
-                    "WR_left >=1"
+                    "WR_left >= 1"
                 ],
                 "horizontal": ["shade-out", "WR1-left",0],
                 "vertical": ["behind", "ball", 0]
