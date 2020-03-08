@@ -223,7 +223,7 @@ var d_formation = {
                     "RB_strong <= 1"
                 ],
                 "horizontal": ["inside", "WR2-strong", 4.5],
-                "vertical": ["behind", "ball", 30]
+                "vertical": ["behind", "ball", 28.5]
             },
             {
                 "criteria": [
@@ -233,7 +233,7 @@ var d_formation = {
                     "RB_strong <= 1"
                 ],
                 "horizontal": ["apex", "TE1-strong", "OT-strong"],
-                "vertical": ["behind", "ball", 24]
+                "vertical": ["behind", "ball", 22.5]
             },
             {
                 "criteria": [
@@ -241,7 +241,7 @@ var d_formation = {
                     "TE_strong >= 2"
                 ],
                 "horizontal": ["shade-out", "TE1-strong", 0],
-                "vertical": ["behind", "ball", 24]
+                "vertical": ["behind", "ball", 22.5]
             },
             {
                 "criteria": [
@@ -249,7 +249,7 @@ var d_formation = {
                     "TE_strong >=2"
                 ],
                 "horizontal": ["apex", "TE1-strong", "TE2-strong"],
-                "vertical": ["behind", "ball", 24]
+                "vertical": ["behind", "ball", 22.5]
             },
             {
                 "criteria": [
@@ -258,7 +258,7 @@ var d_formation = {
                     "FB_strong >= 0.5"
                 ],
                 "horizontal": ["shade-out", "OT-strong", 0],
-                "vertical": ["behind", "ball", 24]
+                "vertical": ["behind", "ball", 22.5]
             },
             {
                 "criteria": [
@@ -268,7 +268,7 @@ var d_formation = {
                     "WR_weak >= 3"
                 ],
                 "horizontal": ["shade-out", "OT-strong", 0],
-                "vertical": ["behind", "ball", 30]
+                "vertical": ["behind", "ball", 28.5]
             },
             {
                 "criteria": [
@@ -280,7 +280,7 @@ var d_formation = {
                     "FB_weak <= 1"
                 ],
                 "horizontal": ["shade-out", "OT-strong", 0],
-                "vertical": ["behind", "ball", 24]
+                "vertical": ["behind", "ball", 22.5]
             },
             {
                 "criteria": [
@@ -291,12 +291,7 @@ var d_formation = {
                     "TE_weak <= 2"
                 ],
                 "horizontal": ["shade-out", "OT-strong", 0],
-                "vertical": ["behind", "ball", 24]
-            },
-            {
-                "criteria": 'default',
-                "horizontal": ["shade-out", "OT-strong", 0],
-                "vertical": ["behind", "ball", 24]
+                "vertical": ["behind", "ball", 22.5]
             }
         ],
         "F": [
@@ -308,7 +303,7 @@ var d_formation = {
                     "RB_weak <= 1"
                 ],
                 "horizontal": ["inside", "WR2-weak", 4.5],
-                "vertical": ["behind", "ball", 30]
+                "vertical": ["behind", "ball", 28.5]
             },
             {
                 "criteria": [
@@ -318,7 +313,7 @@ var d_formation = {
                     "RB_weak <= 1"
                 ],
                 "horizontal": ["apex", "TE1-weak", "OT-weak"],
-                "vertical": ["behind", "ball", 24]
+                "vertical": ["behind", "ball", 22.5]
             },
             {
                 "criteria": [
@@ -326,7 +321,7 @@ var d_formation = {
                     "TE_weak >= 2"
                 ],
                 "horizontal": ["shade-out", "TE1-weak", 0],
-                "vertical": ["behind", "ball", 24]
+                "vertical": ["behind", "ball", 22.5]
             },
             {
                 "criteria": [
@@ -334,7 +329,7 @@ var d_formation = {
                     "TE_weak >=2"
                 ],
                 "horizontal": ["apex", "TE1-weak", "TE2-weak"],
-                "vertical": ["behind", "ball", 24]
+                "vertical": ["behind", "ball", 22.5]
             },
             {
                 "criteria": [
@@ -343,7 +338,7 @@ var d_formation = {
                     "FB_weak >= 0.5"
                 ],
                 "horizontal": ["shade-out", "OT-weak", 0],
-                "vertical": ["behind", "ball", 24]
+                "vertical": ["behind", "ball", 22.5]
             },
             {
                 "criteria": [
@@ -353,7 +348,7 @@ var d_formation = {
                     "WR_strong >= 3"
                 ],
                 "horizontal": ["shade-out", "OT-weak", 0],
-                "vertical": ["behind", "ball", 30]
+                "vertical": ["behind", "ball", 28.5]
             },
             {
                 "criteria": [
@@ -365,7 +360,7 @@ var d_formation = {
                     "FB_strong <= 1"
                 ],
                 "horizontal": ["shade-out", "OT-weak", 0],
-                "vertical": ["behind", "ball", 24]
+                "vertical": ["behind", "ball", 22.5]
             },
             {
                 "criteria": [
@@ -376,12 +371,7 @@ var d_formation = {
                     "TE_strong <= 2"
                 ],
                 "horizontal": ["shade-out", "OT-weak", 0],
-                "vertical": ["behind", "ball", 24]
-            },
-            {
-                "criteria": 'default',
-                "horizontal": ["shade-out", "OT-weak", 0],
-                "vertical": ["behind", "ball", 24]
+                "vertical": ["behind", "ball", 22.5]
             }
         ],
         "RC": [
