@@ -190,20 +190,20 @@ var d_formation = {
             {
                 "criteria": [
                     "WR_weak == 1",
-                    "TE_weak == 0",
-                    "RB_all <= 1"
-                ],
-                "horizontal": ["outside", "OT-weak", 7.5],
-                "vertical": ["behind", "ball", 7.5]
-            },
-            {
-                "criteria": [
-                    "WR_weak == 1",
                     "RB_all <= 2",
                     "FB_weak >= 0.5"
                 ],
                 "horizontal": ["outside", "OT-weak", 3.5],
                 "vertical": ["behind", "ball", 0]
+            },
+            {
+                "criteria": [
+                    "WR_weak == 1",
+                    "TE_weak == 0",
+                    "RB_all <= 1"
+                ],
+                "horizontal": ["outside", "OT-weak", 7.5],
+                "vertical": ["behind", "ball", 7.5]
             },
             {
                 "criteria": [
