@@ -29,14 +29,14 @@ class Defense {
 
         var temp_offense = {}; //use this to temporarily store offensive players with custom tags
 
-        //starting with the o-line .. it should have 5 players sorted left-to-right from an offensive perspective        
+        //Re-tag the o-line .. it should have 5 players sorted left-to-right from an offensive perspective        
         temp_offense['OT-right'] = offense.o_line[0];
         temp_offense['OG-right'] = offense.o_line[1];
         temp_offense['OC'] = offense.o_line[2];
         temp_offense['OG-left'] = offense.o_line[3];
         temp_offense['OT-left'] = offense.o_line[4];
 
-        //WRs and TEs on the left
+        //Split eligibles into WRs and TEs on the left
         var wr_left = [];
         var te_left = [];
         var o_left = offense.eligible_right; //the offenses right is the defenses left
@@ -50,7 +50,7 @@ class Defense {
             }
         }
 
-        //WRs and TEs on the right
+        //Split eligibles into WRs and TEs on the right
         var wr_right = [];
         var te_right = [];
         var o_right = offense.eligible_left; //the offenses left is the defenses right
@@ -64,7 +64,7 @@ class Defense {
             }
         }
 
-        //RB and FB
+        //Split backs into RB and FB
         var rb_all = [];
         var fb_all = [];
         var o_backs = offense.backs; //list is sorted left-to-right and front-to-back from an offensive perspective
@@ -78,7 +78,7 @@ class Defense {
             }
         }
 
-        //RB left, right, and center
+        //Split RB into left, right, and center
         var rb_left = [];
         var rb_center = [];
         var rb_right = [];
@@ -93,7 +93,7 @@ class Defense {
             }
         }
 
-        //FB left, right, and center
+        //Split FB into left, right, and center
         var fb_left = [];
         var fb_center = [];
         var fb_right = [];
@@ -111,6 +111,7 @@ class Defense {
         /*
             Determine strength of offense
         */
+
         var non_rb_left = wr_left.length + te_left.length + fb_left.length;
         var non_rb_right = wr_right.length + te_right.length + fb_right.length;
 
@@ -138,6 +139,63 @@ class Defense {
                         this.strength = 'left';
                     }
                 }
+            }
+        }
+
+        /*
+            Tag players
+        */
+
+        //O-line
+        if (this.strength == 'right') {
+            temp_offense['OT-strong'] = temp_offense['OT-right'];
+            temp_offense['OG-strong'] = temp_offense['OG-right'];
+            temp_offense['OG-weak'] = temp_offense['OG-left'];
+            temp_offense['OT-weak'] = temp_offense['OT-left'];
+        } else if (this.strength == 'left') {
+            temp_offense['OT-strong'] = temp_offense['OT-left'];
+            temp_offense['OG-strong'] = temp_offense['OG-left'];
+            temp_offense['OG-weak'] = temp_offense['OG-right'];
+            temp_offense['OT-weak'] = temp_offense['OT-right'];
+        }
+
+        //TE-left
+        for (i = 0; i < te_left.length; i++) {
+            temp_offense['TE' + (i + 1) + '-left'] = te_left[i];
+            if (this.strength == 'left') {
+                temp_offense['TE' + (i + 1) + '-strong'] = te_left[i];
+            } else {
+                temp_offense['TE' + (i + 1) + '-weak'] = te_left[i];
+            }
+        }
+
+        //TE-right
+        for (i = 0; i < te_right.length; i++) {
+            temp_offense['TE' + (i + 1) + '-right'] = te_right[i];
+            if (this.strength == 'right') {
+                temp_offense['TE' + (i + 1) + '-strong'] = te_right[i];
+            } else {
+                temp_offense['TE' + (i + 1) + '-weak'] = te_right[i];
+            }
+        }
+
+        //WR-left
+        for (i = 0; i < wr_left.length; i++) {
+            temp_offense['WR' + (i + 1) + '-left'] = wr_left[i];
+            if (this.strength == 'left') {
+                temp_offense['WR' + (i + 1) + '-strong'] = wr_left[i];
+            } else {
+                temp_offense['WR' + (i + 1) + '-weak'] = wr_left[i];
+            }
+        }
+
+        //WR-right
+        for (i = 0; i < wr_right.length; i++) {
+            temp_offense['WR' + (i + 1) + '-right'] = wr_right[i];
+            if (this.strength == 'right') {
+                temp_offense['WR' + (i + 1) + '-strong'] = wr_right[i];
+            } else {
+                temp_offense['WR' + (i + 1) + '-weak'] = wr_right[i];
             }
         }
 
