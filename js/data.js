@@ -148,11 +148,6 @@ var d_formation = {
                 ],
                 "horizontal": ["shade-out", "OG-strong", 0],
                 "vertical": ["behind", "ball", 12]
-            },
-            {
-                "criteria": 'default',
-                "horizontal": ["shade-out", "OG-strong", 0],
-                "vertical": ["behind", "ball", 12]
             }
         ],
         "W": {
