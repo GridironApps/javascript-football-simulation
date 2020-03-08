@@ -369,7 +369,7 @@ var d_formation = {
         "RC": [
             {
                 "criteria": [
-                    "WR_right >=1"
+                    "WR_right >= 1"
                 ],
                 "horizontal": ["shade-out", "WR1-right",0],
                 "vertical": ["behind", "ball", 0]
@@ -394,7 +394,7 @@ var d_formation = {
         "LC": [
             {
                 "criteria": [
-                    "WR_left >=1"
+                    "WR_left >= 1"
                 ],
                 "horizontal": ["shade-out", "WR1-left",0],
                 "vertical": ["behind", "ball", 0]
