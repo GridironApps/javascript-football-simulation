@@ -39,7 +39,7 @@ var o_formation = {
             "vertical": ["shade-back", "C", 0]
         },
         "Y": {
-            "horizontal": ["Apex", "Z", "RT"],
+            "horizontal": ["apex", "Z", "RT"],
             "vertical": ["behind", "C", 0]
         },
         "Z": {
