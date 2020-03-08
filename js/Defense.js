@@ -109,6 +109,39 @@ class Defense {
         }
 
         /*
+            Determine strength of offense
+        */
+        var non_rb_left = wr_left.length + te_left.length + fb_left.length;
+        var non_rb_right = wr_right.length + te_right.length + fb_right.length;
+
+        if (non_rb_left > non_rb_right) {
+            this.strength = 'left';
+        } else if (non_rb_left < non_rb_right) {
+            this.strength = 'right';
+        } else {
+            if (te_left.length > te_right.length) {
+                this.strength = 'left';
+            } else if (te_left.length < te_right.length) {
+                this.strength = 'right';
+            } else {
+                if (fb_left.length < fb_right.length) {
+                    this.strength = 'left';
+                } else if (fb_left.length < fb_right.length) {
+                    this.strength = 'right';
+                } else {
+                    if (rb_left.length < rb_right.length) {
+                        this.strength = 'right';
+                    } else if (rb_left.length > rb_right.length) {
+                        this.strength = 'left';
+                    } else {
+                        //TODO add field and QB arm checks
+                        this.strength = 'left';
+                    }
+                }
+            }
+        }
+
+        /*
         //initialize position of each player in the defese
         //we split this up so we don't have to care about the order that the players appear in the object or file
         var players = this.players;
