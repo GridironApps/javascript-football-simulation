@@ -192,7 +192,7 @@ var d_formation = {
             },
             {
                 "criteria": [
-                    "RB_all == 2",
+                    "RB_all <= 2",
                     "FB_weak >= 0.5"
                 ],
                 "horizontal": ["outside", "OT-weak", 3.5],
