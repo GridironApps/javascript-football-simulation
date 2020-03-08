@@ -198,8 +198,8 @@ class Defense {
         this.players = {}; //guys on the field ... using an object so we can map to position tags
         for (var pos in positions) {
             var defender = positions[pos];
-            var h_align;
-            var v_align;
+            var h_align = undefined;
+            var v_align = undefined;
 
             //work through criteria until we find one that works
             if (Array.isArray(defender)) {
@@ -257,11 +257,18 @@ class Defense {
 
                 }
 
+                //adding an elegant message
+                if(typeof(h_align) === 'undefined' || typeof(v_align) === 'undefined'){
+                    console.error('No matching alignment criteria for defender ' + pos + '. Defaulting player to top sideline.');
+                    h_align = ['align','sideline-left'];
+                    v_align = ['align', 'ball'];
+                }
+
             } else {
                 h_align = defender.horizontal;
                 v_align = defender.vertical;
             }
-
+            
             this.players[pos] = new Player(h_align, v_align);
         }
 
