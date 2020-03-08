@@ -23,11 +23,11 @@ var o_formation = {
     "unit": "feet",
     "positions": {
         "QB": {
-            "horizontal" : ["align","ball", 0],
+            "horizontal" : ["align","ball"],
             "vertical" : ["behind", "C", 0]
         },
         "T": {
-            "horizontal": ["align", "ball", 0],
+            "horizontal": ["align", "ball"],
             "vertical": ["behind", "ball", 21]
         },
         "H": {
@@ -48,23 +48,23 @@ var o_formation = {
         },
         "LT": {
             "horizontal": ["left-of", "LG", 2],
-            "vertical": ["behind", "ball", .5]
+            "vertical": ["shade-back", "C", 0]
         },
         "LG": {
             "horizontal": ["left-of", "C", 2],
-            "vertical": ["behind", "ball", .5]
+            "vertical": ["shade-back", "C", 0]
         },
         "C": {
             "horizontal": ["align", "ball", 0],
-            "vertical": ["behind", "ball", 0.5]
+            "vertical": ["behind", "ball", 0]
         },
         "RG": {
             "horizontal": ["right-of", "C", 2],
-            "vertical": ["behind", "ball", .5]
+            "vertical": ["shade-back", "C", 0]
         },
         "RT": {
             "horizontal": ["right-of", "RG", 2],
-            "vertical": ["behind", "ball", .5]
+            "vertical": ["shade-back", "C", 0]
         }
     }
 }

@@ -48,7 +48,7 @@ class Offense {
                     x = alignX(h[1]); //TODO might look into chaining funcitions for padding align().padLeft()
                     break;
                 case "apex":
-                    x = apex(h[1],h[2]);
+                    x = apex(h[1], h[2]);
                     break;
                 case "left-of":
                     x = leftOf(h[1], h[2], player);
@@ -201,5 +201,123 @@ class Offense {
             }
             return ref;
         }
+    }
+
+    /*
+        helper functions to get group offensive players
+        each of these will return an array sorted left-to-right then front-to-back from an offensive perspective
+    */
+
+    get o_line() {
+        //this assumes a standard offensive line
+        var player_group = [
+            this.players['LT'],
+            this.players['LG'],
+            this.players['C'],
+            this.players['RG'],
+            this.players['RT']
+        ];
+
+        return Offense.sortGroup(player_group);
+    }
+
+    get backs() {
+        //this is all non-QB eligible players strictly inside the tackle box
+
+        var LT = this.o_line[0];
+        var RT = this.o_line[4];
+        var QB = this.players['QB'];
+        var C = this.players['C'];
+
+        //go through each player and see if they are inside the tackle box (touching is okay)
+        var player_group = [];
+        for (var pos in this.players) {
+            var player = this.players[pos];
+
+            //make sure player isn't the LT, RT, or QB
+            if (player === LT || player === RT || player === QB) {
+                continue;
+            }
+
+            //check that player is in the tackle box
+            if (player.left_edge >= LT.left_edge && player.right_edge <= RT.right_edge) {
+                //check that player is in the backfield
+                if (player.front_edge >= C.back_edge) {
+                    player_group.push(player);
+                }
+            }
+        }
+
+        return Offense.sortGroup(player_group);
+    }
+
+    get eligible_left() {
+        //this is all non-QB eligible players left of the tackle box
+
+        var LT = this.o_line[0];
+
+        //go through each player and see if they are left of the tackle box (1 foot left is okay)
+        var player_group = [];
+        for (var pos in this.players) {
+            var player = this.players[pos];
+
+            //make sure player isn't the LT
+            if (player === LT) {
+                continue;
+            }
+
+            //check that player is left of the tackle box
+            if (player.left_edge < LT.left_edge) {
+                player_group.push(player);
+            }
+        }
+
+        return Offense.sortGroup(player_group);
+    }
+
+    get eligible_right() {
+        //this is all non-QB eligible players right of the tackle box
+
+        var RT = this.o_line[4];
+
+        //go through each player and see if they are left of the tackle box (1 foot left is okay)
+        var player_group = [];
+        for (var pos in this.players) {
+            var player = this.players[pos];
+
+            //make sure player isn't the LT
+            if (player === RT) {
+                continue;
+            }
+
+            //check that player is left of the tackle box
+            if (player.right_edge > RT.right_edge) {
+                player_group.push(player);
+            }
+        }
+
+        return Offense.sortGroup(player_group);
+    }
+
+    static sortGroup(group){
+        //sort player group left-right and forward-back
+        group.sort(function (a, b) {
+            if (a.x < b.x) {
+                return -1;
+            } else if (a.x > b.x) {
+                return 1;
+            } else if (a.y > b.y) {
+                //a.x == b.x
+                return -1;
+            } else if (a.y < b.y) {
+                //a.x == b.x
+                return 1;
+            } else {
+                //a.x == b.x && a.y == b.y
+                return 0; //TODO this should throw some kind of error, we have players on top of one another
+            }
+        });
+
+        return group;
     }
 }
