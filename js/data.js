@@ -97,6 +97,13 @@ var d_formation = {
             },
             {
                 "criteria": [
+                    "FB_strong >= 0.5"
+                ],
+                "horizontal": ["outside", "OT-strong", 3.5],
+                "vertical": ["behind", "ball", 0]
+            },
+            {
+                "criteria": [
                     "WR_strong == 2",
                     "TE_strong == 0",
                     "RB_all <= 1"
@@ -117,13 +124,6 @@ var d_formation = {
                 ],
                 "horizontal": ["align", "TE1-strong", 0],
                 "vertical": ["behind", "ball",  0]
-            },
-            {
-                "criteria": [
-                    "FB_strong >= 0.5"
-                ],
-                "horizontal": ["outside", "OT-strong", 3.5],
-                "vertical": ["behind", "ball", 0]
             },
             {
                 "criteria": [
