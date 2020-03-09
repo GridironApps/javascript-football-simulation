@@ -1,0 +1,22 @@
+{
+    "name": "Doubles",
+    "unit": "feet",
+    "positions": {
+        "H": {
+            "horizontal": ["apex", "X", "LT"],
+            "vertical": ["behind", "C", 0]
+        },
+        "X": {
+            "horizontal": ["left-of", "numbers-left", 0],
+            "vertical": ["behind", "spot", 0]
+        },
+        "Y": {
+            "horizontal": ["apex", "Z", "RT"],
+            "vertical": ["behind", "C", 0]
+        },
+        "Z": {
+            "horizontal": ["right-of", "numbers-right", 0],
+            "vertical": ["behind", "spot", 0]
+        }
+    }
+}
