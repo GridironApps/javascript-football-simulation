@@ -54,21 +54,25 @@ sample syntax and options
 ```
 {
   "name" : "go"
-  "target" : ...follow target syntax
+  "target" : ...this is a location or a player, follow target syntax
   "wait" : boolean
     if true, the script will wait for the action to finish before moving on to the next action
     if false, the script will perform the next action in parallel with this one during each tick (e.g. action 1 + action 2 in order)
+  //might add a final or target speed field, defaults to full speed
 }
 ```
 
+#### cut
+This is an automated action that will be activated when a players intended velocity isn't close to the same direction as their current velocity. *should not be included in a script*
+
 #### step
-This is a velocity limited version of "go" that will cause players to move slowly in a desired direction.
+This is a velocity limited version of "go" that will cause players to move slowly in a desired direction. 
 
 sample syntax and options
 ```
 {
   "name" : "step"
-  "target" : ...follow target syntax
+  "target" : ...this is a location or a player, follow target syntax
   "wait" : boolean
     if true, the script will wait for the action to finish before moving on to the next action
     if false, the script will perform the next action in parallel with this one during each tick (e.g. action 1 + action 2 in order)
@@ -114,20 +118,80 @@ sample syntax and options
 #### disengage
 This action will cause the player to attempt to disengage any players that are currently engaged with them.
 
+sample syntax and options
+```
+{
+  "name" : "disengage"
+  "wait" : boolean
+    if true, the script will wait for the action to finish before moving on to the next action
+    if false, the script will perform the next action in parallel with this one during each tick (e.g. action 1 + action 2 in order)
+}
+```
+
 #### tackle
 This action will cause the player to attempt to tackle (or takedown) a target player.
+
+sample syntax and options
+```
+{
+  "name" : tackle"
+  "wait" : boolean
+    if true, the script will wait for the action to finish before moving on to the next action
+    if false, the script will perform the next action in parallel with this one during each tick (e.g. action 1 + action 2 in order)
+}
+```
 
 #### block
 This action will cause the player to attempt to block (e.g. engage and guide) a target player.
 
+sample syntax and options
+```
+{
+  "name" : "block"
+  "wait" : boolean
+    if true, the script will wait for the action to finish before moving on to the next action
+    if false, the script will perform the next action in parallel with this one during each tick (e.g. action 1 + action 2 in order)
+}
+```
+
 #### throw
 This action will cause the player to throw the ball to a target location or player.
+
+sample syntax and options
+```
+{
+  "name" : "throw"
+  "wait" : boolean
+    if true, the script will wait for the action to finish before moving on to the next action
+    if false, the script will perform the next action in parallel with this one during each tick (e.g. action 1 + action 2 in order)
+}
+```
 
 #### handoff
 This action will cause the player to hand the ball to another target player.
 
+sample syntax and options
+```
+{
+  "name" : "handoff"
+  "wait" : boolean
+    if true, the script will wait for the action to finish before moving on to the next action
+    if false, the script will perform the next action in parallel with this one during each tick (e.g. action 1 + action 2 in order)
+}
+```
+
 #### pitch 
 This action will cause the player to pitch the ball to another target player.
+
+sample syntax and options
+```
+{
+  "name" : "pitch"
+  "wait" : boolean
+    if true, the script will wait for the action to finish before moving on to the next action
+    if false, the script will perform the next action in parallel with this one during each tick (e.g. action 1 + action 2 in order)
+}
+```
 
 #### snap
 This is an automated action to snap the football and start the play. *should not be included in a script*
