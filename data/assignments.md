@@ -30,31 +30,112 @@ Key and non-key target players use the same format
 The script is what the player follows during simulation of a play.
 - A script contains a series of actions in an array []. 
 - Actions are performed in the order they appear in the array.
-- An action is can be a simple action or a complex action created by combining simple and/or other complex actions.
+- An action can be a built-in action or a composite action created by combining built-in and/or other composite actions.
 - Actions are objects {};
 
 ```
 "script" : [
   {"name" : "action 1"},
   {"name" : "action 2"},
-  {"name" : "complex action 1"}
+  {"name" : "composite action 1"}
 ]
 ```
 
 ### Actions
-Actions can have multiple options/inputs, but all actions must have a name. This name is unique and maps back to either a simple action or a complex action.
+Actions can have multiple options/inputs, but all actions must have an action name. This name is unique and maps back to either a built-in action or a composite action.
 
-### Simple Actions
-The following are names of simple (i.e built-in) actions
-- go : This is a full speed "run" to a target location or player. // may be able to use smart pathing
-- step : This is a velocity limited version of "go" that will cause players to move slowly in a desired direction.
-- read : This is used to branch the script in different directions based on some condition that the player attempts to "read".
-- engage : This action will cause the player to attempt to engage a target player. When players are "engaged" their motion is no longer independent.
-- disengage : This action will cause the player to attempt to disengage any players that are currently engaged with them.
-- tackle : This action will cause the player to attempt to tackle (or takedown) a target player.
-- block : This action will cause the player to attempt to block (e.g. engage and guide) a target player.
-- throw : This action will cause the player to throw the ball to a target location or player.
-- handoff : This action will cause the player to hand the ball to another target player.
-- pitch : This action will cause the player to pitch the ball to another target player.
-- snap //might not need this one
+### Built-in Actions
+The following are names of built-in actions
+
+#### go
+This is a full speed "run" to a target location or player. // may be able to use smart pathing
+
+sample syntax and options
+```
+{
+  "name" : "go"
+  "target" : ...follow target syntax
+  "wait" : boolean
+    if true, the script will wait for the action to finish before moving on to the next action
+    if false, the script will perform the next action in parallel with this one during each tick (e.g. action 1 + action 2 in order)
+}
+```
+
+#### step
+This is a velocity limited version of "go" that will cause players to move slowly in a desired direction.
+
+sample syntax and options
+```
+{
+  "name" : "step"
+  "target" : ...follow target syntax
+  "wait" : boolean
+    if true, the script will wait for the action to finish before moving on to the next action
+    if false, the script will perform the next action in parallel with this one during each tick (e.g. action 1 + action 2 in order)
+}
+```
+
+#### read
+This is used to branch the script in different directions based on some condition that the player attempts to "read".
+
+sample syntax and options
+```
+{
+  "name" : "read"
+  "criteria" : ...what the player is reading (*should be able to return true/false*)
+  "duration" : ...the player will read once during each "tick" this is how long should the player be allowed to keep trying to make a successful read.
+  "default" : ...a script the player will perform if they fail to read during the duration given
+  "true" : ...a script the player will perform if the read returns "true"
+  "false" : ...a script the player will perform if the read returns "false"
+  "wait" : boolean
+    if true, the script will wait for the action to finish before moving on to the next action
+    if false, the script will perform the next action in parallel with this one during each tick (e.g. action 1 + action 2 in order)
+}
+```
+
+#### engage
+This action will cause the player to attempt to engage a target player. When players are "engaged" their motion is no longer independent.
+
+sample syntax and options
+```
+{
+  "name" : "engage"
+  "criteria" : ...what the player is reading (*should be able to return true/false*)
+  "duration" : ...the player will perform the "engage" action once each "tick". this is how long should the player be allowed to keep trying to make a successful engage.
+  "target" : ...must be a player 
+    if player is within range then an engage attempt will be tried
+    if the player is out of range, then the player will first try to "go" to the target player
+  "wait" : boolean
+    if true, the script will wait for the action to finish before moving on to the next action
+    if false, the script will perform the next action in parallel with this one during each tick (e.g. action 1 + action 2 in order)
+}
+```
+
+#### disengage
+This action will cause the player to attempt to disengage any players that are currently engaged with them.
+
+#### tackle
+This action will cause the player to attempt to tackle (or takedown) a target player.
+
+#### block
+This action will cause the player to attempt to block (e.g. engage and guide) a target player.
+
+#### throw
+This action will cause the player to throw the ball to a target location or player.
+
+#### handoff
+This action will cause the player to hand the ball to another target player.
+
+#### pitch 
+This action will cause the player to pitch the ball to another target player.
+
+#### snap
+This is an automated action to snap the football and start the play. *should not be included in a script*
+
+#### catch
+This is an automated action to try and catch a football that is within range. *should not be included in a script*
+
+
+
+
   
