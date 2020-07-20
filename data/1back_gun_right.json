@@ -1,0 +1,14 @@
+{
+    "name": "Gun Right",
+    "unit": "feet",
+    "positions": {
+        "QB": {
+            "horizontal" : ["align","ball", 0],
+            "vertical" : ["behind", "ball", 15]
+        },
+        "T": {
+            "horizontal": ["align", "RG", 0],
+            "vertical": ["behind", "ball", 16.5]
+        }
+    }
+}
