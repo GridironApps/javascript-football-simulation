@@ -170,7 +170,8 @@ for (pos in offense){
     offense[pos].distance_to_hole = dist(offense[pos].location, gap_location);
 }
 //figure out blockers ... this would likely be pre-snap and therefore based on distance (not time)
-//using a gap > over > backer blocking scheme
+//using a "block the guy assigned to this gap scheme, Big on Big"
+
 
 //get array of defenders that could get to the hole before the runner
 var defenders = [];
@@ -180,11 +181,7 @@ for(pos in defense){
     }
 }
 
-
-
-
-
-//each offenseive player has alignment and task
+//each offensive player has alignment and task
 
 //(defense) personnel -> formation + play
 
