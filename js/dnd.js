@@ -1,158 +1,138 @@
-/*
-    Very crude simulation that is basically DnD style dice rolling
-*/
-var gap = {
-    'A-strong': [1,0],
-    'B-strong': [3,0],
-    'C-strong': [5,0],
-    'D-strong': [7,0],
-    'contain-strong': [9,0],
-    'A-weak': [-1,0],
-    'B-weak': [-3,0],
-    'C-weak': [-5,0],
-    'D-weak': [-7,0],
-    'contain-weak': [-9,0]
-}
-
-var d_formation = [
-    ['__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__'],
-    ['__', '__', '__', '__', '__', '__', '__', '__', '__', 'FS', '__', '__', '__', '__', '__', '__', '__', 'SS', '__', '__', '__', '__', '__', '__', '__', '__', '__'],
-    ['__', '__', '__', '__', '__', '__', '__', '__', '__', '__', 'WB', '__', '__', '__', 'MB', '__', '__', '__', 'SB', '__', '__', '__', '__', '__', '__', '__', '__'],
-    ['__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__'],
-    ['__', 'C1', '__', '__', '__', '__', '__', '__', 'RE', '__', '__', '__', 'NT', '__', '__', '__', 'DT', '__', '__', '__', 'LE', '__', '__', '__', '__', 'C2', '__']
-];
-
-var o_formation = [
-    ['__', 'W1', '__', '__', '__', '__', '__', '__', '__', 'LT', '__', 'LG', '__', 'OC', '__', 'RG', '__', 'RT', '__', 'TE', '__', '__', '__', '__', '__', '__', '__'],
-    ['__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', 'QB', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', 'W2', '__'],
-    ['__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', 'FB', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__'],
-    ['__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', 'RB', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__'],
-    ['__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__']
-];
-
-var o_play = {
-    'type': 'handoff', //handoff, pitch, draw, pass, play_action, screen?
-    'ball_carrier': 'RB', //RB, FB, QB
-    'gap': ['A-right'] //first one listed is the default adjacent are options based on the RBs read
-};
-
-//make an array of defensive players
-defense = {
-    'RE': {
-        'gap': 'C-weak',
-        'read': 50,
-        'speed': 4.6
-    },
-    'NT': {
-        'gap': 'A-weak',
-        'read': 50,
-        'speed': 5.2
-    },
-    'DT': {
-        'gap': 'B-strong',
-        'read': 50,
-        'speed': 5.0
-    },
-    'LE': {
-        'gap': 'D-strong',
-        'read': 50,
-        'speed': 4.8
-    },
-    'WB': {
-        'gap': 'B-weak',
-        'read': 50,
-        'speed': 4.5
-    },
-    'MB': {
-        'gap': 'A-strong',
-        'read': 50,
-        'speed': 4.6
-    },
-    'SB': {
-        'gap': 'C-strong',
-        'read': 50,
-        'speed': 4.6
-    },
-    'C1': {
-        'gap': 'man',
-        'read': 50,
-        'speed': 4.3
-    },
-    'FS': {
-        'gap': 'contain-weak',
-        'read': 50,
-        'speed': 4.4
-    },
-    'SS': {
-        'gap': 'contain-strong',
-        'read': 50,
-        'speed': 4.5
-    },
-    'C2': {
-        'gap': 'man',
-        'read': 50,
-        'speed': 4.4
-    }
-}
-
-//calculate approximate defender locations
-var horizontal = [-22, -19, -16, -13, -11, -9, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 9, 11, 13, 16, 19, 22];
-var d_vertical = [12, 8, 4, 1, 0.5];
-var o_vertical = [-0.5, -1, -4, -8, -12];
-
-for (row = 4; row > -1; row--) {
-    for (col = 0; col < 27; col++) {
-        var pos = d_formation[row][col];
-        if (pos !== '__') {
-            var h = horizontal[col];
-            var v = d_vertical[row];
-            defense[pos].location = [h, v];
-        }
-    }
-}
-
-//calculate approximate location of offensive player
-var offense = {};
-for (row = 0; row < 5; row++) {
-    for (col = 0; col < 27; col++) {
-        var pos = o_formation[row][col];
-        if (pos !== '__') {
-            var h = horizontal[col];
-            var v = o_vertical[row];
-            offense[pos] = {};
-            offense[pos].location = [h, v];
-        }
-    }
-}
-
-//replace gap with location for defense
-for(pos in defense){
-    var g = defense[pos].gap;
-    if(typeof(gap[g]) !== 'undefined'){
-        defense[pos].gap = gap[g];
-    }else{
-        defense[pos].gap = defense[pos].location;
-    }
-}
-
 //simulate the current running play
-console.log('The ball is snapped.');
-//tell the viewer what the play might be
-console.log('It looks like a handoff to the right.');
-//do defensive reads
+pbp('The ball is snapped.');
+
+//figure out if the play is a run or a pass
+var run_or_pass = undefined;
+if (offense['QB'].job.hasOwnProperty('handoff')) {
+    pbp('It looks like a handoff to the ' + offense['QB'].job.handoff.direction);
+    run_or_pass = 'run';
+}
+
+//roll for defensive reads //TODO don't read for certain defensive jobs e.g. blitz
 var bad_read = [];
 for (pos in defense) {
-    var delay = (Math.random() * 100) - defense[pos].read;
+    var delay = (Math.random() * 100) - defense[pos].attributes.read;
     if (delay <= 0) {
         defense[pos].delay = 0;
     } else {
-        defense[pos].delay = delay/100;
+        defense[pos].delay = delay / 100;
         bad_read.push(pos);
     }
 }
 if (bad_read.length > 0) {
-    console.log('The following defenders had a hard time reading the play: ' + bad_read.join(', '));
+    pbp('The following defenders had a hard time reading the play: ' + bad_read.join(', '));
 }
+
+//calculate score for each gap //TODO move this to it's own section when we add in passing
+
+//initialize matchup scores
+matchups = {
+    'E-': {
+        'off_players': [],
+        'off_score': 0,
+        'def_player': undefined,
+        'def_score': 0
+    },
+    'D-': {
+        'off_players': [],
+        'off_score': 0,
+        'def_player': undefined,
+        'def_score': 0
+    },
+    'C-': {
+        'off_players': [],
+        'off_score': 0,
+        'def_player': undefined,
+        'def_score': 0
+    },
+    'B-': {
+        'off_players': [],
+        'off_score': 0,
+        'def_player': undefined,
+        'def_score': 0
+    },
+    'A-': {
+        'off_players': [],
+        'off_score': 0,
+        'def_player': undefined,
+        'def_score': 0
+    },
+    'A+': {
+        'off_players': [],
+        'off_score': 0,
+        'def_player': undefined,
+        'def_score': 0
+    },
+    'B+': {
+        'off_players': [],
+        'off_score': 0,
+        'def_player': undefined,
+        'def_score': 0
+    },
+    'C+': {
+        'off_players': [],
+        'off_score': 0,
+        'def_player': undefined,
+        'def_score': 0
+    },
+    'D+': {
+        'off_players': [],
+        'off_score': 0,
+        'def_player': undefined,
+        'def_score': 0
+    },
+    'E+': {
+        'off_players': [],
+        'off_score': 0,
+        'def_player': undefined,
+        'def_score': 0
+    }
+};
+
+//loop through offense and add up run block scores
+for (pos in offense) {
+    if (offense[pos].job.hasOwnProperty('run_block')) {
+        var gaps = offense[pos].job.run_block.gaps;
+        var score = offense[pos].attributes.run_block / gaps.length;
+        for (var i = 0; i < gaps.length; i++) {
+            matchups[gaps[i]].off_players.push(pos);
+            matchups[gaps[i]].off_score += score;
+        }
+    }
+}
+
+//TODO add in distance or something where initial location matters
+
+//loop through defense and add shed rating to gap score
+for (pos in defense) {
+    if (defense[pos].job.gap != 'free') {
+        var gap = defense[pos].job.gap;
+        var score = defense[pos].attributes.shed;
+        matchups[gap].def_player = pos;
+        matchups[gap].def_score += score;
+    }
+}
+
+//calculate a gap score ... roll off_score vs def_score randomly and calculate the difference (off-def)
+for (gap in matchups) {
+    var o_roll = matchups[gap].off_score * Math.random();
+    var d_roll = matchups[gap].def_score * Math.random();
+    matchups[gap].score = o_roll - d_roll;
+}
+
+//printing the variable to the screen
+pbp('The matchups look like this:');
+var gaps = ['E-','D-','C-','B-','A-','A+','B+','C+','D+','E+'];
+for(var i=0;i<gaps.length;i++){
+    var gap = gaps[i];
+    var m = matchups[gap];
+    pbp('Gap ' + gap + ': ' + m.off_players + ' (' + m.off_score + ') versus ' + m.def_player + ' (' + m.def_score + ') resulting in a score of ' + m.score);
+}
+
+//have the rb read some gaps
+
+
+/*
 //get location of default gap
 var gap_location = [1, 0];
 //calculate distance of ball_carrier to gap
@@ -188,6 +168,12 @@ for(pos in defense){
 //get defensive players
 
 //each defensive player has alignment, run-to task, run-away task, pass task
+ */
+
+//write to pbp section function
+function pbp(text) {
+    $('#pbp').append($('<p></p>').text(text));
+}
 
 //distance function
 function dist(a, b) {
