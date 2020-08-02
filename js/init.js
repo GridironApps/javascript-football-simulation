@@ -213,7 +213,7 @@ defense = {
         'attributes' : {
             'read': 50,
             'speed': 4.4,
-            'shed' : 15
+            'shed' : 30
         }
     },
     'SS': {
@@ -223,7 +223,7 @@ defense = {
         'attributes' : {
             'read': 50,
             'speed': 4.5,
-            'shed' : 50
+            'shed' : 40
         }
     },
     'C2': {
@@ -233,7 +233,7 @@ defense = {
         'attributes' : {
             'read': 50,
             'speed': 4.4,
-            'shed' : 50
+            'shed' : 15
         }
     }
 };
