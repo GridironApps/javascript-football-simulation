@@ -91,11 +91,14 @@ for (gap in matchups) {
 
         var y_total = dy_def + dy_off;
         var dist_to_block = (40 / (speed_def + blocker.attributes.speed)) * (time_delay + time_dx_def - time_dx_off + y_total * speed_def / 40);
-        
-        //only choose the best block location
-        m.block_location[1] = Math.max((dist_to_block - dy_off),m.block_location[1]);
+        if (dist_to_block >= 0) {
+            //defender is blocked
+
+            //only choose the best block location
+            m.block_location[1] = Math.max((dist_to_block - dy_off), m.block_location[1]); //FIXME O-line included in block will probably cause block to be further back than FB
+        }
     }
-    //make sure defender isn't starting backwards
+    //cap collision distance, shouldn't be behind defender
     m.block_location[1] = Math.min(m.block_location[1], defender.location[1]);
 }
 
@@ -107,7 +110,7 @@ for (gap in matchups) {
     var shed_block = false;
 
     //see if blocker arrived in time
-    if (matchups[gap].block_location[1] >= -0.5) {
+    if (matchups[gap].block_location[1] != -Infinity) {
 
         //see if the blocker(s) are able to initialize a block
         if (matchups[gap].block_dice < roll(100)) {
@@ -156,7 +159,7 @@ pbp('The matchups look like this:');
 for (var i = 0; i < gaps.length; i++) {
     var gap = gaps[i];
     var m = matchups[gap];
-    pbp('Gap ' + gap + ': ' + m.off_players + ' versus ' + m.def_players + ' met ' + m.block_location[1].toFixed(1) + ' yards downfield and the pile was pushed with a score of ' + m.push_score);
+    pbp('Gap ' + gap + ': ' + m.off_players + ' met ' + m.def_players + ' ' + m.block_location[1].toFixed(1) + ' yards downfield and the pile was pushed with a score of ' + m.push_score);
 }
 
 //have the runner read the gaps
