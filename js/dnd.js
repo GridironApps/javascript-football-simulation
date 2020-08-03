@@ -57,7 +57,7 @@ for (pos in offense) {
     }
 }
 
-//loop through defense and update matchup player(s)
+//loop through defense and update matchup player(s) and dice
 for (pos in defense) {
     if (defense[pos].job.gap != 'free') {
         var gap = defense[pos].job.gap; //assuming each defender get's 1 gap
@@ -76,7 +76,7 @@ for (gap in matchups) {
     //TODO update this to use L2 distance, using L1 for now to simplify (L2 is euclidian, L1 is taxi cab)
     var defender = defense[m.def_players[0]];
     var time_delay = defender.delay;
-    var dx_def = Math.abs(m.gap_location[0] - defender.location[0]);
+    var dx_def = Math.abs(m.gap_location[0] - defender.location[0]) + 0.5; //adding half a body width to help offense initialize block
     var dy_def = Math.abs(m.gap_location[1] - defender.location[1]);
     var speed_def = defender.attributes.speed;
     var time_dx_def = dx_def * speed_def / 40;
@@ -85,7 +85,7 @@ for (gap in matchups) {
     var blockers = m.off_players;
     for (var i = 0; i < blockers.length; i++) {
         var blocker = offense[blockers[i]];
-        var dx_off = Math.abs(m.gap_location[0] - blocker.location[0]);
+        var dx_off = Math.abs(m.gap_location[0] - blocker.location[0]) - 0.5; //removing half a body width to help offense initialize block
         var dy_off = Math.abs(m.gap_location[1] - blocker.location[1]);
         var time_dx_off = dx_off * blocker.attributes.speed / 40;
 
@@ -105,7 +105,7 @@ for (gap in matchups) {
     var shed_block = false;
 
     //see if blocker arrived in time
-    if (matchups[gap].block_location[1] >= -0.5) {
+    if (matchups[gap].block_location[1] >= 0) {
 
         //see if the blocker(s) are able to initialize a block
         if (matchups[gap].block_dice < roll(100)) {
@@ -145,7 +145,7 @@ for (gap in matchups) {
         matchups[gap].push_score = -Infinity;
     }
 
-    
+
 }
 
 //printing the matchups to the screen
@@ -154,7 +154,7 @@ pbp('The matchups look like this:');
 for (var i = 0; i < gaps.length; i++) {
     var gap = gaps[i];
     var m = matchups[gap];
-    pbp('Gap ' + gap + ': ' + m.off_players + ' versus ' + m.def_players + ' met ' + Math.round(m.block_location[1]) + ' yards downfield and the pile was pushed with a score of ' + m.push_score);
+    pbp('Gap ' + gap + ': ' + m.off_players + ' versus ' + m.def_players + ' met ' + m.block_location[1].toFixed(1) + ' yards downfield and the pile was pushed with a score of ' + m.push_score);
 }
 
 //have the runner read the gaps
