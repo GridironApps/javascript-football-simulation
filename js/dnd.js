@@ -95,6 +95,8 @@ for (gap in matchups) {
         //only choose the best block location
         m.block_location[1] = Math.max((dist_to_block - dy_off),m.block_location[1]);
     }
+    //make sure defender isn't starting backwards
+    m.block_location[1] = Math.min(m.block_location[1], defender.location[1]);
 }
 
 //simulate matchups
