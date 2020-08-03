@@ -23,9 +23,11 @@ if (bad_read.length > 0) {
     pbp('The following defenders had a hard time reading the play: ' + bad_read.join(', '));
 }
 
-//calculate score for each gap //TODO move this to it's own section when we add in passing
+//===
+//RUN PLAY: calculate score for each gap //TODO move this to it's own section when we add in passing
+//===
 
-//initialize matchup scores
+//initialize matchup list
 var gaps = ['E-', 'D-', 'C-', 'B-', 'A-', 'A+', 'B+', 'C+', 'D+', 'E+'];
 var matchups = {};
 for (var i = 0; i < gaps.length; i++) {
@@ -53,7 +55,8 @@ for (pos in offense) {
     }
 }
 
-//TODO add in distance or something where initial location matters
+//calculate location of each gaps collision
+
 
 //loop through defense and add shed rating to gap score
 for (pos in defense) {
@@ -67,20 +70,45 @@ for (pos in defense) {
 
 //simulate matchups
 for (gap in matchups) {
-    var block_score = matchups[gap].block_dice * Math.random();
-    var shed_score = matchups[gap].shed_dice * Math.random();
-    if (block_score >= shed_score) {
-        //defender is blocked, assuming 1 defender per gap
-        matchups[gap].blocked = true;
+    
+    var blocked = false;
+    var disadvantage = false;
+    var shed_block = false;
 
+    //see if the blocker(s) are able to initialize a block
+    if(matchups[gap].block_dice < 99 * Math.random()){
+        disadvantage = true;
+
+        //roll again, they are basically just in the way at this point
+        if(matchups[gap].block_dice >= 99 * Math.random()){
+            blocked = true;
+        }
+    }else{
+        blocked = true;
+    }
+
+    if(blocked){
+        //check to see if the defender is able to shed the block
+        var hold_block_score = matchups[gap].block_dice * Math.random();
+        if(disadvantage){
+            hold_block_score = Math.min(matchups[gap].block_dice * Math.random(), hold_block_score);
+        }
+        var shed_score = matchups[gap].shed_dice * Math.random();
+
+        if(hold_block_score < shed_score){
+            shed_block = true;
+        }
+    }
+
+    if(shed_block){
+        //defender has been delayed
+        matchups[gap].push_score = 0; //TODO figure out a better representation
+    }else if(blocked){
         //figure out how far gap is pushed, can be negative if defender overpowers blocker(s)
         var o_push_score = matchups[gap].o_push_dice * Math.random();
         var d_push_score = matchups[gap].d_push_dice * Math.random();
         matchups[gap].push_score = o_push_score - d_push_score;
-
-    } else {
-        //defender is unblocked
-        matchups[gap].blocked = false;
+    }else{
         matchups[gap].push_score = -Infinity;
     }
 }
