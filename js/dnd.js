@@ -105,7 +105,11 @@ for (gap in matchups) {
         matchups[gap].push_score = 0; //TODO figure out a better representation
     }else if(blocked){
         //figure out how far gap is pushed, can be negative if defender overpowers blocker(s)
-        var o_push_score = matchups[gap].o_push_dice * Math.random();
+        var drive_block_score = matchups[gap].block_dice * Math.random();
+        if(disadvantage){
+            drive_block_score = Math.min(matchups[gap].block_dice * Math.random(), drive_block_score);
+        }
+        var o_push_score = matchups[gap].o_push_dice * Math.random() + drive_block_score;
         var d_push_score = matchups[gap].d_push_dice * Math.random();
         matchups[gap].push_score = o_push_score - d_push_score;
     }else{
