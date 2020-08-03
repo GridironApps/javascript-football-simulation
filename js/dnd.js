@@ -26,77 +26,29 @@ if (bad_read.length > 0) {
 //calculate score for each gap //TODO move this to it's own section when we add in passing
 
 //initialize matchup scores
-matchups = {
-    'E-': {
+var gaps = ['E-', 'D-', 'C-', 'B-', 'A-', 'A+', 'B+', 'C+', 'D+', 'E+'];
+var matchups = {};
+for (var i = 0; i < gaps.length; i++) {
+    matchups[gaps[i]] = {
         'off_players': [],
-        'off_score': 0,
+        'block_dice': 0,
+        'o_push_dice': 0,
         'def_player': undefined,
-        'def_score': 0
-    },
-    'D-': {
-        'off_players': [],
-        'off_score': 0,
-        'def_player': undefined,
-        'def_score': 0
-    },
-    'C-': {
-        'off_players': [],
-        'off_score': 0,
-        'def_player': undefined,
-        'def_score': 0
-    },
-    'B-': {
-        'off_players': [],
-        'off_score': 0,
-        'def_player': undefined,
-        'def_score': 0
-    },
-    'A-': {
-        'off_players': [],
-        'off_score': 0,
-        'def_player': undefined,
-        'def_score': 0
-    },
-    'A+': {
-        'off_players': [],
-        'off_score': 0,
-        'def_player': undefined,
-        'def_score': 0
-    },
-    'B+': {
-        'off_players': [],
-        'off_score': 0,
-        'def_player': undefined,
-        'def_score': 0
-    },
-    'C+': {
-        'off_players': [],
-        'off_score': 0,
-        'def_player': undefined,
-        'def_score': 0
-    },
-    'D+': {
-        'off_players': [],
-        'off_score': 0,
-        'def_player': undefined,
-        'def_score': 0
-    },
-    'E+': {
-        'off_players': [],
-        'off_score': 0,
-        'def_player': undefined,
-        'def_score': 0
+        'shed_dice': 0,
+        'd_push_dice': 0
     }
 };
 
-//loop through offense and add up run block scores
+//loop through offense and update matchup variables
 for (pos in offense) {
     if (offense[pos].job.hasOwnProperty('run_block')) {
         var gaps = offense[pos].job.run_block.gaps;
-        var score = offense[pos].attributes.run_block / gaps.length;
+        var push = offense[pos].attributes.strength / gaps.length;
+        var block = offense[pos].attributes.run_block / gaps.length;
         for (var i = 0; i < gaps.length; i++) {
             matchups[gaps[i]].off_players.push(pos);
-            matchups[gaps[i]].off_score += score;
+            matchups[gaps[i]].block_dice += block;
+            matchups[gaps[i]].o_push_dice += push;
         }
     }
 }
@@ -107,17 +59,30 @@ for (pos in offense) {
 for (pos in defense) {
     if (defense[pos].job.gap != 'free') {
         var gap = defense[pos].job.gap;
-        var score = defense[pos].attributes.shed;
         matchups[gap].def_player = pos;
-        matchups[gap].def_score += score;
+        matchups[gap].shed_dice += defense[pos].attributes.shed;
+        matchups[gap].d_push_dice += defense[pos].attributes.strength;
     }
 }
 
-//calculate a gap score ... roll off_score vs def_score randomly and calculate the difference (off-def)
+//simulate matchups
 for (gap in matchups) {
-    var o_roll = matchups[gap].off_score * Math.random();
-    var d_roll = matchups[gap].def_score * Math.random();
-    matchups[gap].score = o_roll - d_roll;
+    var block_score = matchups[gap].block_dice * Math.random();
+    var shed_score = matchups[gap].shed_dice * Math.random();
+    if (block_score >= shed_score) {
+        //defender is blocked, assuming 1 defender per gap
+        matchups[gap].blocked = true;
+
+        //figure out how far gap is pushed, can be negative if defender overpowers blocker(s)
+        var o_push_score = matchups[gap].o_push_dice * Math.random();
+        var d_push_score = matchups[gap].d_push_dice * Math.random();
+        matchups[gap].push_score = o_push_score - d_push_score;
+
+    } else {
+        //defender is unblocked
+        matchups[gap].blocked = false;
+        matchups[gap].push_score = -Infinity;
+    }
 }
 
 //printing the matchups to the screen
@@ -126,7 +91,7 @@ var gaps = ['E-', 'D-', 'C-', 'B-', 'A-', 'A+', 'B+', 'C+', 'D+', 'E+'];
 for (var i = 0; i < gaps.length; i++) {
     var gap = gaps[i];
     var m = matchups[gap];
-    pbp('Gap ' + gap + ': ' + m.off_players + ' (' + m.off_score + ') versus ' + m.def_player + ' (' + m.def_score + ') resulting in a score of ' + m.score);
+    pbp('Gap ' + gap + ': ' + m.off_players + ' versus ' + m.def_player + ' resulting in a push of ' + m.push_score);
 }
 
 //have the runner read the gaps
@@ -139,10 +104,10 @@ if (offense[pos].job.hasOwnProperty('run')) {
     var gap = undefined;
     var gap_score = -Infinity;
     for (var i = 0; i < gaps.length; i++) {
-        var score = matchups[gaps[i]].score;
-        if (score > gap_score) {
+        var push_score = matchups[gaps[i]].push_score;
+        if (push_score > gap_score) {
             gap = gaps[i];
-            gap_score = score;
+            gap_score = push_score;
         }
     }
 

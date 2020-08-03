@@ -19,7 +19,8 @@ var offense = {
         },
         'attributes': {
             'speed': 4.6,
-            'run_block': 40
+            'run_block': 40,
+            'strength' : 40
         }
     },
     'RB': {
@@ -41,7 +42,8 @@ var offense = {
         },
         'attributes': {
             'speed': 4.8,
-            'run_block': 70
+            'run_block': 70,
+            'strength' : 70
         }
     },
     'LG': {
@@ -52,7 +54,8 @@ var offense = {
         },
         'attributes': {
             'speed': 5.2,
-            'run_block': 80
+            'run_block': 80,
+            'strength' : 75
         }
     },
     'OC': {
@@ -63,7 +66,8 @@ var offense = {
         },
         'attributes': {
             'speed': 4.9,
-            'run_block': 70
+            'run_block': 75,
+            'strength' : 60
         }
     },
     'RG': {
@@ -74,7 +78,8 @@ var offense = {
         },
         'attributes': {
             'speed': 5.0,
-            'run_block': 75
+            'run_block': 75,
+            'strength' : 80
         }
     },
     'RT': {
@@ -85,7 +90,8 @@ var offense = {
         },
         'attributes': {
             'speed': 5.0,
-            'run_block': 75
+            'run_block': 75,
+            'strength' : 70
         }
     },
     'TE': {
@@ -96,7 +102,8 @@ var offense = {
         },
         'attributes': {
             'speed': 4.6,
-            'run_block': 50
+            'run_block': 50,
+            'strength' : 50
         }
     },
     'W1': {
@@ -107,7 +114,8 @@ var offense = {
         },
         'attributes': {
             'speed': 4.4,
-            'run_block': 20
+            'run_block': 20,
+            'strength' : 30
             
         }
     },
@@ -119,7 +127,8 @@ var offense = {
         },
         'attributes': {
             'speed': 4.3,
-            'run_block' : 10
+            'run_block' : 10,
+            'strength' : 15
         }
     }
 };
@@ -133,7 +142,8 @@ defense = {
         'attributes' : {
             'read': 50,
             'speed': 4.6,
-            'shed' : 70
+            'shed' : 80,
+            'strength' : 60
         }        
     },
     'NT': {
@@ -143,7 +153,8 @@ defense = {
         'attributes' : {
             'read': 50,
             'speed': 5.2,
-            'shed' : 70
+            'shed' : 50,
+            'strength' : 90
         }
     },
     'DT': {
@@ -153,7 +164,8 @@ defense = {
         'attributes' : {
             'read': 50,
             'speed': 5.0,
-            'shed' : 80
+            'shed' : 70,
+            'strength' : 80
         }
     },
     'LE': {
@@ -163,7 +175,8 @@ defense = {
         'attributes' : {
             'read': 50,
             'speed': 4.8,
-            'shed' : 75
+            'shed' : 75,
+            'strength' : 70
         }
     },
     'WB': {
@@ -173,7 +186,8 @@ defense = {
         'attributes' : {
             'read': 50,
             'speed': 4.5,
-            'shed' : 40
+            'shed' : 40,
+            'strength' : 40
         }
     },
     'MB': {
@@ -183,7 +197,8 @@ defense = {
         'attributes' : {
             'read': 50,
             'speed': 4.6,
-            'shed' : 60
+            'shed' : 60,
+            'strength' : 60
         }
     },
     'SB': {
@@ -193,7 +208,8 @@ defense = {
         'attributes' : {
             'read': 50,
             'speed': 4.6,
-            'shed' : 50
+            'shed' : 50,
+            'strength' : 50
         }
     },
     'C1': {
@@ -203,7 +219,8 @@ defense = {
         'attributes' : {
             'read': 50,
             'speed': 4.3,
-            'shed' : 20
+            'shed' : 20,
+            'strength' : 10
         }
     },
     'FS': {
@@ -213,7 +230,8 @@ defense = {
         'attributes' : {
             'read': 50,
             'speed': 4.4,
-            'shed' : 30
+            'shed' : 30,
+            'strength' : 25
         }
     },
     'SS': {
@@ -223,7 +241,8 @@ defense = {
         'attributes' : {
             'read': 50,
             'speed': 4.5,
-            'shed' : 40
+            'shed' : 40,
+            'strength' : 35
         }
     },
     'C2': {
@@ -233,7 +252,8 @@ defense = {
         'attributes' : {
             'read': 50,
             'speed': 4.4,
-            'shed' : 15
+            'shed' : 15,
+            'strength' : 10
         }
     }
 };
