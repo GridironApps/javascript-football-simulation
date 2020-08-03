@@ -225,7 +225,7 @@ defense = {
     },
     'FS': {
         'job' : {
-            'gap' : 'free'
+            'gap' : 'D-'
         },
         'attributes' : {
             'read': 50,
@@ -236,7 +236,7 @@ defense = {
     },
     'SS': {
         'job' : {
-            'gap' : 'D-'
+            'gap' : 'free'
         },
         'attributes' : {
             'read': 50,
