@@ -40,7 +40,7 @@ for (var i = 0; i < gaps.length; i++) {
         'shed_dice': 0,
         'd_push_dice': 0,
         'gap_location': [gap_locations[i], 0],
-        'block_location': [gap_locations[i], 0]
+        'block_location': [gap_locations[i], -Infinity]
     }
 };
 
@@ -91,10 +91,10 @@ for (gap in matchups) {
 
         var y_total = dy_def + dy_off;
         var dist_to_block = (40 / (speed_def + blocker.attributes.speed)) * (time_delay + time_dx_def - time_dx_off + y_total * speed_def / 40);
-        m.block_location[1] += (dist_to_block - dy_off);
+        
+        //only choose the best block location
+        m.block_location[1] = Math.max((dist_to_block - dy_off),m.block_location[1]);
     }
-    //average the block location at the end
-    m.block_location[1] = m.block_location[1] / blockers.length;
 }
 
 //simulate matchups
@@ -105,7 +105,7 @@ for (gap in matchups) {
     var shed_block = false;
 
     //see if blocker arrived in time
-    if (matchups[gap].block_location[1] >= 0) {
+    if (matchups[gap].block_location[1] >= -0.5) {
 
         //see if the blocker(s) are able to initialize a block
         if (matchups[gap].block_dice < roll(100)) {
