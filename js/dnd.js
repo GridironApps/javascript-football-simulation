@@ -120,7 +120,7 @@ for (gap in matchups) {
     matchups[gap].score = o_roll - d_roll;
 }
 
-//printing the variable to the screen
+//printing the matchups to the screen
 pbp('The matchups look like this:');
 var gaps = ['E-','D-','C-','B-','A-','A+','B+','C+','D+','E+'];
 for(var i=0;i<gaps.length;i++){
@@ -129,7 +129,35 @@ for(var i=0;i<gaps.length;i++){
     pbp('Gap ' + gap + ': ' + m.off_players + ' (' + m.off_score + ') versus ' + m.def_player + ' (' + m.def_score + ') resulting in a score of ' + m.score);
 }
 
-//have the rb read some gaps
+//have the runner read the gaps
+var pos = offense['QB'].job.handoff.target;
+if(offense[pos].job.hasOwnProperty('run')){
+    var ball_carrier = offense[pos];
+    var gaps = ball_carrier.job.run.target;
+    
+    pbp('The ' + pos + ' checks the following gaps: ' + gaps);
+    var gap = undefined;
+    var gap_score = -Infinity;
+    for(var i=0;i<gaps.length;i++){
+        var score = matchups[gaps[i]].score;
+        if(score > gap_score){
+            gap = gaps[i];
+        }
+    }
+
+    //check to see if we have a blocked gap
+    if(gap_score >= 0){
+        //we have a gap that is blocked
+        pbp('It looks like the ' + pos + ' is hitting the ' + gap + ' gap.');
+    }else{
+        //none of our target gaps are blocked, try to bounce it outside
+        pbp("It looks like the " + pos + ' didn\'t like what they saw and are trying to bounce it outside.');
+        gap = ball_carrier.job.run.bounce[0];
+    }
+
+}else{
+    pbp('There seems to be a mixup in the backfield.');
+}
 
 
 /*
