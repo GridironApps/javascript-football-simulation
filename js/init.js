@@ -20,7 +20,9 @@ var offense = {
         'attributes': {
             'speed': 4.6,
             'run_block': 40,
-            'strength' : 40
+            'strength' : 40,
+            'squat' : 400,
+            'weight' : 250
         }
     },
     'RB': {
@@ -43,7 +45,9 @@ var offense = {
         'attributes': {
             'speed': 4.8,
             'run_block': 70,
-            'strength' : 70
+            'strength' : 70,
+            'squat' : 550,
+            'weight' : 300
         }
     },
     'LG': {
@@ -55,7 +59,9 @@ var offense = {
         'attributes': {
             'speed': 5.2,
             'run_block': 80,
-            'strength' : 75
+            'strength' : 75,
+            'squat' : 575,
+            'weight' : 300
         }
     },
     'OC': {
@@ -67,7 +73,9 @@ var offense = {
         'attributes': {
             'speed': 4.9,
             'run_block': 75,
-            'strength' : 60
+            'strength' : 60,
+            'squat' : 525,
+            'weight' : 300
         }
     },
     'RG': {
@@ -79,7 +87,9 @@ var offense = {
         'attributes': {
             'speed': 5.0,
             'run_block': 75,
-            'strength' : 80
+            'strength' : 80,
+            'squat' : 600,
+            'weight' : 300
         }
     },
     'RT': {
@@ -91,7 +101,9 @@ var offense = {
         'attributes': {
             'speed': 5.0,
             'run_block': 75,
-            'strength' : 70
+            'strength' : 70,
+            'squat' : 550,
+            'weight' : 300
         }
     },
     'TE': {
@@ -103,7 +115,9 @@ var offense = {
         'attributes': {
             'speed': 4.6,
             'run_block': 50,
-            'strength' : 50
+            'strength' : 50,
+            'squat' : 450,
+            'weight' : 250
         }
     },
     'W1': {
@@ -115,7 +129,9 @@ var offense = {
         'attributes': {
             'speed': 4.4,
             'run_block': 20,
-            'strength' : 30
+            'strength' : 30,
+            'squat' : 350,
+            'weight' : 200
             
         }
     },
@@ -128,7 +144,9 @@ var offense = {
         'attributes': {
             'speed': 4.3,
             'run_block' : 10,
-            'strength' : 15
+            'strength' : 15,
+            'squat' : 250,
+            'weight' : 180
         }
     }
 };
@@ -143,7 +161,9 @@ defense = {
             'read': 50,
             'speed': 4.6,
             'shed' : 80,
-            'strength' : 60
+            'strength' : 60,
+            'squat' : 500,
+            'weight' : 280
         }        
     },
     'NT': {
@@ -154,7 +174,9 @@ defense = {
             'read': 50,
             'speed': 5.2,
             'shed' : 50,
-            'strength' : 90
+            'strength' : 90,
+            'squat' : 700,
+            'weight' : 330
         }
     },
     'DT': {
@@ -165,7 +187,9 @@ defense = {
             'read': 50,
             'speed': 5.0,
             'shed' : 70,
-            'strength' : 80
+            'strength' : 80,
+            'squat' : 600,
+            'weight' : 300
         }
     },
     'LE': {
@@ -176,7 +200,9 @@ defense = {
             'read': 50,
             'speed': 4.8,
             'shed' : 75,
-            'strength' : 70
+            'strength' : 70,
+            'squat' : 550,
+            'weight' : 280
         }
     },
     'WB': {
@@ -187,7 +213,9 @@ defense = {
             'read': 50,
             'speed': 4.5,
             'shed' : 40,
-            'strength' : 40
+            'strength' : 40,
+            'squat' : 400,
+            'weight' : 230
         }
     },
     'MB': {
@@ -198,7 +226,9 @@ defense = {
             'read': 50,
             'speed': 4.6,
             'shed' : 60,
-            'strength' : 60
+            'strength' : 60,
+            'squat' : 500,
+            'weight' : 250
         }
     },
     'SB': {
@@ -209,7 +239,9 @@ defense = {
             'read': 50,
             'speed': 4.6,
             'shed' : 50,
-            'strength' : 50
+            'strength' : 50,
+            'squat' : 450,
+            'weight' : 250
         }
     },
     'C1': {
@@ -220,7 +252,9 @@ defense = {
             'read': 50,
             'speed': 4.3,
             'shed' : 20,
-            'strength' : 10
+            'strength' : 10,
+            'squat' : 200,
+            'weight' : 190
         }
     },
     'FS': {
@@ -231,7 +265,9 @@ defense = {
             'read': 50,
             'speed': 4.4,
             'shed' : 30,
-            'strength' : 25
+            'strength' : 25,
+            'squat' : 250,
+            'weight' : 220
         }
     },
     'SS': {
@@ -242,7 +278,9 @@ defense = {
             'read': 50,
             'speed': 4.5,
             'shed' : 40,
-            'strength' : 35
+            'strength' : 35,
+            'squat' : 350,
+            'weight' : 220
         }
     },
     'C2': {
@@ -253,7 +291,9 @@ defense = {
             'read': 50,
             'speed': 4.4,
             'shed' : 15,
-            'strength' : 10
+            'strength' : 10,
+            'squat' : 200,
+            'weight' : 190
         }
     }
 };

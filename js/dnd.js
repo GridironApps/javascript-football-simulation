@@ -35,10 +35,12 @@ for (var i = 0; i < gaps.length; i++) {
     matchups[gaps[i]] = {
         'off_players': [],
         'block_dice': 0,
-        'o_push_dice': 0,
+        'o_push_force': 0,
+        'o_weight': 0,
         'def_players': [],
         'shed_dice': 0,
-        'd_push_dice': 0,
+        'd_push_force': 0,
+        'd_weight': 0,
         'gap_location': [gap_locations[i], 0],
         'block_location': [gap_locations[i], -Infinity]
     }
@@ -52,7 +54,8 @@ for (pos in offense) {
         for (var i = 0; i < gaps.length; i++) {
             matchups[gaps[i]].off_players.push(pos);
             matchups[gaps[i]].block_dice += atts.run_block / gaps.length;
-            matchups[gaps[i]].o_push_dice += atts.strength / gaps.length;
+            matchups[gaps[i]].o_push_force += atts.squat / gaps.length;
+            matchups[gaps[i]].o_weight += atts.weight / gaps.length;
         }
     }
 }
@@ -64,7 +67,8 @@ for (pos in defense) {
         var atts = defense[pos].attributes;
         matchups[gap].def_players.push(pos);
         matchups[gap].shed_dice += atts.shed;
-        matchups[gap].d_push_dice += atts.strength;
+        matchups[gap].d_push_force += atts.squat;
+        matchups[gap].d_weight += atts.weight;
     }
 }
 
@@ -80,6 +84,7 @@ for (gap in matchups) {
     var dy_def = Math.abs(m.gap_location[1] - defender.location[1]);
     var speed_def = defender.attributes.speed;
     var time_dx_def = dx_def * speed_def / 40;
+    m.time = (dx_def + dy_def) * speed_def / 40;
 
     //loop through potential blockers and figure out where they intersect the defender
     var blockers = m.off_players;
@@ -91,15 +96,39 @@ for (gap in matchups) {
 
         var y_total = dy_def + dy_off;
         var dist_to_block = (40 / (speed_def + blocker.attributes.speed)) * (time_delay + time_dx_def - time_dx_off + y_total * speed_def / 40);
+
         if (dist_to_block >= 0) {
             //defender is blocked
 
             //only choose the best block location
-            m.block_location[1] = Math.max((dist_to_block - dy_off), m.block_location[1]); //FIXME O-line included in block will probably cause block to be further back than FB
+            //FIXME O-line included in block will probably cause block to be further back than FB 
+            var y_block = dist_to_block - dy_off;
+            if (y_block >= m.block_location[1]) {
+                m.block_location[1] = y_block;
+                m.time = (dx_off + dist_to_block) * blocker.attributes.speed / 40; //TODO check if there was a faster time at the same distance
+            }
         }
     }
     //cap collision distance, shouldn't be behind defender
     m.block_location[1] = Math.min(m.block_location[1], defender.location[1]);
+}
+
+//calculate how long the runner takes to hit the target hole so we know how long to simulate the blocking matchups
+var pos = offense['QB'].job.handoff.target;
+var time_to_hole = Infinity;
+if (offense[pos].job.hasOwnProperty('run')) {
+    var ball_carrier = offense[pos];
+    var gaps = ball_carrier.job.run.target;
+    var x = 0;
+    var y = 0;
+    for (var i = 0; i < gaps.length; i++) {
+        x += matchups[gaps[i]].gap_location[0];
+        y += matchups[gaps[i]].gap_location[1];
+    }
+    x = x / gaps.length;
+    y = y / gaps.length;
+    var dist_to_target = dist(ball_carrier.location, [x, y]);
+    time_to_hole = dist_to_target * ball_carrier.attributes.speed / 40
 }
 
 //simulate matchups
@@ -124,7 +153,7 @@ for (gap in matchups) {
             blocked = true;
         }
     } else {
-        //check for a TFL
+        //TODO check for a TFL ... reuse 1D code for collision
     }
 
     if (blocked) {
@@ -139,15 +168,21 @@ for (gap in matchups) {
 
     if (shed_block) {
         //defender has been delayed
-        matchups[gap].push_score = 0; //TODO figure out a better representation
+        matchups[gap].push_yards = 0; //TODO figure out a better representation
     } else if (blocked) {
         //figure out how far gap is pushed, can be negative if defender overpowers blocker(s)
-        var drive_block_score = roll(matchups[gap].block_dice, block_roll_mod);
-        var o_push_score = roll(matchups[gap].o_push_dice) + drive_block_score;
-        var d_push_score = roll(matchups[gap].d_push_dice);
-        matchups[gap].push_score = o_push_score - d_push_score;
+        var drive_block_score = roll(matchups[gap].block_dice, block_roll_mod) / 100;
+        var o_push_force = matchups[gap].o_push_force * (1 + drive_block_score); //offense can win through technique
+
+        var d_push_force = matchups[gap].d_push_force;
+
+        var net_force = o_push_force - d_push_force;
+        var dt = Math.max(time_to_hole - matchups[gap].time, 0);
+        var total_weight = matchups[gap].o_weight + matchups[gap].d_weight;
+
+        matchups[gap].push_yards = 0.5 * net_force * (32.2 / total_weight) * dt * dt;
     } else {
-        matchups[gap].push_score = -Infinity;
+        matchups[gap].push_yards = 0;
     }
 
 
@@ -159,7 +194,7 @@ pbp('The matchups look like this:');
 for (var i = 0; i < gaps.length; i++) {
     var gap = gaps[i];
     var m = matchups[gap];
-    pbp('Gap ' + gap + ': ' + m.off_players + ' met ' + m.def_players + ' ' + m.block_location[1].toFixed(1) + ' yards downfield and the pile was pushed with a score of ' + m.push_score);
+    pbp('Gap ' + gap + ': ' + m.off_players + ' met ' + m.def_players + ' ' + m.block_location[1].toFixed(1) + ' yards downfield and the pile was pushed ' + m.push_yards.toFixed(1) + ' yards');
 }
 
 //have the runner read the gaps
