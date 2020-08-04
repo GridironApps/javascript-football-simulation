@@ -171,7 +171,7 @@ for (gap in matchups) {
         matchups[gap].push_yards = 0; //TODO figure out a better representation
     } else if (blocked) {
         //figure out how far gap is pushed, can be negative if defender overpowers blocker(s)
-        var drive_block_score = roll(matchups[gap].block_dice, block_roll_mod) / 100;
+        var drive_block_score = roll(matchups[gap].block_dice, block_roll_mod) / 100; //FIXME this is always a bonus to the blocker...might set a threshold where it hurts them due to bad blocking technique, say 50
         var o_push_force = matchups[gap].o_push_force * (1 + drive_block_score); //offense can win through technique
 
         var d_push_force = matchups[gap].d_push_force;
@@ -207,10 +207,10 @@ if (offense[pos].job.hasOwnProperty('run')) {
     var gap = undefined;
     var gap_score = -Infinity;
     for (var i = 0; i < gaps.length; i++) {
-        var push_score = matchups[gaps[i]].push_score;
-        if (push_score > gap_score) {
+        var temp_score = matchups[gaps[i]].block_location[1] + matchups[gaps[i]].push_yards;
+        if (temp_score > gap_score) {
             gap = gaps[i];
-            gap_score = push_score;
+            gap_score = temp_score;
         }
     }
 
