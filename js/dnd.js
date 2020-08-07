@@ -180,12 +180,10 @@ for (gap in matchups) {
         var dt = Math.max(time_to_hole - matchups[gap].time, 0);
         var total_weight = matchups[gap].o_weight + matchups[gap].d_weight;
 
-        matchups[gap].push_yards = 0.5 * net_force * (32.2 / total_weight) * dt * dt;
+        matchups[gap].push_yards = 0.5 * net_force * (32.2 / total_weight) * dt * dt / 3;
     } else {
         matchups[gap].push_yards = 0;
     }
-
-
 }
 
 //printing the matchups to the screen
@@ -228,43 +226,8 @@ if (offense[pos].job.hasOwnProperty('run')) {
     pbp('There seems to be a mixup in the backfield.');
 }
 
-/*
-//get location of default gap
-var gap_location = [1, 0];
-//calculate distance of ball_carrier to gap
-var runner_dist = dist(offense[o_play.ball_carrier].location, gap_location);
-//calculate time of ball_carrier to gap
-var runner_time = runner_dist * 4.5 / 40; //4.5 is the 40-yd time of the running back ... FIXME this should be pulled in from somewhere
-//calculate distance and time for each defender to reach target gap
-for (pos in defense) {
-    defense[pos].distance_to_gap = dist(defense[pos].location,defense[pos].gap);
-    defense[pos].distance_to_hole = defense[pos].distance_to_gap + dist(defense[pos].gap, gap_location);
-    defense[pos].time_to_hole = defense[pos].delay + defense[pos].distance_to_hole * defense[pos].speed / 40;
-}
-//get distance to hole for blockers
-for (pos in offense){
-    offense[pos].distance_to_hole = dist(offense[pos].location, gap_location);
-}
-//figure out blockers ... this would likely be pre-snap and therefore based on distance (not time)
-//using a "block the guy assigned to this gap scheme, Big on Big"
+//RB runs straight ahead and we check for tackles along the way
 
-
-//get array of defenders that could get to the hole before the runner
-var defenders = [];
-for(pos in defense){
-    if(defense[pos].time_to_hole < runner_time){
-        defenders.push(pos);
-    }
-}
-
-//each offensive player has alignment and task
-
-//(defense) personnel -> formation + play
-
-//get defensive players
-
-//each defensive player has alignment, run-to task, run-away task, pass task
- */
 
 //write to pbp section function
 function pbp(text) {
@@ -279,16 +242,216 @@ function dist(a, b) {
 }
 
 //roll function
-function roll(dice, modifier) {
-    var r = dice * Math.random();
+function roll(dice_size, modifier) {
 
-    if (modifier == 'advantage') {
-        r = Math.max(r, roll(dice));
+    var r = [Math.random(), Math.random()];
+
+    switch (modifier) {
+        case 'advantage':
+            r = Math.max(r);
+            break;
+        case 'disadvantage':
+            r = Math.min(r);
+            break;
+        default:
+            r = r[0];
     }
 
-    if (modifier == 'disadvantage') {
-        r = Math.min(r, roll(dice));
+    return r * dice_size;
+}
+
+//collision location function
+function locateCollision1D(predator, prey, base_location) {
+    //this is a 1D function (taxi-cab distances) to determine where OR if the predator catches the prey //TODO make this 2D
+    //the prey is trying to make it to the base
+    //the predator is trying to make it to the prey before then
+
+    //save variables locally so we can update them
+    var predator_x = predator.location[0];
+    var predator_y = predator.location[1];
+    var predator_v = 40 / predator.attributes.speed;
+    var predator_t = -0.5 / predator_v + predator.delay; //0.5 correcting for edge to edge contact
+    var prey_x = prey.location[0];
+    var prey_y = prey.location[1];
+    var prey_v = 40 / prey.attributes.speed;
+    var prey_t = 0.5 / prey_v + prey.delay; //0.5 correcting for edge to edge contact
+    var base_x = base_location[0];
+    var base_y = base_location[1];
+
+    //have both players head to the line of impact
+    //predator
+    var predator_dx = base_x - predator_x;
+    predator_x += predator_dx;
+    var predator_dt = Math.abs(predator_dx) / predator_v;
+    predator_t += predator_dt;
+    //prey
+    var prey_dx = base_x - prey_x;
+    prey_x += prey_dx;
+    var prey_dt = Math.abs(prey_dx) / prey_v;
+    prey_t += prey_dt;
+
+    //check to see which player needs to be update based on time
+    if (prey_t < predator_t) {
+        //update prey ... move towards base
+
+        //calculate time difference
+        prey_dt = predator_t - prey_t;
+
+        //calculate key distances
+        var dist_to_base = base_y - prey_y;
+        var dist_moved = prey_v * prey_dt;
+
+        //update prey position
+        if (dist_moved > Math.abs(dist_to_base)) {
+            //prey won't be caught
+
+            //update prey's position and time
+            prey_y = undefined; //could return base location
+            prey_t += Math.abs(dist_to_base) / prey_v;
+
+            return {
+                'x': prey_x,
+                'y': prey_y,
+                't': prey_t
+            };
+        } else {
+            //update prey's position & time
+            prey_y += dist_moved * Math.sign(dist_to_base);
+            prey_t += prey_dt;
+        }
+
+    } else if (predator_t < prey_t) {
+        //update predator ... move towards prey
+
+        //calculate time difference
+        predator_dt = prey_t - predator_t;
+
+        //calculate key distances
+        var dist_to_prey = prey_y - predator_y;
+        var dist_moved = predator_v * predator_dt;
+
+        //update predator position
+        if (dist_moved > Math.abs(dist_to_prey)) {
+            //prey will be caught before they get on vertical path
+
+            //update predator's time
+            predator_t += Math.abs(dist_to_prey) / predator_v;
+
+            return {
+                'x': prey_x,
+                'y': prey_y,
+                't': predator_t //FIXME using predator_t allows the prey to basically teleport since they wouldn't have made it to the current position yet
+            };
+        } else {
+            //update predator's position & time
+            predator_y += dist_moved * Math.sign(dist_to_prey);
+            predator_t += predator_dt;
+        }
     }
 
-    return r;
+    //both players are on the vertical path and their time-scales match, check different scenarios for prey
+
+    //calculate key measures (prey POV)
+    var dist_to_predator = (predator_y - prey_y);
+    var dist_to_base = (base_y - prey_y);
+
+    //check if players share a spot
+    if (dist_to_predator == 0) {
+        //share a spot, already caught
+        return {
+            'x': prey_x,
+            'y': prey_y,
+            't': prey_t
+        };
+    } else {
+        //don't share a spot
+
+        //check which way prey is running
+        if (dist_to_base == 0) {
+            //already free
+            return {
+                'x': prey_x,
+                'y': undefined,
+                't': prey_t
+            };
+        } else if (Math.sign(dist_to_base) == Math.sign(dist_to_predator)) {
+            //running towards predator
+
+            //figure out where collision occurs on line between (or at) predator and prey
+            var speed_ratio = prey_v / predator_v;
+            prey_dy = dist_to_predator * speed_ratio / (1 + speed_ratio);
+
+            if (Math.abs(prey_dy) > Math.abs(dist_to_base)) {
+                //prey makes it to the base before the collision
+
+                //update time
+                prey_t += Math.abs(dist_to_base) / prey_v;
+
+                return {
+                    'x': prey_x,
+                    'y': undefined,
+                    't': prey_t
+                };
+            } else {
+                //prey is caught before it makes it to base
+
+                //update location and time
+                prey_y += prey_dy;
+                prey_t += Math.abs(prey_dy) / prey_v;
+
+                return {
+                    'x': prey_x,
+                    'y': prey_y,
+                    't': prey_t
+                };
+            }
+        } else {
+            //running away from predator
+
+            //check and see if/where prey is caught from behind
+            var speed_ratio = predator_v / prey_v;
+            if (speed_ratio > 1) {
+                //prey might be caught
+                var prey_dy = dist_to_predator / (speed_ratio - 1);
+
+                if (Math.abs(prey_dy) > Math.abs(dist_to_base)) {
+                    //prey is not caught in time
+
+                    //update time
+                    prey_t += Math.abs(dist_to_base) / prey_v;
+
+                    return {
+                        'x': prey_x,
+                        'y': undefined,
+                        't': prey_t
+                    };
+                } else {
+                    //prey is caught in time
+
+                    //update position and time
+                    prey_y += prey_dy;
+                    prey_t += Math.abs(prey_dy) / prey_v;
+
+                    return {
+                        'x': prey_x,
+                        'y': prey_y,
+                        't': prey_t
+                    };
+                }
+
+            } else {
+                //prey is never caught
+
+                //update time
+                prey_t += Math.abs(dist_to_base) / prey_v;
+
+                return {
+                    'x': prey_x,
+                    'y': undefined,
+                    't': prey_t
+                };
+            }
+
+        }
+    }
 }

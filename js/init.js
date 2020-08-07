@@ -319,7 +319,7 @@ var o_formation = [
     ['__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__']
 ];
 
-//calculate approximate defender locations, ball is at 0,0, units are yards
+//calculate approximate starting locations for defender, ball is at 0,0, units are yards
 for (row = 4; row > -1; row--) {
     for (col = 0; col < 27; col++) {
         var pos = d_formation[row][col];
@@ -327,11 +327,12 @@ for (row = 4; row > -1; row--) {
             var h = horizontal[col];
             var v = d_vertical[row];
             defense[pos].location = [h, v];
+            defense[pos].delay = 0;
         }
     }
 }
 
-//calculate approximate location of offensive player
+//calculate approximate starting location of offensive player
 for (row = 0; row < 5; row++) {
     for (col = 0; col < 27; col++) {
         var pos = o_formation[row][col];
@@ -339,6 +340,7 @@ for (row = 0; row < 5; row++) {
             var h = horizontal[col];
             var v = o_vertical[row];
             offense[pos].location = [h, v];
+            offense[pos].delay = 0;
         }
     }
 }
