@@ -1,2 +1,0 @@
--add instructions for creating plays to Github
--add 25, 50, 75, 100 team options
