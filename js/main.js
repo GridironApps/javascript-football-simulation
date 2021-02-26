@@ -15,7 +15,32 @@ function loadData(input, param) {
     reader.readAsText(file);
 
     reader.onload = function () {
-        data[param] = JSON.parse(reader.result);
+        json = JSON.parse(reader.result);
+        data[param] = json;
+
+        if (param === 'd_play') {
+            //load play name
+            $('#defense_play_name').text(json.name);
+            $('#defense_play_diagram').attr('src', json.diagram);
+        }
+
+        if (param === 'o_play') {
+            //load play name
+            $('#offense_play_name').text(json.name);
+            $('#offense_play_diagram').attr('src', json.diagram);
+        }
+
+        //if we have all data, simulate the play
+        if (_.isEmpty(data.o_players) || _.isEmpty(data.o_play) || _.isEmpty(data.d_players) || _.isEmpty(data.d_play)) {
+
+        } else {
+            let result = simulatePlay();
+
+            //write scores to page
+            $('#defense_score').text(result.defense.score.toFixed(1));
+            $('#offense_score').text(result.offense.score.toFixed(1));
+        }
+
     };
 
     reader.onerror = function () {
@@ -49,11 +74,11 @@ function formatDefense(players, play) {
 }
 
 function simulatePlay() {
-    let offense = formatOffense(data.o_players,data.o_play);
-    let defense = formatDefense(data.d_players,data.d_play);
+    let offense = formatOffense(data.o_players, data.o_play);
+    let defense = formatDefense(data.d_players, data.d_play);
 
     let result;
-    switch(data.o_play.type){
+    switch (data.o_play.type) {
         case 'run':
             result = simulateRun(offense, defense);
             break;
@@ -62,6 +87,8 @@ function simulatePlay() {
             break;
         default:
             result = 'Invalid play.type';
-        }       
-        console.log(result);
+    }
+
+    console.log(result);
+    return result;
 }

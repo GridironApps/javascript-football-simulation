@@ -1,7 +1,7 @@
 {
     "name": "I-Form Pro, Inside Zone Right",
     "type": "run",    
-    "diagram": "https: //www.madden-school.com/wp-content/plugins/playbook/playbook_images/27987_inside-zone.png",
+    "diagram": "https://www.madden-school.com/wp-content/plugins/playbook/playbook_images/27987_inside-zone.png",
     "assignments": {
         "QB": {
             "job": "handoff",

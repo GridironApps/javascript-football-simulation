@@ -5,7 +5,7 @@
 <head>
     <meta charset="utf-8">
 
-    <title>Javascript Football Simulation</title>
+    <title>Gridiron Apps Play Tester</title>
     <meta name="description" content="An american football simulation written in javascript">
     <meta name="author" content="GridironApps">
 
@@ -14,24 +14,33 @@
 </head>
 
 <body>
-    <p>
-        <label for="o_players">Offensive Personnel file:</label>
-        <input id="o_players" type="file" onchange="loadData(this,'o_players')">
-        <br />
-        <label for="o_play">Offensive Play file:</label>
-        <input id="o_play" type="file" onchange="loadData(this,'o_play')">
-        <br />
-        <label for="d_players">Defensive Personnel file:</label>
-        <input id="d_players" type="file" onchange="loadData(this,'d_players')">
-        <br />
-        <label for="o_play">Defensive Play file:</label>
-        <input id="o_play" type="file" onchange="loadData(this,'d_play')">
-    </p>
-    <p>
-        <button type="button" onclick="simulatePlay()">Simulate Play</button>
-    </p>
-    <p>Output will be in the console.</p>
+    <h1>Gridiron Apps Play Tester</h1>
+    <p id="defense_play_name">DEFENSE</p>
+    <img id="defense_play_diagram" src="" width="400">
+    <p>Score: <span id="defense_score">TBD</span></p>
+    <label for="o_play">Defensive Play file:</label>
+    <input id="o_play" type="file" onchange="loadData(this,'d_play')">
+    <br />
+    <label for="d_players">Defensive Personnel file:</label>
+    <input id="d_players" type="file" onchange="loadData(this,'d_players')">
+    <br />
+
+    <hr>
+
+    <p id="offense_play_name">OFFENSE</p>
+    <img id="offense_play_diagram" src="" width="400">
+    <p>Score: <span id="offense_score">TBD</span></p>
+    <label for="o_play">Offensive Play file:</label>
+    <input id="o_play" type="file" onchange="loadData(this,'o_play')">
+    <br />
+    <label for="o_players">Offensive Personnel file:</label>
+    <input id="o_players" type="file" onchange="loadData(this,'o_players')">
+    <br />
+ 
+    <p>Additional details located in the console.</p>
+
     <script src="js/lodash.min.js"></script>
+    <script src="js/jquery-3.5.1.slim.min.js"></script>
     <script src="js/simulation.js"></script>
     <script src="js/main.js"></script>
 </body>
