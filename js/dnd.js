@@ -206,7 +206,7 @@ if (offense[pos].job.hasOwnProperty('run')) {
     var gap_score = -Infinity;
     for (var i = 0; i < gaps.length; i++) {
         var temp_score = matchups[gaps[i]].block_location[1] + matchups[gaps[i]].push_yards;
-        if (temp_score > gap_score) {
+        if (temp_score > gap_score) { //FIXME RB shouldn't pick the best gap every time unless they have perfect read
             gap = gaps[i];
             gap_score = temp_score;
         }
