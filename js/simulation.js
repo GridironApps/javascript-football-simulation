@@ -8,78 +8,32 @@
 
 //FIXME need to target recievers in a more general sense
 
-//
-// take input data and do some formatting before passing to the appropriate simulation function ... TODO is a pass play and run play formatted the same(?)
-//
-
-function formatOffense(play, players) {
-    //initialize variable to be returned
-    var offense = play.assignments;
-
-    //assign player attributes to offensive play positions //TODO in the future we could use this to also map play-position to personell-position  
-    for (const pos in offense) {
-        offense[pos].run_dice = players[pos].run_dice;
-        offense[pos].pass_dice = players[pos].pass_dice;
-    }
-
-    //add extra play information
-    offense.play = {};
-    offense.play.type = play.type;
-    if (offense.play.type == 'run') {
-        offense.play.target_zone = play.target_zone;
-        //FIXME try to keep all plays formatted similarly
-    }
-
-    return offense;
-}
-
-function formatDefense(play, players) {
-    //initialize variable that will be returned
-    var defense = play;
-
-    for (const pos in defense) {
-        defense[pos].run_dice = players[pos].run_dice;
-        defense[pos].pass_dice = players[pos].pass_dice;
-    }
-
-    return defense;
-}
-
-//
-// simulation functions
-//
-
 //for the function below just assume the data is already formatted in a json object (above)
 function simulateRun(o, d) {
-    //TODO make this simulateRun (o,d,play) so that offense can avoid the non-player data
-
     //
     // OFFENSE
     //
 
-    //re-scale importance so it adds up to 100%  //TODO should probably chunk these into a blocking, running, handoff groups first
-    let temp_sum = 0;
-    for (const pos in offense) {
-        if (pos == 'play') {
-            //FIXME it seems inefficient to have to constantly do this
-            continue;
+    //get target zone for runner
+    let target_zone;
+    for (const pos in o) {
+        if (o[pos].job === 'run') {
+            target_zone = o[pos].run_zone; //FIXME future things could break if this is an array
         }
-        temp_sum += offense[pos].importance;
     }
 
-    for (const pos in offense) {
-        if (pos == 'play') {
-            continue;
-        }
-        offense[pos].importance = offense[pos].importance / temp_sum;
+    //re-scale importance so it adds up to 100%  //TODO should probably chunk these into a blocking, running, handoff groups first
+    let temp_sum = 0;
+    for (const pos in o) {
+        temp_sum += o[pos].importance;
+    }
+    for (const pos in o) {
+        o[pos].importance = o[pos].importance / temp_sum;
     }
 
     //roll dice for each offensive player and calculate their scores
     let temp_score = 0;
     for (const pos in o) {
-        if (pos == 'play') {
-            continue;
-        }
         o[pos].roll = roll(o[pos].run_dice);
         o[pos].score = o[pos].roll * o[pos].importance;
         temp_score += o[pos].score;
@@ -90,13 +44,11 @@ function simulateRun(o, d) {
     // DEFENSE
     //
 
-    let zone_importance;
-
     //assign importance to each rushing zone based on the targeted zone of the run play
-    switch (o.play.target_zone) {
+    let zone_importance;
+    switch (target_zone) {
         case (1):
-            zone_importance = [8, 4, 4, 2, 1, 1];
-            //no need to scale yet, we will rescale everything at once later
+            zone_importance = [8, 4, 4, 2, 1, 1]; //no need to scale yet, we will rescale everything at once later
             break;
         case (2):
             zone_importance = [2, 8, 4, 2, 1, 1];
@@ -115,28 +67,27 @@ function simulateRun(o, d) {
             break;
         default:
             //we should never make it here
-            Error('Rushing zone is not defined properly.');
+            console.log('run_zone for offense is not defined properly');
     }
 
     //get run direction
     var run_direction;
-    if (o.play.target_zone >= 4 && o.play.target_zone <= 6) {
+    if (target_zone >= 4 && target_zone <= 6) {
         run_direction = 'right';
-    } else if (o.play.target_zone >= 1 && o.play.target_zone <= 3) {
+    } else if (target_zone >= 1 && target_zone <= 3) {
         run_direction = 'left';
     }
 
     //assign zone importance to each defender //TODO eventually it would be a good idea to build the zones up with players so I can check zone by zone instead of an entire group roll
-    temp_sum = 0;
     for (const pos in d) {
         let assignment = d[pos]['run_' + run_direction];
 
         //get defender_zone
         let defender_zones = [];
         if (assignment.job == 'fit-zone') {
-            defender_zones = assignment.zones;
+            defender_zones = assignment.run_zones;
         } else if (assignment.job == 'pursue') {
-            defender_zones = o.play.target_zone;
+            defender_zones = target_zone;
         }
 
         //loop through all zones the defender is in and average the importance
@@ -151,11 +102,14 @@ function simulateRun(o, d) {
             //in this case there is a single value
             temp_importance = zone_importance[defender_zones - 1];
         }
-        d[pos].importance = temp_importance;
-        temp_sum += d[pos].importance;
+        d[pos].importance = temp_importance;        
     }
 
     //re-scale importance so it adds up to 100%
+    temp_sum = 0;
+    for (const pos in d) {
+        temp_sum += d[pos].importance;
+    }
     for (const pos in d) {
         d[pos].importance = d[pos].importance / temp_sum;
     }
@@ -171,13 +125,9 @@ function simulateRun(o, d) {
 
     //TODO concievbly we could have run_dice and pass_dice or multiple run_dices for option type plays, the QB would be responsible for choosing ... this should actually be based on the defense, but passing might look at offensive rolls for reads
 
-    //
-    // RETURN result
-    //
-
     return {
-        o: o,
-        d: d
+        offense: o,
+        defense: d
     }
 
 }
@@ -248,16 +198,16 @@ function simulatePass(o, d) {
     // map man-coverage guys to recievers    
     for (const pos in d) {
         if (d[pos].pass.job == 'cover-man') {
-            if (pass_catchers.includes(d[pos].pass.target)) {
+            if (pass_catchers.includes(d[pos].pass.target_player)) {
                 pass_defenders.push(pos);
 
                 d[pos].covering.push({
-                    player: d[pos].pass.target,
-                    zone: o[d[pos].pass.target].catch_zone,
-                    depth: o[d[pos].pass.target].catch_depth
+                    player: d[pos].pass.target_player,
+                    zone: o[d[pos].pass.target_player].catch_zone,
+                    depth: o[d[pos].pass.target_player].catch_depth
                 });
 
-                o[d[pos].pass.target].covered_by.push({
+                o[d[pos].pass.target_player].covered_by.push({
                     player: pos,
                     type: 'man'
                 });
@@ -434,8 +384,8 @@ function simulatePass(o, d) {
     }
 
     return {
-        o,
-        d
+        offense: o,
+        defense: d
     }
 
 }
@@ -449,9 +399,3 @@ function roll(dice_size) {
     //use this to remove all randomness    
     //return Math.random() * dice_size;
 }
-
-//script to run at the bottom
-var offense = formatOffense(pass_play, o_players);
-var defense = formatDefense(man_d_play, d_players);
-var result = simulatePass(offense, defense);
-[result.o.score, result.d.score]

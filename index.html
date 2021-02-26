@@ -1,0 +1,39 @@
+<!doctype html>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+
+    <title>Javascript Football Simulation</title>
+    <meta name="description" content="An american football simulation written in javascript">
+    <meta name="author" content="GridironApps">
+
+    <link rel="stylesheet" href="css/styles.css">
+
+</head>
+
+<body>
+    <p>
+        <label for="o_players">Offensive Personnel file:</label>
+        <input id="o_players" type="file" onchange="loadData(this,'o_players')">
+        <br />
+        <label for="o_play">Offensive Play file:</label>
+        <input id="o_play" type="file" onchange="loadData(this,'o_play')">
+        <br />
+        <label for="d_players">Defensive Personnel file:</label>
+        <input id="d_players" type="file" onchange="loadData(this,'d_players')">
+        <br />
+        <label for="o_play">Defensive Play file:</label>
+        <input id="o_play" type="file" onchange="loadData(this,'d_play')">
+    </p>
+    <p>
+        <button type="button" onclick="simulatePlay()">Simulate Play</button>
+    </p>
+    <p>Output will be in the console.</p>
+    <script src="js/lodash.min.js"></script>
+    <script src="js/simulation.js"></script>
+    <script src="js/main.js"></script>
+</body>
+
+</html>

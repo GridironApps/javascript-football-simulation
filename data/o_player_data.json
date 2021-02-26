@@ -1,11 +1,11 @@
 {
     "QB": {
         "pass_dice": 90,
-        "run_dice": 10,
+        "run_dice": 10
     },
     "HB": {
         "pass_dice": 50,
-        "run_dice": 90,
+        "run_dice": 90
     },
     "FB": {
         "pass_dice": 25,
