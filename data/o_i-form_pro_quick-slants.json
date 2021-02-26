@@ -1,0 +1,61 @@
+{
+    "name": "I-Form Pro, Quick Slants",
+    "type": "pass",
+    "diagram": "https://www.madden-school.com/wp-content/plugins/playbook/playbook_images/27996_quick-slants.png",
+    "assignments": {
+        "QB": {
+            "job": "throw",
+            "start_position": "center",
+            "drop": "3-step",
+            "importance": 8
+        },
+        "HB": {
+            "job": "run-route",
+            "catch_zone": 1,
+            "catch_depth": 0,
+            "importance": 1
+        },
+        "FB": {
+            "job": "block",
+            "importance": 2
+        },
+        "X": {
+            "job": "run-route",
+            "catch_zone": 2,
+            "catch_depth": 10,
+            "importance": 1
+        },
+        "Y": {
+            "job": "run-route",
+            "catch_zone": 6,
+            "catch_depth": 5,
+            "importance": 2
+        },
+        "Z": {
+            "job": "run-route",
+            "catch_zone": 5,
+            "catch_depth": 10,
+            "importance": 4
+        },
+        "LT": {
+            "job": "block",
+            "importance": 2
+        },
+        "LG": {
+            "job": "block",
+            "importance": 2
+        },
+        "C": {
+            "job": "block",
+            "importance": 2
+        },
+        "RG": {
+            "job": "block",
+            "importance": 2
+        },
+        "RT": {
+            "job": "block",
+            "importance": 2
+        }
+    }
+};

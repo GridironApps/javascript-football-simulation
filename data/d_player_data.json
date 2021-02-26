@@ -1,0 +1,48 @@
+NEEDS UPDATING
+
+var d_players = {
+    LDE: {
+        pass_dice: 75,
+        run_dice: 75
+    },
+    DT: {
+        pass_dice: 90,
+        run_dice: 90
+    },
+    NT: {
+        pass_dice: 50,
+        run_dice: 90
+    },
+    RDE: {
+        pass_dice: 90,
+        run_dice: 50
+    },
+    SLB: {
+        pass_dice: 75,
+        run_dice: 75
+    },
+    MLB: {
+        pass_dice: 50,
+        run_dice: 90
+    },
+    WLB: {
+        pass_dice: 75,
+        run_dice: 50
+    },
+    LCB: {
+        pass_dice: 90,
+        run_dice: 10
+    },
+    SS: {
+        pass_dice: 75,
+        run_dice: 50
+    },
+    FS: {
+        pass_dice: 90,
+        run_dice: 25
+    },
+    RCB: {
+        pass_dice: 90,
+        run_dice: 10
+    }
+};
