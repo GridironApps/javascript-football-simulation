@@ -306,9 +306,12 @@ function simulatePass(o, d) {
         temp_sum += o[pos].importance;
     }
 
+    //get the quarterback based scaling for the pass rush and pass defense groups
+    let def_qb_scalar = 1/(1-o[pass_thrower].importance);
+
     //setup importance for pass rushers, assume all pass rushers are equally important
     for (const pos of pass_rushers) {
-        d[pos].importance = temp_sum / pass_blockers.length; //we use the number of pass_blockers instead of pass_rushers to capture the impact of more or less pass rushers
+        d[pos].importance = def_qb_scalar * temp_sum / pass_blockers.length; //we use the number of pass_blockers instead of pass_rushers to capture the impact of more or less pass rushers
     }
 
     //roll dice for pass rushers and calculate weighted scores
@@ -360,7 +363,7 @@ function simulatePass(o, d) {
             }
 
             //modify the score by the recivers importance
-            cvr.score *= o[pos].importance;
+            cvr.score *= o[pos].importance * def_qb_scalar;
 
             //store the score
             d[cvr.player].score += cvr.score;

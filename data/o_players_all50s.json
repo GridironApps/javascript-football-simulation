@@ -1,0 +1,46 @@
+{
+    "QB": {
+        "pass_dice": 50,
+        "run_dice": 50
+    },
+    "HB": {
+        "pass_dice": 50,
+        "run_dice": 50
+    },
+    "FB": {
+        "pass_dice": 50,
+        "run_dice": 50
+    },
+    "X": {
+        "pass_dice": 50,
+        "run_dice": 50
+    },
+    "Y": {
+        "pass_dice": 50,
+        "run_dice": 50
+    },
+    "Z": {
+        "pass_dice": 90,
+        "run_dice": 50
+    },
+    "LT": {
+        "pass_dice": 50,
+        "run_dice": 50
+    },
+    "LG": {
+        "pass_dice": 50,
+        "run_dice": 50
+    },
+    "C": {
+        "pass_dice": 50,
+        "run_dice": 50
+    },
+    "RG": {
+        "pass_dice": 50,
+        "run_dice": 50
+    },
+    "RT": {
+        "pass_dice": 50,
+        "run_dice": 50
+    }
+}

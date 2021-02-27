@@ -1,0 +1,46 @@
+{
+    "LDE": {
+        "pass_dice": 50,
+        "run_dice": 50
+    },
+    "DT": {
+        "pass_dice": 50,
+        "run_dice": 50
+    },
+    "NT": {
+        "pass_dice": 50,
+        "run_dice": 50
+    },
+    "RDE": {
+        "pass_dice": 50,
+        "run_dice": 50
+    },
+    "SLB": {
+        "pass_dice": 50,
+        "run_dice": 50
+    },
+    "MLB": {
+        "pass_dice": 50,
+        "run_dice": 50
+    },
+    "WLB": {
+        "pass_dice": 50,
+        "run_dice": 50
+    },
+    "LCB": {
+        "pass_dice": 50,
+        "run_dice": 50
+    },
+    "SS": {
+        "pass_dice": 50,
+        "run_dice": 50
+    },
+    "FS": {
+        "pass_dice": 50,
+        "run_dice": 50
+    },
+    "RCB": {
+        "pass_dice": 50,
+        "run_dice": 50
+    }
+}
