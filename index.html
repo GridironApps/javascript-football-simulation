@@ -15,7 +15,8 @@
 
 <body>
     <h1>Gridiron Apps Play Tester</h1>
-    <p id="defense_play_name">DEFENSE</p>
+    <h2>Defense</h2>
+    <p id="defense_play_name">Waiting for play to be loaded...</p>
     <img id="defense_play_diagram" src="" width="400">
     <p>Score: <span id="defense_score">Waiting for all files to be loaded...</span></p>
     <label for="o_play">Defensive Play file:</label>
@@ -23,11 +24,9 @@
     <br />
     <label for="d_players">Defensive Personnel file:</label>
     <input id="d_players" type="file" onchange="loadData(this,'d_players')">
-    <br />
-
     <hr>
-
-    <p id="offense_play_name">OFFENSE</p>
+    <h2>Offense</h2>
+    <p id="offense_play_name">Waiting for play to be loaded...</p>
     <img id="offense_play_diagram" src="" width="400">
     <p>Score: <span id="offense_score">Waiting for all files to be loaded...</span></p>
     <label for="o_play">Offensive Play file:</label>
@@ -35,9 +34,8 @@
     <br />
     <label for="o_players">Offensive Personnel file:</label>
     <input id="o_players" type="file" onchange="loadData(this,'o_players')">
-    <br />
- 
-    <p>Additional details located in the console.</p>
+    <h2>Log</h2>
+    <p id="log">Waiting for all files to be loaded...</p>
 
     <script src="js/lodash.min.js"></script>
     <script src="js/jquery-3.5.1.slim.min.js"></script>

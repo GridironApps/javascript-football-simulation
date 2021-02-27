@@ -39,6 +39,9 @@ function loadData(input, param) {
             //write scores to page
             $('#defense_score').text(result.defense.score.toFixed(1));
             $('#offense_score').text(result.offense.score.toFixed(1));
+
+            //write log data to pbp
+            $('#log').html(result.log.join('<br/>') + '<br/>Additional information available in the console.')
         }
 
     };

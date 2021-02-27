@@ -14,11 +14,16 @@ function simulateRun(o, d) {
     // OFFENSE
     //
 
+    //setup log file to return
+    let log = [];
+
     //get target zone for runner
     let target_zone;
     for (const pos in o) {
         if (o[pos].job === 'run') {
             target_zone = o[pos].run_zone; //FIXME future things could break if this is an array
+            log.push('Runner is ' + pos);
+            log.push('Run is targeting zone ' + target_zone);
         }
     }
 
@@ -127,7 +132,8 @@ function simulateRun(o, d) {
 
     return {
         offense: o,
-        defense: d
+        defense: d,
+        log: log
     }
 
 }
@@ -136,6 +142,9 @@ function simulatePass(o, d) {
     //setup constants
     const SHORT_ZONE_END = 20;
     const DEEP_ZONE_START = 10;
+
+    //setup a log file to display
+    let log = [];
 
     //get pass thrower
     let pass_thrower;
@@ -149,6 +158,7 @@ function simulatePass(o, d) {
             //there can be only one pass_thrower
         }
     }
+    log.push('Pass thrower is ' + pass_thrower);
 
     // get pass blockers
     let pass_blockers = [];
@@ -160,6 +170,7 @@ function simulatePass(o, d) {
             pass_blockers.push(pos);
         }
     }
+    log.push('Pass blockers are ' + pass_blockers);
 
     //get initial pass rushers
     let pass_rushers = [];
@@ -168,6 +179,7 @@ function simulatePass(o, d) {
             pass_rushers.push(pos);
         }
     }
+    log.push('Initial pass rushers are ' + pass_rushers);
 
     //initialize pass coverage mapping arrays
     for (const pos in o) {
@@ -191,6 +203,7 @@ function simulatePass(o, d) {
             pass_catchers.push(pos);
         }
     }
+    log.push('Pass catchers are ' + pass_catchers);
 
     //get pass defenders
     let pass_defenders = [];
@@ -215,6 +228,7 @@ function simulatePass(o, d) {
             } else {
                 //pass rush through assignment since their guy is blocking
                 pass_rushers.push(pos);
+                log.push(pos + ' has no one to cover and is rushing the passer.')
             }
         }
     }
@@ -254,6 +268,7 @@ function simulatePass(o, d) {
             }
         }
     }
+    log.push('Pass defenders are ' + pass_defenders);
 
     //
     // DICE rolling time
@@ -274,6 +289,7 @@ function simulatePass(o, d) {
     //roll dice for pass_thrower and calculate weighted score
     o[pass_thrower].roll = roll(o[pass_thrower].pass_dice);
     o[pass_thrower].score = o[pass_thrower].roll * o[pass_thrower].importance;
+    log.push('The ' + pass_thrower + ' generated a score of ' + o[pass_thrower].score);
 
     //re-scale pass blockers importance to add up to 100%
     temp_sum = 0;
@@ -291,6 +307,7 @@ function simulatePass(o, d) {
         o[pos].score = o[pos].roll * o[pos].importance;
         pass_block_score += o[pos].score;
     }
+    log.push('The pass blockers generated a score of ' + pass_block_score);
 
     //setup importance for pass rushers, assume all pass rushers are equally important
     for (const pos of pass_rushers) {
@@ -305,6 +322,7 @@ function simulatePass(o, d) {
         d[pos].score = d[pos].roll * d[pos].importance;
         pass_rush_score += d[pos].score;
     }
+    log.push('The pass rushers generated a score of ' + pass_rush_score);
 
     //roll dice for pass_defenders and initialize score ... weights and score updated per matchup ... a guy covering no one will have a score of 0
     for (const pos of pass_defenders) {
@@ -362,6 +380,8 @@ function simulatePass(o, d) {
             pass_defense_score += cvr.score;
         }
     }
+    log.push('The pass catchers generated a score of ' + pass_catch_score);
+    log.push('The pass defenders generated a score of ' + pass_defense_score);
 
     //
     // calculate results
@@ -385,7 +405,8 @@ function simulatePass(o, d) {
 
     return {
         offense: o,
-        defense: d
+        defense: d,
+        log: log
     }
 
 }
