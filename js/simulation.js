@@ -143,8 +143,20 @@ function simulatePass(o, d) {
     const SHORT_ZONE_END = 20;
     const DEEP_ZONE_START = 10;
 
-    //setup a log file to display
+    //setup a log file to display later
     let log = [];
+
+    //initialize pass coverage mapping arrays
+    for (const pos in o) {
+        if (pos == 'play') {
+            continue;
+        }
+        o[pos].covered_by = [];
+    }
+
+    for (const pos in d) {
+        d[pos].covering = [];
+    }
 
     //get pass thrower
     let pass_thrower;
@@ -172,27 +184,6 @@ function simulatePass(o, d) {
     }
     log.push('Pass blockers are ' + pass_blockers);
 
-    //get initial pass rushers
-    let pass_rushers = [];
-    for (const pos in d) {
-        if (d[pos].pass.job == 'rush') {
-            pass_rushers.push(pos);
-        }
-    }
-    log.push('Initial pass rushers are ' + pass_rushers);
-
-    //initialize pass coverage mapping arrays
-    for (const pos in o) {
-        if (pos == 'play') {
-            continue;
-        }
-        o[pos].covered_by = [];
-    }
-
-    for (const pos in d) {
-        d[pos].covering = [];
-    }
-
     // get recievers
     let pass_catchers = [];
     for (const pos in o) {
@@ -204,6 +195,15 @@ function simulatePass(o, d) {
         }
     }
     log.push('Pass catchers are ' + pass_catchers);
+
+    //get initial pass rushers
+    let pass_rushers = [];
+    for (const pos in d) {
+        if (d[pos].pass.job == 'rush') {
+            pass_rushers.push(pos);
+        }
+    }
+    log.push('Initial pass rushers are ' + pass_rushers);
 
     //get pass defenders
     let pass_defenders = [];
@@ -274,7 +274,7 @@ function simulatePass(o, d) {
     // DICE rolling time
     //
 
-    //scale all offense initially so we can get overall importance for the pass_thrower
+    //scale offense importance so adds up to 100%
     let temp_sum = 0;
     for (const pos in o) {
         if (pos == 'play') {
@@ -289,16 +289,7 @@ function simulatePass(o, d) {
     //roll dice for pass_thrower and calculate weighted score
     o[pass_thrower].roll = roll(o[pass_thrower].pass_dice);
     o[pass_thrower].score = o[pass_thrower].roll * o[pass_thrower].importance;
-    log.push('The ' + pass_thrower + ' generated a score of ' + o[pass_thrower].score);
-
-    //re-scale pass blockers importance to add up to 100%
-    temp_sum = 0;
-    for (const pos of pass_blockers) {
-        temp_sum += o[pos].importance;
-    }
-    for (const pos of pass_blockers) {
-        o[pos].importance = o[pos].importance / temp_sum;
-    }
+    log.push('The ' + pass_thrower + ' generated a score of ' + o[pass_thrower].score.toFixed(1));
 
     //roll dice for pass blockers and calculate weighted scores
     let pass_block_score = 0;
@@ -307,12 +298,17 @@ function simulatePass(o, d) {
         o[pos].score = o[pos].roll * o[pos].importance;
         pass_block_score += o[pos].score;
     }
-    log.push('The pass blockers generated a score of ' + pass_block_score);
+    log.push('The pass blockers generated a score of ' + pass_block_score.toFixed(1));
+
+    //calculate pass blocker importance so we can use it for pass rushers
+    temp_sum = 0;
+    for (const pos of pass_blockers) {
+        temp_sum += o[pos].importance;
+    }
 
     //setup importance for pass rushers, assume all pass rushers are equally important
     for (const pos of pass_rushers) {
-        d[pos].importance = 1 / pass_blockers.length;
-        //we use the number of pass_blockers instead of pass_rushers to capture the impact of more or less pass rushers
+        d[pos].importance = temp_sum / pass_blockers.length; //we use the number of pass_blockers instead of pass_rushers to capture the impact of more or less pass rushers
     }
 
     //roll dice for pass rushers and calculate weighted scores
@@ -322,21 +318,12 @@ function simulatePass(o, d) {
         d[pos].score = d[pos].roll * d[pos].importance;
         pass_rush_score += d[pos].score;
     }
-    log.push('The pass rushers generated a score of ' + pass_rush_score);
+    log.push('The pass rushers generated a score of ' + pass_rush_score.toFixed(1));
 
     //roll dice for pass_defenders and initialize score ... weights and score updated per matchup ... a guy covering no one will have a score of 0
     for (const pos of pass_defenders) {
         d[pos].roll = roll(d[pos].pass_dice);
         d[pos].score = 0;
-    }
-
-    //re-scale pass_catchers importance to add up to 100%
-    temp_sum = 0;
-    for (const pos of pass_catchers) {
-        temp_sum += o[pos].importance;
-    }
-    for (const pos of pass_catchers) {
-        o[pos].importance = o[pos].importance / temp_sum;
     }
 
     //roll dice for recievers and calculate weighted scores
@@ -380,12 +367,14 @@ function simulatePass(o, d) {
             pass_defense_score += cvr.score;
         }
     }
-    log.push('The pass catchers generated a score of ' + pass_catch_score);
-    log.push('The pass defenders generated a score of ' + pass_defense_score);
+    log.push('The pass catchers generated a score of ' + pass_catch_score.toFixed(1));
+    log.push('The pass defenders generated a score of ' + pass_defense_score.toFixed(1));
 
     //
     // calculate results
     //
+
+    /*
 
     let non_thrower_importance = 1 - o[pass_thrower].importance;
     switch (o[pass_thrower].drop) {
@@ -402,6 +391,9 @@ function simulatePass(o, d) {
             o.score = (0.5 * pass_block_score + 0.5 * pass_catch_score) * non_thrower_importance + o[pass_thrower].score;
             d.score = 0.5 * pass_rush_score + 0.5 * pass_defense_score;
     }
+    */
+    o.score = o[pass_thrower].score + pass_block_score + pass_catch_score;
+    d.score = pass_rush_score + pass_defense_score;
 
     return {
         offense: o,
