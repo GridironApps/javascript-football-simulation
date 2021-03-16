@@ -1,46 +1,90 @@
 {
     "LDE": {
-        "pass_dice": 75,
-        "run_dice": 75
+        "running": 50,
+        "shedding": 50,
+        "man_coverage": 50,
+        "zone_coverage": 50,
+        "tackling": 50,
+        "consistency": 50
     },
     "DT": {
-        "pass_dice": 90,
-        "run_dice": 90
+        "running": 50,
+        "shedding": 50,
+        "man_coverage": 50,
+        "zone_coverage": 50,
+        "tackling": 50,
+        "consistency": 50
     },
     "NT": {
-        "pass_dice": 50,
-        "run_dice": 90
+        "running": 50,
+        "shedding": 50,
+        "man_coverage": 50,
+        "zone_coverage": 50,
+        "tackling": 50,
+        "consistency": 50
     },
     "RDE": {
-        "pass_dice": 90,
-        "run_dice": 50
+        "running": 50,
+        "shedding": 50,
+        "man_coverage": 50,
+        "zone_coverage": 50,
+        "tackling": 50,
+        "consistency": 50
     },
     "SLB": {
-        "pass_dice": 75,
-        "run_dice": 75
+        "running": 50,
+        "shedding": 50,
+        "man_coverage": 50,
+        "zone_coverage": 50,
+        "tackling": 50,
+        "consistency": 50
     },
     "MLB": {
-        "pass_dice": 50,
-        "run_dice": 90
+        "running": 50,
+        "shedding": 50,
+        "man_coverage": 50,
+        "zone_coverage": 50,
+        "tackling": 50,
+        "consistency": 50
     },
     "WLB": {
-        "pass_dice": 75,
-        "run_dice": 50
+        "running": 50,
+        "shedding": 50,
+        "man_coverage": 50,
+        "zone_coverage": 50,
+        "tackling": 50,
+        "consistency": 50
     },
     "LCB": {
-        "pass_dice": 90,
-        "run_dice": 10
+        "running": 50,
+        "shedding": 50,
+        "man_coverage": 50,
+        "zone_coverage": 50,
+        "tackling": 50,
+        "consistency": 50
     },
     "SS": {
-        "pass_dice": 75,
-        "run_dice": 50
+        "running": 50,
+        "shedding": 50,
+        "man_coverage": 50,
+        "zone_coverage": 50,
+        "tackling": 50,
+        "consistency": 50
     },
     "FS": {
-        "pass_dice": 90,
-        "run_dice": 25
+        "running": 50,
+        "shedding": 50,
+        "man_coverage": 50,
+        "zone_coverage": 50,
+        "tackling": 50,
+        "consistency": 50
     },
     "RCB": {
-        "pass_dice": 90,
-        "run_dice": 10
+        "running": 50,
+        "shedding": 50,
+        "man_coverage": 50,
+        "zone_coverage": 50,
+        "tackling": 50,
+        "consistency": 50
     }
 }

@@ -1,46 +1,90 @@
 {
     "QB": {
-        "pass_dice": 90,
-        "run_dice": 10
+        "throwing": 50,
+        "running": 50,
+        "run_blocking": 50,
+        "pass_blocking": 50,
+        "catching": 50,
+        "consistency": 50
     },
     "HB": {
-        "pass_dice": 50,
-        "run_dice": 90
+        "throwing": 50,
+        "running": 90,
+        "run_blocking": 50,
+        "pass_blocking": 50,
+        "catching": 50,
+        "consistency": 90
     },
     "FB": {
-        "pass_dice": 25,
-        "run_dice": 75
+        "throwing": 50,
+        "running": 50,
+        "run_blocking": 50,
+        "pass_blocking": 50,
+        "catching": 50,
+        "consistency": 50
     },
     "X": {
-        "pass_dice": 90,
-        "run_dice": 10
+        "throwing": 50,
+        "running": 50,
+        "run_blocking": 50,
+        "pass_blocking": 50,
+        "catching": 50,
+        "consistency": 50
     },
     "Y": {
-        "pass_dice": 50,
-        "run_dice": 50
+        "throwing": 50,
+        "running": 50,
+        "run_blocking": 50,
+        "pass_blocking": 50,
+        "catching": 50,
+        "consistency": 50
     },
     "Z": {
-        "pass_dice": 90,
-        "run_dice": 10
+        "throwing": 50,
+        "running": 50,
+        "run_blocking": 50,
+        "pass_blocking": 50,
+        "catching": 50,
+        "consistency": 50
     },
     "LT": {
-        "pass_dice": 90,
-        "run_dice": 75
+        "throwing": 50,
+        "running": 50,
+        "run_blocking": 50,
+        "pass_blocking": 50,
+        "catching": 50,
+        "consistency": 50
     },
     "LG": {
-        "pass_dice": 75,
-        "run_dice": 75
+        "throwing": 50,
+        "running": 50,
+        "run_blocking": 50,
+        "pass_blocking": 50,
+        "catching": 50,
+        "consistency": 50
     },
     "C": {
-        "pass_dice": 75,
-        "run_dice": 50
+        "throwing": 50,
+        "running": 50,
+        "run_blocking": 50,
+        "pass_blocking": 50,
+        "catching": 50,
+        "consistency": 50
     },
     "RG": {
-        "pass_dice": 50,
-        "run_dice": 90
+        "throwing": 50,
+        "running": 50,
+        "run_blocking": 50,
+        "pass_blocking": 50,
+        "catching": 50,
+        "consistency": 50
     },
     "RT": {
-        "pass_dice": 75,
-        "run_dice": 90
+        "throwing": 50,
+        "running": 50,
+        "run_blocking": 50,
+        "pass_blocking": 50,
+        "catching": 50,
+        "consistency": 50
     }
 }

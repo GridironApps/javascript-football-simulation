@@ -4,49 +4,47 @@
     "diagram": "https://www.madden-school.com/wp-content/plugins/playbook/playbook_images/27987_inside-zone.png",
     "assignments": {
         "QB": {
-            "job": "handoff",
-            "importance": 0
+            "job": "handoff"
         },
         "HB": {
             "job": "run",
-            "importance": 8,
-            "run_zone": 4
+            "target_zone": "B+"
         },
         "FB": {
-            "job": "block",
-            "importance": 4
+            "job": "run-block",
+            "blocking_zones": ["B+"]
         },
         "X": {
-            "job": "block",
-            "importance": 0
+            "job": "run-block",
+            "blocking_zones": ["E-"]
         },
         "Y": {
-            "job": "block",
-            "importance": 2
+            "job": "run-block",
+            "blocking_zones": ["D+"]
         },
         "Z": {
-            "job": "block",
-            "importance": 1
+            "job": "run-block",            
+            "blocking_zones": ["E+"]
         },
         "LT": {
-            "job": "block",
-            "importance": 1
+            "job": "run-block",            
+            "blocking_zones": ["B-"]
         },
         "LG": {
-            "job": "block",
-            "importance": 2
+            "job": "run-block",            
+            "blocking_zones": ["A-"]
         },
         "C": {
-            "job": "block",
-            "importance": 2
+            "job": "run-block",
+            "blocking_zones": ["A+"]
         },
         "RG": {
-            "job": "block",
-            "importance": 4
+            "job": "run-block",
+            "blocking_zones": ["B+"]
         },
         "RT": {
-            "job": "block",
-            "importance": 4
+            "job": "run-block",            
+            "blocking_zones": ["C+"]
         }
     }
 }

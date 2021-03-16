@@ -4,12 +4,12 @@
     "assignments": {
         "LDE": {
             "run_left": {
-                "job": "fit-zone",
-                "run_zones": [5]
+                "job": "fit-zones",
+                "rush_zones": ["D+"]
             },
             "run_right": {
-                "job": "fit-zone",
-                "run_zones": [5]
+                "job": "fit-zones",
+                "rush_zones": ["D+"]
             },
             "pass": {
                 "job": "rush"
@@ -17,12 +17,12 @@
         },
         "DT": {
             "run_left": {
-                "job": "fit-zone",
-                "run-zones": [4]
+                "job": "fit-zones",
+                "rush_zones": ["B+"]
             },
             "run_right": {
-                "job": "fit-zone",
-                "run_zones": [4]
+                "job": "fit-zones",
+                "rush_zones": ["B+"]
             },
             "pass": {
                 "job": "rush"
@@ -30,12 +30,12 @@
         },
         "NT": {
             "run_left": {
-                "job": "fit-zone",
-                "run_zones": [3]
+                "job": "fit-zones",
+                "rush_zones": ["A-"]
             },
             "run_right": {
-                "job": "fit-zone",
-                "run_zones": [3]
+                "job": "fit-zones",
+                "rush_zones": ["A-"]
             },
             "pass": {
                 "job": "rush"
@@ -43,12 +43,12 @@
         },
         "RDE": {
             "run_left": {
-                "job": "fit-zone",
-                "run_zones": [2]
+                "job": "fit-zones",
+                "rush_zones": ["C-"]
             },
             "run_right": {
-                "job": "fit-zone",
-                "run_zones": [2]
+                "job": "fit-zones",
+                "rush_zones": ["C-"]
             },
             "pass": {
                 "job": "rush"
@@ -56,12 +56,12 @@
         },
         "SLB": {
             "run_left": {
-                "job": "fit-zone",
-                "run_zones": [4]
+                "job": "fit-zones",
+                "rush_zones": ["A+"]
             },
             "run_right": {
-                "job": "fit-zone",
-                "run_zones": [5]
+                "job": "fit-zones",
+                "rush_zones": ["C+"]
             },
             "pass": {
                 "job": "cover-man",
@@ -70,12 +70,12 @@
         },
         "MLB": {
             "run_left": {
-                "job": "fit-zone",
-                "run_zones": [3]
+                "job": "fit-zones",
+                "rush_zones": ["B-"]
             },
             "run_right": {
-                "job": "fit-zone",
-                "run_zones": [4]
+                "job": "fit-zones",
+                "rush_zones": ["A+"]
             },
             "pass": {
                 "job": "cover-man",
@@ -84,12 +84,12 @@
         },
         "WLB": {
             "run_left": {
-                "job": "fit-zone",
-                "run_zones": [2]
+                "job": "fit-zones",
+                "rush_zones": ["D-"]
             },
             "run_right": {
-                "job": "fit-zone",
-                "run_zones": [3]
+                "job": "fit-zones",
+                "rush_zones": ["B-"]
             },
             "pass": {
                 "job": "cover-man",
@@ -98,12 +98,12 @@
         },
         "LCB": {
             "run_left": {
-                "job": "fit-zone",
-                "run_zones": [6]
+                "job": "fit-zones",
+                "rush_zones": ["E+"]
             },
             "run_right": {
-                "job": "fit-zone",
-                "run_zones": [6]
+                "job": "fit-zones",
+                "rush_zones": ["E+"]
             },
             "pass": {
                 "job": "cover-man",
@@ -112,8 +112,8 @@
         },
         "SS": {
             "run_left": {
-                "job": "fit-zone",
-                "run_zones": [5]
+                "job": "fit-zones",
+                "rush_zones": ["C+"]
             },
             "run_right": {
                 "job": "pursue"
@@ -129,8 +129,8 @@
                 "job": "pursue"
             },
             "run_right": {
-                "job": "fit-zone",
-                "run_zones": [2]
+                "job": "fit-zones",
+                "rush_zones": ["D-"]
             },
             "pass": {
                 "job": "cover-zone",
@@ -140,12 +140,12 @@
         },
         "RCB": {
             "run_left": {
-                "job": "fit-zone",
-                "run_zones": [1]
+                "job": "fit-zones",
+                "rush_zones": ["E-"]
             },
             "run_right": {
-                "job": "fit-zone",
-                "run_zones": [1]
+                "job": "fit-zones",
+                "rush_zones": ["E-"]
             },
             "pass": {
                 "job": "cover-man",

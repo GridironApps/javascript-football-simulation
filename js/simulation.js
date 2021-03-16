@@ -4,135 +4,293 @@
 
 //TODO work in style of pass: quick, normal, timing, long, play-action
 
-//TODO update code to accept fit-gap
-
 //FIXME need to target recievers in a more general sense
 
 //for the function below just assume the data is already formatted in a json object (above)
 function simulateRun(o, d) {
-    //
-    // OFFENSE
-    //
 
     //setup log file to return
     let log = [];
 
+    //
+    // OFFENSE
+    //
+
     //get target zone for runner
     let target_zone;
+    let runner;
     for (const pos in o) {
         if (o[pos].job === 'run') {
-            target_zone = o[pos].run_zone; //FIXME future things could break if this is an array
+            runner = pos;
+            target_zone = o[pos].target_zone; //FIXME future things could break if this is an array
             log.push('Runner is ' + pos);
             log.push('Run is targeting zone ' + target_zone);
+            break; //assuming only one player has the job "run"
         }
     }
 
-    //re-scale importance so it adds up to 100%  //TODO should probably chunk these into a blocking, running, handoff groups first
-    let temp_sum = 0;
-    for (const pos in o) {
-        temp_sum += o[pos].importance;
-    }
-    for (const pos in o) {
-        o[pos].importance = o[pos].importance / temp_sum;
+    //ignoring "handoff" job for now, should check that it exists though...could be a pitch
+
+    //initialize blocking matchups for each possible zone ... zones roughly correspond to location of pre-snap gaps
+    const ZONES = ["E-", "D-", "C-", "B-", "A-", "A+", "B+", "C+", "D+", "E+"];
+    let blocking_matchup = {};
+    for (const ZONE of ZONES) {
+        blocking_matchup[ZONE] = {};
+        blocking_matchup[ZONE].score = 0; // + is good for offense, - is good for defense
+        blocking_matchup[ZONE].blockers = [];
+        blocking_matchup[ZONE].defenders = [];
     }
 
-    //roll dice for each offensive player and calculate their scores
-    let temp_score = 0;
-    for (const pos in o) {
-        o[pos].roll = roll(o[pos].run_dice);
-        o[pos].score = o[pos].roll * o[pos].importance;
-        temp_score += o[pos].score;
+    //get run blockers
+    let run_blockers = [];
+    for (const POS in o) {
+        if (o[POS].job === "run-block") {
+            run_blockers.push(POS);
+
+            //write assignment to blocking matchup object
+            for (const ZONE of o[POS].blocking_zones) {
+                blocking_matchup[ZONE].blockers.push(POS);
+            }
+        }
     }
-    o.score = temp_score;
+    log.push('Run blockers are ' + run_blockers);
 
     //
     // DEFENSE
     //
 
-    //assign importance to each rushing zone based on the targeted zone of the run play
-    let zone_importance;
-    switch (target_zone) {
-        case (1):
-            zone_importance = [8, 4, 4, 2, 1, 1]; //no need to scale yet, we will rescale everything at once later
-            break;
-        case (2):
-            zone_importance = [2, 8, 4, 2, 1, 1];
-            break;
-        case (3):
-            zone_importance = [1, 4, 8, 4, 2, 1];
-            break;
-        case (4):
-            zone_importance = [1, 2, 4, 8, 4, 1];
-            break;
-        case (5):
-            zone_importance = [1, 1, 2, 4, 8, 2];
-            break;
-        case (6):
-            zone_importance = [1, 1, 2, 4, 4, 8];
-            break;
-        default:
-            //we should never make it here
-            console.log('run_zone for offense is not defined properly');
-    }
-
     //get run direction
     var run_direction;
-    if (target_zone >= 4 && target_zone <= 6) {
-        run_direction = 'right';
-    } else if (target_zone >= 1 && target_zone <= 3) {
-        run_direction = 'left';
+    switch (target_zone) {
+        case ("E-"):
+            run_direction = 'left';
+            break;
+        case ("D-"):
+            run_direction = 'left';
+            break;
+        case ("C-"):
+            run_direction = 'left';
+            break;
+        case ("B-"):
+            run_direction = 'left';
+            break;
+        case ("A-"):
+            run_direction = 'left';
+            break;
+        case ("A+"):
+            run_direction = 'right';
+            break;
+        case ("B+"):
+            run_direction = 'right';
+            break;
+        case ("C+"):
+            run_direction = 'right';
+            break;
+        case ("D+"):
+            run_direction = 'right';
+            break;
+        case ("E+"):
+            run_direction = 'right';
+            break;
+        default:
+            console.log('Not able to determine run direction.');
     }
 
-    //assign zone importance to each defender //TODO eventually it would be a good idea to build the zones up with players so I can check zone by zone instead of an entire group roll
-    for (const pos in d) {
-        let assignment = d[pos]['run_' + run_direction];
+    //assign defenders to rushing zones
+    for (const POS in d) {
+        //get assignment based on run direction
+        const ASSIGNMENT = d[POS]['run_' + run_direction];
 
-        //get defender_zone
-        let defender_zones = [];
-        if (assignment.job == 'fit-zone') {
-            defender_zones = assignment.run_zones;
-        } else if (assignment.job == 'pursue') {
-            defender_zones = target_zone;
+        //get rush_zone responsibliity
+        let rush_zones;
+        if (ASSIGNMENT.job == 'fit-zones') {
+            rush_zones = ASSIGNMENT.rush_zones;
+        } else if (ASSIGNMENT.job == 'pursue') {
+            rush_zones = [target_zone];
         }
 
-        //loop through all zones the defender is in and average the importance
-        let temp_importance = 0;
-        if (defender_zones.length > 0) {
-            //in this case there is an array
-            for (const z of defender_zones) {
-                temp_importance += zone_importance[z - 1];
+        //store rush_zones in player object
+        d[POS].defending_zones = rush_zones;
+
+        //write assignment to blocking matchup object
+        for (const ZONE of rush_zones) {
+            blocking_matchup[ZONE].defenders.push(POS);
+        }
+    }
+
+    //write matchups to players
+
+    //
+    // Roll Dice
+    //
+
+    //generate rushing_score for runner
+    o[runner].rushing_score = roll(o[runner].running, o[runner].consistency);
+
+    //generate score for each blocker
+    for (const POS of run_blockers) {
+        o[POS].run_blocking_score = roll(o[POS].run_blocking, o[POS].consistency);
+    }
+
+    //generate scores for each defender
+    for (const POS in d) {
+        d[POS].run_defense_score = roll(d[POS].shedding, d[POS].consistency);
+        d[POS].tackling_score = roll(d[POS].tackling, d[POS].consistency);
+    }
+
+    //generate a matchup score for each rushing zone
+    for (const ZONE in blocking_matchup) {
+        const MATCHUP = blocking_matchup[ZONE];
+
+        //blockers
+        for (const BLOCKER of MATCHUP.blockers) {
+            MATCHUP.score += (o[BLOCKER].run_blocking_score / o[BLOCKER].blocking_zones.length);
+        }
+
+        //defenders
+        for (const DEFENDER of MATCHUP.defenders) {
+            MATCHUP.score -= (d[DEFENDER].run_defense_score / d[DEFENDER].defending_zones.length);
+        }
+    }
+
+    //
+    // Simulate Play
+    //
+
+    let tackled = false;
+
+    //FIXME assuming handoff, pitch might get us outside the A-gap zone
+    let tfl_zones;
+    if (run_direction == 'right') {
+        //check these in order for TFL    //TODO add starting depth to help with the matchups ... deeper guys won't make TFLs
+        tfl_zones = ['A+', 'B+', 'C+', 'D+', 'E+'];
+    } else if (run_direction == 'left') {
+        tfl_zones = ['A-', 'B-', 'C-', 'D-', 'E-'];
+    }
+
+    for (const ZONE of tfl_zones) {
+
+        //if the matchup score is negative, the defenders have a chance at a TFL
+        if (blocking_matchup[ZONE].score < 0) {
+            //log the penetration
+            log.push('Good penetration in zone ' + ZONE);
+
+            //calculate a tackle score
+            let tackle_score = 0;
+            for (const DEFENDER of blocking_matchup[ZONE].defenders) {
+                tackle_score += (d[DEFENDER].tackling_score / d[DEFENDER].defending_zones.length);
             }
-            temp_importance = temp_importance / defender_zones.length;
-        } else {
-            //in this case there is a single value
-            temp_importance = zone_importance[defender_zones - 1];
+
+            //check for a tackle //FIXME might check and see if we can run down the runner first
+            if (tackle_score > o[runner].rushing_score) {
+                //figure out who makes the tackle
+                let tackler;
+                let tackler_score = 0;
+                for (const DEFENDER of blocking_matchup[ZONE].defenders) {
+                    let temp_score = (d[DEFENDER].run_defense_score + d[DEFENDER].tackling_score) / d[DEFENDER].defending_zones.length;
+                    if (temp_score > tackler_score) {
+                        tackler = DEFENDER;
+                        tackler_score = temp_score;
+                    }
+                }
+                log.push('The ' + tackler + ' tackles the ' + runner + ' for a loss.');
+                tackled = true;
+                break;
+
+            } else {
+                log.push('The ' + runner + ' was able to avoid it.')
+            }
         }
-        d[pos].importance = temp_importance;        
+
+        //stop checking once we get to the target zone
+        if (ZONE === target_zone) {
+            break;
+        }
     }
 
-    //re-scale importance so it adds up to 100%
-    temp_sum = 0;
-    for (const pos in d) {
-        temp_sum += d[pos].importance;
-    }
-    for (const pos in d) {
-        d[pos].importance = d[pos].importance / temp_sum;
+    if (!tackled) {
+
+        //note that the runner has made it to the LOS
+        log.push('The ' + runner + ' runs through the ' + target_zone + ' zone');
+        //check for minimal gain ... tackle in target gap
+
+        //calculate a tackle score
+        let tackle_score = 0;
+        for (const DEFENDER of blocking_matchup[target_zone].defenders) {
+            tackle_score += (d[DEFENDER].tackling_score / d[DEFENDER].defending_zones.length);
+        }
+
+        //check for a tackle //FIXME might check and see if we can run down the runner first
+        if (tackle_score > o[runner].rushing_score) {
+            //figure out who makes the tackle
+            let tackler;
+            let tackler_score = 0;
+            for (const DEFENDER of blocking_matchup[target_zone].defenders) {
+                let temp_score = d[DEFENDER].tackling_score / d[DEFENDER].defending_zones.length;
+                if (temp_score > tackler_score) {
+                    tackler = DEFENDER;
+                    tackler_score = temp_score;
+                }
+            }
+            log.push('The ' + tackler + ' tackles the ' + runner + ' for a minimal gain.');
+            tackled = true;
+        }
+
     }
 
-    //roll dice for each defensive player and calculate their scores
-    temp_score = 0;
-    for (const pos in d) {
-        d[pos].roll = roll(d[pos].run_dice);
-        d[pos].score = d[pos].roll * d[pos].importance;
-        temp_score += d[pos].score;
-    }
-    d.score = temp_score;
+    if (!tackled) {
+        //check these in order for gain
+        let right_zones = ZONES.slice(ZONES.indexOf(target_zone) + 1, ZONES.length);
+        let left_zones = ZONES.slice(0, ZONES.indexOf(target_zone)).reverse();
 
-    //TODO concievbly we could have run_dice and pass_dice or multiple run_dices for option type plays, the QB would be responsible for choosing ... this should actually be based on the defense, but passing might look at offensive rolls for reads
+        for (let i = 0; i < ZONES.length; i++) {
+            let a = blocking_matchup[right_zones[i]];
+            let b = blocking_matchup[left_zones[i]];
+            let defenders = [];
+            if (a) {
+                defenders.concat(a.defenders);
+            }
+            if (b) {
+                defenders.concat(b.defenders);
+            }
+            //FIXME i could have the same player in both group a and group b
+
+            let tackle_score = 0;
+            for (const DEFENDER of defenders) {
+                tackle_score += (d[DEFENDER].tackling_score / d[DEFENDER].defending_zones.length);
+            }
+
+            //check for a tackle //FIXME might check and see if we can run down the runner first
+            if (tackle_score > o[runner].rushing_score) {
+                //figure out who makes the tackle
+                let tackler;
+                let tackler_score = 0;
+                for (const DEFENDER of defenders) {
+                    let temp_score = d[DEFENDER].tackling_score / d[DEFENDER].defending_zones.length;
+                    if (temp_score > tackler_score) {
+                        tackler = DEFENDER;
+                        tackler_score = temp_score;
+                    }
+                }
+                log.push('The ' + tackler + ' tackles the ' + runner + ' for a ' + (i + 2) + ' yard gain.');
+                tackled = true;
+                //runner is tackled ... stop checking
+                break;
+            }
+        }
+    }
+
+    //TODO check for touchdown
+    if(!tackled){
+        log.push('The ' + runner + ' runs for a TOUCHDOWN!');
+    }
+
+    //TODO conceivibly we could have run_dice and pass_dice or multiple run_dices for option type plays, the QB would be responsible for choosing ... this should actually be based on the defense, but passing might look at offensive rolls for reads
 
     return {
         offense: o,
         defense: d,
+        matchup: blocking_matchup,
         log: log
     }
 
@@ -307,7 +465,7 @@ function simulatePass(o, d) {
     }
 
     //get the quarterback based scaling for the pass rush and pass defense groups
-    let def_qb_scalar = 1/(1-o[pass_thrower].importance);
+    let def_qb_scalar = 1 / (1 - o[pass_thrower].importance);
 
     //setup importance for pass rushers, assume all pass rushers are equally important
     for (const pos of pass_rushers) {
@@ -410,8 +568,11 @@ function simulatePass(o, d) {
 // UTILITY function to roll dice
 //
 
-function roll(dice_size) {
-    return dice_size;
-    //use this to remove all randomness    
-    //return Math.random() * dice_size;
+function roll(dice_size, dice_consistency) {
+    if (Math.random() * 100 < dice_consistency) {
+        return dice_size;
+    } else {
+        //return dice_size;
+        return Math.random() * dice_size;
+    }
 }

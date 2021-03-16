@@ -37,8 +37,8 @@ function loadData(input, param) {
             let result = simulatePlay();
 
             //write scores to page
-            $('#defense_score').text(result.defense.score.toFixed(1));
-            $('#offense_score').text(result.offense.score.toFixed(1));
+            //$('#defense_score').text(result.defense.score.toFixed(1));
+            //$('#offense_score').text(result.offense.score.toFixed(1));
 
             //write log data to pbp
             $('#log').html(result.log.join('<br/>') + '<br/>Additional information available in the console.')
@@ -56,9 +56,10 @@ function formatOffense(players, play) {
     let offense = _.cloneDeep(play.assignments); //using Lodash to clone without reference
 
     //assign player attributes to offensive play positions //TODO in the future we could use this to also map play-position to personell-position  
-    for (const pos in offense) {
-        offense[pos].run_dice = players[pos].run_dice;
-        offense[pos].pass_dice = players[pos].pass_dice;
+    for (const POS in offense) {
+        for(const ATT in players[POS]){
+            offense[POS][ATT] = players[POS][ATT];
+        }
     }
 
     return offense;
@@ -68,9 +69,10 @@ function formatDefense(players, play) {
     //initialize variable that will be returned
     let defense = _.cloneDeep(play.assignments); //using Lodash to clone without reference
 
-    for (const pos in defense) {
-        defense[pos].run_dice = players[pos].run_dice;
-        defense[pos].pass_dice = players[pos].pass_dice;
+    for (const POS in defense) {
+        for(const ATT in players[POS]){
+            defense[POS][ATT] = players[POS][ATT];
+        }
     }
 
     return defense;
