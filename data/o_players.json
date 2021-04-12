@@ -1,90 +1,102 @@
 {
     "QB": {
         "throwing": 50,
-        "running": 50,
+        "speed": 50,
         "run_blocking": 50,
         "pass_blocking": 50,
         "catching": 50,
-        "consistency": 50
+        "consistency": 50,
+        "first_step": 50
     },
     "HB": {
         "throwing": 50,
-        "running": 90,
+        "speed": 90,
         "run_blocking": 50,
         "pass_blocking": 50,
         "catching": 50,
-        "consistency": 90
+        "consistency": 90,
+        "first_step": 50
     },
     "FB": {
         "throwing": 50,
-        "running": 50,
+        "speed": 50,
         "run_blocking": 50,
         "pass_blocking": 50,
         "catching": 50,
-        "consistency": 50
+        "consistency": 50,
+        "first_step": 50
     },
     "X": {
         "throwing": 50,
-        "running": 50,
+        "speed": 50,
         "run_blocking": 50,
         "pass_blocking": 50,
         "catching": 50,
-        "consistency": 50
+        "consistency": 50,
+        "first_step": 50
+        
     },
     "Y": {
         "throwing": 50,
-        "running": 50,
+        "speed": 50,
         "run_blocking": 50,
         "pass_blocking": 50,
         "catching": 50,
-        "consistency": 50
+        "consistency": 50,
+        "first_step": 50
     },
     "Z": {
         "throwing": 50,
-        "running": 50,
+        "speed": 50,
         "run_blocking": 50,
         "pass_blocking": 50,
         "catching": 50,
-        "consistency": 50
+        "consistency": 50,
+        "first_step": 50
     },
     "LT": {
         "throwing": 50,
-        "running": 50,
-        "run_blocking": 50,
+        "speed": 50,
+        "run_blocking": 80,
         "pass_blocking": 50,
         "catching": 50,
-        "consistency": 50
+        "consistency": 80,
+        "first_step": 50
     },
     "LG": {
         "throwing": 50,
-        "running": 50,
-        "run_blocking": 50,
+        "speed": 50,
+        "run_blocking": 80,
         "pass_blocking": 50,
         "catching": 50,
-        "consistency": 50
+        "consistency": 80,
+        "first_step": 50
     },
     "C": {
         "throwing": 50,
-        "running": 50,
-        "run_blocking": 50,
+        "speed": 50,
+        "run_blocking": 80,
         "pass_blocking": 50,
         "catching": 50,
-        "consistency": 50
+        "consistency": 80,
+        "first_step": 50
     },
     "RG": {
         "throwing": 50,
-        "running": 50,
-        "run_blocking": 50,
+        "speed": 50,
+        "run_blocking": 80,
         "pass_blocking": 50,
         "catching": 50,
-        "consistency": 50
+        "consistency": 80,
+        "first_step": 50
     },
     "RT": {
         "throwing": 50,
-        "running": 50,
-        "run_blocking": 50,
+        "speed": 50,
+        "run_blocking": 80,
         "pass_blocking": 50,
         "catching": 50,
-        "consistency": 50
+        "consistency": 80,
+        "first_step": 50
     }
 }

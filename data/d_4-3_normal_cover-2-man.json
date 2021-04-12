@@ -61,7 +61,7 @@
             },
             "run_right": {
                 "job": "fit-zones",
-                "rush_zones": ["C+"]
+                "rush_zones": ["C+","D+"]
             },
             "pass": {
                 "job": "cover-man",
@@ -75,7 +75,7 @@
             },
             "run_right": {
                 "job": "fit-zones",
-                "rush_zones": ["A+"]
+                "rush_zones": ["A+","B+","C+"]
             },
             "pass": {
                 "job": "cover-man",
@@ -89,7 +89,7 @@
             },
             "run_right": {
                 "job": "fit-zones",
-                "rush_zones": ["B-"]
+                "rush_zones": ["B-","A-","A+"]
             },
             "pass": {
                 "job": "cover-man",
@@ -99,11 +99,11 @@
         "LCB": {
             "run_left": {
                 "job": "fit-zones",
-                "rush_zones": ["E+"]
+                "rush_zones": ["E+","D+"]
             },
             "run_right": {
                 "job": "fit-zones",
-                "rush_zones": ["E+"]
+                "rush_zones": ["E+","D+"]
             },
             "pass": {
                 "job": "cover-man",
@@ -130,7 +130,7 @@
             },
             "run_right": {
                 "job": "fit-zones",
-                "rush_zones": ["D-"]
+                "rush_zones": ["D-","B-"]
             },
             "pass": {
                 "job": "cover-zone",
@@ -141,11 +141,11 @@
         "RCB": {
             "run_left": {
                 "job": "fit-zones",
-                "rush_zones": ["E-"]
+                "rush_zones": ["E-","D-"]
             },
             "run_right": {
                 "job": "fit-zones",
-                "rush_zones": ["E-"]
+                "rush_zones": ["E-","D-"]
             },
             "pass": {
                 "job": "cover-man",

@@ -1,90 +1,112 @@
 {
     "LDE": {
-        "running": 50,
-        "shedding": 50,
+        "speed": 50,
+        "shed": 50,
         "man_coverage": 50,
         "zone_coverage": 50,
         "tackling": 50,
-        "consistency": 50
+        "consistency": 50,
+        "first_step": 50,
+        "read": 50
     },
     "DT": {
-        "running": 50,
-        "shedding": 50,
+        "speed": 50,
+        "shed": 50,
         "man_coverage": 50,
         "zone_coverage": 50,
         "tackling": 50,
-        "consistency": 50
+        "consistency": 50,
+        "first_step": 50,
+        "read": 50
     },
     "NT": {
-        "running": 50,
-        "shedding": 50,
+        "speed": 50,
+        "shed": 50,
         "man_coverage": 50,
         "zone_coverage": 50,
         "tackling": 50,
-        "consistency": 50
+        "consistency": 50,
+        "first_step": 50,
+        "read": 50
     },
     "RDE": {
-        "running": 50,
-        "shedding": 50,
+        "speed": 50,
+        "shed": 50,
         "man_coverage": 50,
         "zone_coverage": 50,
         "tackling": 50,
-        "consistency": 50
+        "consistency": 50,
+        "first_step": 50,
+        "read": 50
     },
     "SLB": {
-        "running": 50,
-        "shedding": 50,
+        "speed": 50,
+        "shed": 50,
         "man_coverage": 50,
         "zone_coverage": 50,
         "tackling": 50,
-        "consistency": 50
+        "consistency": 50,
+        "first_step": 50,
+        "read": 50
     },
     "MLB": {
-        "running": 50,
-        "shedding": 50,
+        "speed": 50,
+        "shed": 50,
         "man_coverage": 50,
         "zone_coverage": 50,
         "tackling": 50,
-        "consistency": 50
+        "consistency": 50,
+        "first_step": 50,
+        "read": 50
     },
     "WLB": {
-        "running": 50,
-        "shedding": 50,
+        "speed": 50,
+        "shed": 50,
         "man_coverage": 50,
         "zone_coverage": 50,
         "tackling": 50,
-        "consistency": 50
+        "consistency": 50,
+        "first_step": 50,
+        "read": 50
     },
     "LCB": {
-        "running": 50,
-        "shedding": 50,
+        "speed": 50,
+        "shed": 50,
         "man_coverage": 50,
         "zone_coverage": 50,
         "tackling": 50,
-        "consistency": 50
+        "consistency": 50,
+        "first_step": 50,
+        "read": 50
     },
     "SS": {
-        "running": 50,
-        "shedding": 50,
+        "speed": 50,
+        "shed": 50,
         "man_coverage": 50,
         "zone_coverage": 50,
         "tackling": 50,
-        "consistency": 50
+        "consistency": 50,
+        "first_step": 50,
+        "read": 50
     },
     "FS": {
-        "running": 50,
-        "shedding": 50,
+        "speed": 50,
+        "shed": 50,
         "man_coverage": 50,
         "zone_coverage": 50,
         "tackling": 50,
-        "consistency": 50
+        "consistency": 50,
+        "first_step": 50,
+        "read": 50
     },
     "RCB": {
-        "running": 50,
-        "shedding": 50,
+        "speed": 50,
+        "shed": 50,
         "man_coverage": 50,
         "zone_coverage": 50,
         "tackling": 50,
-        "consistency": 50
+        "consistency": 50,
+        "first_step": 50,
+        "read": 50
     }
 }
