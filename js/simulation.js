@@ -60,101 +60,14 @@ function simulateRun(o, d) {
 
     //
     // DEFENSE
-    //
-
-    //TODO align based on TIME to each responsibility ... can add a run/pass cheat based on time (or distance) ... cheat pass by 0.1 seconds or 1 yd
-
-    //initialize position of each defender based on run and pass jobs //TODO this should exist before we call simRun or simPass
-    for (const POS in d) {
-        //initialize position as [0,0], on the ball, units are yards
-        d[POS].x = 0;
-        d[POS].y = 0;
-
-        //get rushing resposibilities
-        let zones = [];
-        if (d[POS].run_left.job == 'fit-zones') {
-            zones = d[POS].run_left.rush_zones;
-        } else if (d[POS].run_left.job == 'pursue') {
-            zones = ["E-", "D-", "C-", "B-", "A-"];
-        }
-        if (d[POS].run_right.job == 'fit-zones') {
-            zones = zones.concat(d[POS].run_right.rush_zones);
-        } else if (d[POS].run_left.job == 'pursue') {
-            zonse = zones.concat(["A+", "B+", "C+", "D+", "E+"]);
-        }
-
-        //get number of unique zones
-        unique = zones.filter(function(value, index, self) {
-            return self.indexOf(value) === index;
-        });
-
-        //look at number of unique responsibilities to generate initial vertical depth
-        if (unique.length == 1){
-            d[POS].y = 0;
-        }else if (unique.length == 2) {
-            //player is considered on the line IFF those zone are the same or next to one another
-            if (Math.abs(blocking_matchup[unique[0]].x - blocking_matchup[unique[1]].x) <= 2) {
-                //zones match or are adjacent ... except for D/E //FIXME D/E zones won't register here
-                d[POS].y = 0;
-            } else if ((unique[0] == 'E-' && unique[1] == 'D-') || (unique[0] == 'D-' && unique[1] == 'E-')) {
-                d[POS].y = 1;
-            }
-            else if ((unique[0] == 'E+' && unique[1] == 'D+') || (unique[0] == 'D+' && unique[1] == 'E+')) {
-                d[POS].y = 1;
-            } else {
-                d[POS].y = 4;
-            }
-        }else{
-            d[POS].y = 4;
-        }
-        
-        //TODO update y-pos using pass resposibilities
-
-        //averaging all zone locations to set initial x-pos
-        let x = 0;
-        for(const ZONE of zones){
-            x += blocking_matchup[ZONE].x;
-        }
-        d[POS].x = x/zones.length;
-
-        //TODO update x-pos using pass responsibiilties
-    }
+    //    
 
     //get run direction
     var run_direction;
-    switch (target_zone) {
-        case ("E-"):
-            run_direction = 'left';
-            break;
-        case ("D-"):
-            run_direction = 'left';
-            break;
-        case ("C-"):
-            run_direction = 'left';
-            break;
-        case ("B-"):
-            run_direction = 'left';
-            break;
-        case ("A-"):
-            run_direction = 'left';
-            break;
-        case ("A+"):
-            run_direction = 'right';
-            break;
-        case ("B+"):
-            run_direction = 'right';
-            break;
-        case ("C+"):
-            run_direction = 'right';
-            break;
-        case ("D+"):
-            run_direction = 'right';
-            break;
-        case ("E+"):
-            run_direction = 'right';
-            break;
-        default:
-            console.log('Not able to determine run direction.');
+    if(target_zone.indexOf('+') > 0){
+        run_direction = 'right';
+    }else if(target_zone.indexOf('-') > 0){
+        run_direction = 'left';
     }
 
     //assign defenders to rushing zones
