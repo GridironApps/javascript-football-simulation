@@ -84,3 +84,8 @@ play = {
         }
     }
 }
+
+        guys with a single gap (left and right) are on the line, those gaps can be different if adjacent
+        guys with multiple gaps are off the line
+        guys with non-rush pass responsiblity are also off the line
+        guys with deep-zones are further off the line initially

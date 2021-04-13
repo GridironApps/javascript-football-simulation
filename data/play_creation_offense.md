@@ -48,3 +48,7 @@ play = {
         ...
     }
 }
+
+        offense must have 1 WR (or more) on each side ... 11, 12, 13, 14, 21, 22, 23, 31, 32, 41 are all valid reciver groups
+        offense can have 0, 1, or 2 TE .... the 1st TE is always to the offenses right
+        run-blockers must only be assigned to a single zone
