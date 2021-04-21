@@ -20,7 +20,7 @@
     "FB": {
         "throwing": 50,
         "speed": 50,
-        "run_blocking": 50,
+        "run_blocking": 90,
         "pass_blocking": 50,
         "catching": 50,
         "consistency": 50,
@@ -57,7 +57,7 @@
     "LT": {
         "throwing": 50,
         "speed": 50,
-        "run_blocking": 80,
+        "run_blocking": 90,
         "pass_blocking": 50,
         "catching": 50,
         "consistency": 80,
@@ -66,7 +66,7 @@
     "LG": {
         "throwing": 50,
         "speed": 50,
-        "run_blocking": 80,
+        "run_blocking": 90,
         "pass_blocking": 50,
         "catching": 50,
         "consistency": 80,
@@ -75,7 +75,7 @@
     "C": {
         "throwing": 50,
         "speed": 50,
-        "run_blocking": 80,
+        "run_blocking": 90,
         "pass_blocking": 50,
         "catching": 50,
         "consistency": 80,
@@ -84,7 +84,7 @@
     "RG": {
         "throwing": 50,
         "speed": 50,
-        "run_blocking": 80,
+        "run_blocking": 90,
         "pass_blocking": 50,
         "catching": 50,
         "consistency": 80,
@@ -93,7 +93,7 @@
     "RT": {
         "throwing": 50,
         "speed": 50,
-        "run_blocking": 80,
+        "run_blocking": 90,
         "pass_blocking": 50,
         "catching": 50,
         "consistency": 80,

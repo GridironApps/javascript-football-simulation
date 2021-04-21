@@ -23,6 +23,7 @@ function simulateRun(o, d) {
         if (o[pos].job === 'run') {
             runner = pos;
             target_zone = o[pos].target_zone; //FIXME future things could break if this is an array
+
             log.push('Runner is ' + pos);
             log.push('Run is targeting zone ' + target_zone);
             break; //assuming only one player has the job "run"
@@ -45,10 +46,10 @@ function simulateRun(o, d) {
     //get run blockers
     let run_blockers = [];
     for (const POS in o) {
-        
+
         //intialize blocking matchup array
         o[POS].blocking = [];
-       
+
         //add to rush zone if job is blocking
         if (o[POS].job === "run-block") {
             run_blockers.push(POS);
@@ -89,7 +90,7 @@ function simulateRun(o, d) {
         for (const ZONE of rush_zones) {
             blocking_matchup[ZONE].defenders.push(POS);
         }
-        
+
         //initialize blocking matchup array
         d[POS].blocked_by = [];
     }
@@ -224,31 +225,37 @@ function simulateRun(o, d) {
     // ball is snapped
     let is_play_active = true;
 
-    // roll first step for all players
-    for (const POS in o) {
-        o[POS].first_step_roll = roll(o[POS].first_step, o[POS].consistency);
-    }
-    for (const POS in d) {
-        d[POS].first_step_roll = roll(d[POS].first_step, d[POS].consistency);
-    }
-
     //FIXME make sure blockers are assigned to a single zone, might add a "combo" type block later where they can start in one zone and move to another
 
     // use first step and position to determine where player position is 1-tick (0.1 seconds) later ... will smooth this once we determine matchups
     for (const ZONE in blocking_matchup) {
 
-        //get blockers positions
+        //update blockers positions
         for (const BLOCKER of blocking_matchup[ZONE].blockers) {
+            o[BLOCKER].first_step_roll = roll(o[BLOCKER].first_step, o[BLOCKER].consistency);
             let dist = o[BLOCKER].first_step_roll / 100; //bounds distance between 0-1 yards
-            o[BLOCKER].y += dist;
-            //TODO setup or find vector math library
 
+            let target = { "x": blocking_matchup[ZONE].x, "y": 0 };
+            let direction = unitVector(o[BLOCKER], target);
+            o[BLOCKER].x += direction.x * dist;
+            o[BLOCKER].y += direction.y * dist;
+
+            //initialize engaged_with array
+            o[BLOCKER].engaged_with = [];
         }
 
-        //get defenders positions
+        //update defenders positions
         for (const DEFENDER of blocking_matchup[ZONE].defenders) {
+            d[DEFENDER].first_step_roll = roll(d[DEFENDER].first_step, d[DEFENDER].consistency);
             let dist = d[DEFENDER].first_step_roll / 100;
-            d[DEFENDER].y -= dist;            
+
+            let target = { "x": blocking_matchup[ZONE].x, "y": 0 };
+            let direction = unitVector(d[DEFENDER], target);
+            d[DEFENDER].x += direction.x * dist;
+            d[DEFENDER].y += direction.y * dist;
+
+            //initialize engaged_with array
+            d[DEFENDER].engaged_with = [];
         }
 
         //sort large to small by y-pos
@@ -271,137 +278,183 @@ function simulateRun(o, d) {
                 o[blocker].blocking.push(defender);
                 d[defender].blocked_by.push(blocker);
 
-                let y = (o[blocker].y + d[defender].y) / 2; //FIXME this lets players teleport if they don't overlap ... think S coming from deep
-                o[blocker].y = y;
-                d[defender].y = y;
+                log.push(blocker + ' is trying to block ' + defender);
+
+                //TODO need to fuzz location if they are close enough to collide
+
+                //let y = (o[blocker].y + d[defender].y) / 2; //FIXME this lets players teleport if they don't overlap ... think S coming from deep
+                //o[blocker].y = y;
+                //d[defender].y = y;
             } else {
                 //we have more blockers than defenders ... help with the first available matchup //FIXME breaks if I have more than a double team
                 let ii = i - blocking_matchup[ZONE].defenders.length - 1;
 
                 let blocker = blocking_matchup[ZONE].blockers[i];
                 let defender = blocking_matchup[ZONE].defenders[ii];
-                let other_blocker = blocking_matchup[ZONE].blockers[ii];
+                //let other_blocker = blocking_matchup[ZONE].blockers[ii];
 
                 o[blocker].blocking.push(defender);
                 d[defender].blocked_by.push(blocker);
 
-                let y = Math.max(o[blocker].y, o[other_blocker].y);
-                o[blocker].y = y;
-                d[defender].y = y;
-                o[other_blocker].y = y;
+                log.push(blocker + ' is trying to block ' + defender);
+
+                //TODO need to fuzz location if they are close enough to collide
+
+                //let y = Math.max(o[blocker].y, o[other_blocker].y);
+                //o[blocker].y = y;
+                //d[defender].y = y;
+                //o[other_blocker].y = y;
             }
         }
     }
 
-    //TODO add a read check to see how quickly they get to their assignment ... not needed if they only have a single responsibility
+    //TODO add a read check to see how quickly they get to their assignment ... not needed if they only have a single responsibility    
 
-    // offense tries to engage the player they are blocking ... roll run blocking for each offensive player, with advantage
-    for (const POS in o) {
-        o[POS].engaged = false; //FIXME this should be set earlier
-        if (o[POS].blocking.length > 0) { //FIXME should the be == 1 since they can only block a single player?
-            o[POS].run_blocking_roll = roll(o[POS].run_blocking, o[POS].consistency, 'advantage'); //FIXME should the consistency be 0 here for a true percentile roll?
-            if (o[POS].run_blocking_roll > Math.random() * 100) {
-                o[POS].engaged = true;
-            }
-        }
+    //update runners position using first step //FIXME we should do this in the update loop below
+    o[runner].first_step_roll = roll(o[runner].first_step, o[runner].consistency);
+    let dist = o[runner].first_step_roll / 100; //bounds distance between 0-1 yards
+    let target = { "x": blocking_matchup[target_zone].x, "y": 0 };
+    let direction = unitVector(o[runner], target);
+    o[runner].x += direction.x * dist;
+    o[runner].y += direction.y * dist;
+
+    //get forty time of runner on this play
+    o[runner].forty_time = 5.2 - roll(o[runner].speed, o[runner].consistency) / 100;
+
+    //get forty time for blockers on this play
+    for (const POS of run_blockers) {
+        o[POS].forty_time = 5.2 - roll(o[POS].speed, o[POS].consistency) / 100;
     }
 
-    // defense tries to free themselves ... roll shed for each defensive player that is blocked
-    //TODO add a time delay for getting off a block
-    for (const POS in d) {
-        d[POS].engaged = false; //FIXME this shoudl be set earlier
-        if (d[POS].blocked_by.length > 0) {
-            for (const BLOCKER of d[POS].blocked_by) {
-                if (o[BLOCKER].engaged) {
-                    //roll shed normally
-                    d[POS].shed_roll = roll(d[POS].shed, d[POS].consistency);
-                } else {
-                    //roll shed with advantage
-                    d[POS].shed_roll = roll(d[POS].shed, d[POS].consistency, 'advantage');
-                }
-                if (d[POS].shed_roll > Math.random() * 100) {
-                    o[BLOCKER].engaged = false; //FIXME I could update the arrays, but I kind of want to keep a record of who was responsible for who
-                } else {
-                    //move defender back a yard and retry
-                    d[POS].y += 1;
-                    o[BLOCKER].y += 1; //FIXME move the other blocker as well if they exist
-
-                    //roll shed again
-                    d[POS].shed_roll = roll(d[POS].shed, d[POS].consistency);
-
-                    if (d[POS].shed_roll > Math.random() * 100) {
-                        o[BLOCKER].engaged = false;
-                    } else {
-                        d[POS].engaged = true; // they won't be able to make the tackle
-                    }
-                }
-            }
-        }
-    }
-
-    // defender(s) in unblocked zones chase ball carrier ... calculate distances and see if and where tackle can be made ... use horizontal distance between zones for now //FIXME add player (RB) depth
-
-    //build a tackle queue with players that are no longer blocked
-    let tackle_queue = [];
-    for (const POS in d) {
-        if (!d[POS].engaged) {
-            tackle_queue.push(POS);
-        }
-    }
-
-    //get forty time for each defender on this play
+    //get forty time for each defenders on this play
     for (const POS in d) {
         d[POS].forty_time = 5.2 - roll(d[POS].speed, d[POS].consistency) / 100; // assuming 40 times are bounded between 4.2 (100 spd) and 5.2 (0 spd)
     }
 
-    //sort the tackle queue based on time to reach hole  //FIXME this could disadvantage TFLs from behind
-    tackle_queue.sort(function (a, b) {
-        let time_a = dist2(d[a], blocking_matchup[target_zone]) * d[a].forty_time / 40;
-        let time_b = dist2(d[b], blocking_matchup[target_zone]) * d[b].forty_time / 40;
-        return time_a - time_b;
-    });
+    //step through the play at 0.1 second intervals until tackle is made or runner scores //FIXME each defender only gets 1 chance to tackle
+    let time = 0.1;
+    let dt = 0.1;
+    const REACH_DIST = 0.75; //yard
+    while (is_play_active) {
+        //increment time
+        time += 0.1;
 
-    //get forty time of runner on this play
-    o[runner].forty_time = 5.2 - roll(o[runner].speed, o[runner].consistency) / 100; 
+        //update runner
+        let target;
+        if (o[runner].y < 0) { //if runner is behind the LOS runn should head through their assigned zone/gap
+            target = {
+                "x": blocking_matchup[target_zone].x,
+                "y": 0
+            };
+        } else {
+            target = {
+                "x": blocking_matchup[target_zone].x,
+                "y": 100
+            };
+        }
 
-    //update runner so they are inline with the target zone (in the backfield)
-    let distance_to_target = blocking_matchup[target_zone].x - o[runner].x;
-    o[runner].x += distance_to_target;
-    let runner_time = Math.abs(distance_to_target) * o[runner].forty_time / 40;
+        //update runners position
+        o[runner] = move(o[runner], target, dt * 40 / o[runner].forty_time);
 
-    //work through tackle queue at 0.1 second intervals until we have no more potential tacklers left //FIXME each defender only gets 1 chance to tackle
-    while (tackle_queue.length > 0 && is_play_active) {
-        for (const DEFENDER of tackle_queue) {
-            //get time to runners current position
-            let time_to_runner = dist2(d[DEFENDER], o[runner]) * d[DEFENDER].forty_time / 40;
-            if (time_to_runner <= runner_time) { //FIXME we should probably adjust the distance through interpolation or add some margin of error
-                // defender can reach the ball carrier
+        //check to see if runner has scored
+        if (o[runner].y > 99) {
+            log.push('The ' + runner + ' runs for a TOUCHDOWN!');
+            is_play_active = false;
+            break;
+        }
 
-                // ball carrier tries to evade the defender
 
-                // defender tries to tackle if not evaded
-                if (roll(d[DEFENDER].tackling, d[DEFENDER].consistency) > Math.random() * 100) {
-                    //ball carrier is tackled
-                    log.push(runner + ' is tackled by ' + DEFENDER + ' for a gain of ' + o[runner].y + ' yards');
-                    is_play_active = false;
-                    break;
+        //BLOCKERS update
+        for (const BLOCKER of run_blockers) {
+
+            //check to see if target defender is in range
+            if (dist2(o[BLOCKER], d[o[BLOCKER].blocking[0]]) > REACH_DIST) {
+                //not in range, so move closer
+                let target = d[o[BLOCKER].blocking[0]]; //FIXME should they move to the zone first? //TODO add waypoints to each player
+                o[BLOCKER] = move(o[BLOCKER], target, dt * 40 / o[BLOCKER].forty_time);
+            } else {
+                //if in range check to see if defender is already blocked
+                if (o[BLOCKER].engaged_with.length > 0) {
+                    //push the defender back 
+                    let target = o[BLOCKER].engaged_with[0];
+                    let direction = unitVector(o[BLOCKER], d[target]);
+                    let dist = dt * roll(o[BLOCKER].run_blocking) / 100; //FIXME should this be strength based?
+
+                    //update position of both players 
+                    o[BLOCKER].x += direction.x * dist;
+                    o[BLOCKER].y += direction.y * dist;
+                    d[target].x -= direction.x * dist;
+                    d[target].y -= direction.y * dist;
+                    //update the position of the other blocker if they exist
+                    if (d[target].engaged_with > 1) {
+                        let blocker2 = d[target].engaged_with[0];
+                        if (BLOCKER == blocker2) {
+                            blocker2 = d[target].engaged_with[1];
+                        }
+                        o[blocker2].x += direction.x * dist;
+                        o[blocker2].y += direction.y * dist;
+                    }
                 } else {
-                    //remove the tackler from the queue
-                    tackle_queue.splice(tackle_queue.indexOf(DEFENDER), 1);
+                    //if not blocked try to engage the player they are blocking ... roll run blocking for each offensive player //FIXME should this be with advantage?
+                    if (Math.random() * 100 < roll(o[BLOCKER].run_blocking, o[BLOCKER].consistency)) { //FIXME should the consistency be 0 here for a true percentile roll?
+                        let defender = o[BLOCKER].blocking[0];
+                        o[BLOCKER].engaged_with.push(defender);
+                        d[defender].engaged_with.push(BLOCKER);
+
+                        //log.push(BLOCKER + ' has engaged the ' + defender);
+                    }
                 }
 
-                // ball carrier tries to break tackle if tackled ... add a 0.1s time delay
             }
         }
-        if (is_play_active) {
-            runner_time += 0.1;
-            o[runner].y += 0.1 * 40 / o[runner].forty_time;
-        }
-    }
 
-    //Check for touchdown
-    if (is_play_active) {
-        log.push('The ' + runner + ' runs for a TOUCHDOWN!');
+        //DEFENSE update
+        for (const DEFENDER in d) {
+
+            //check to see if defender is engaged with a blocker
+            if (d[DEFENDER].engaged_with.length > 0) {
+                //try to disengage from each blocker
+                for (const BLOCKER of d[DEFENDER].engaged_with) {
+                    if (Math.random() * 100 < roll(d[DEFENDER].shed, d[DEFENDER].consistency)) {
+                        //update engaged_with arrays
+                        d[DEFENDER].engaged_with = d[DEFENDER].engaged_with.filter(function (item) { //TODO add a .remove() function for arrays
+                            return item !== BLOCKER;
+                        });
+                        o[BLOCKER].engaged_with = o[BLOCKER].engaged_with.filter(function (item) {
+                            return item !== DEFENDER;
+                        });
+                        //log.push(DEFENDER + ' has shed the block of ' + BLOCKER);
+                    }
+                }
+            } else {
+                //check if the runner is in range
+                if (dist2(d[DEFENDER], o[runner]) > REACH_DIST) {
+                    //move
+                    let target;
+                    if (o[runner].y < 0 && d[DEFENDER].y > 0) { //if runner is behind the LOS AND defender is on other side of LOS, defender should head through their assigned zone/gap
+                        target = {
+                            "x": blocking_matchup[d[DEFENDER].defending_zones[0]].x,
+                            "y": 0
+                        };
+                    } else { //if runner is past the LOS OR defender has crossed into the offenses side, defender should head to the runner //TODO run to intersection point
+                        target = o[runner];
+                    }
+
+                    //update defenders position
+                    d[DEFENDER] = move(d[DEFENDER], target, dt * 40 / d[DEFENDER].forty_time);
+
+                } else {
+                    //try to tackle //TODO allow runner to evade and/or break tackle (for a small time delay)
+                    if (Math.random() * 100 < roll(d[DEFENDER].tackling, d[DEFENDER].consistency)) {
+                        log.push(DEFENDER + ' made the tackle for a gain of ' + o[runner].y + ' yards');
+                        is_play_active = false;
+                        break;
+                    } else {
+                        log.push(DEFENDER + ' missed the tackle at ' + o[runner].y + ' yards');
+                    }
+                }
+            }
+        }
     }
 
     //TODO conceivibly we could have run_dice and pass_dice or multiple run_dices for option type plays, the QB would be responsible for choosing ... this should actually be based on the defense, but passing might look at offensive rolls for reads
@@ -727,3 +780,27 @@ function roll(dice_size, dice_consistency, type) {
 function dist2(a, b) {
     return Math.pow(Math.pow(a.x - b.x, 2) + Math.pow(a.y - b.y, 2), 0.5);
 }
+
+function vec2(start, end) {
+    let vec = {};
+    vec.x = end.x - start.x;
+    vec.y = end.y - start.y;
+    return vec;
+}
+
+function unitVector(start, end) {
+    let dist = dist2(start, end);
+    let vec = vec2(start, end);
+    vec.x = vec.x / dist;
+    vec.y = vec.y / dist;
+    return vec;
+}
+
+function move(player, target, dist) {
+    let direction = unitVector(player, target); //FIXME create a subfunction to update position
+    player.x += direction.x * dist;
+    player.y += direction.y * dist;
+    return player;
+}
+
+//TODO put some of the physics stuff together into an object
