@@ -2,220 +2,193 @@
 
 //TODO in the near term update this to match the job types (handoff, run, run_block, pass_block, run_route, catch, throw, shed_blocker, tackle, cover_man, cover_zone)
 
-//TODO work in style of pass: quick, normal, timing, long, play-action
-
-//FIXME need to target recievers in a more general sense
-
 //for the function below just assume the data is already formatted in a json object (above)
 function simulateRun(o, d) {
 
     //setup log file to return
     let log = [];
 
+    //initialize closest location to rushing zones ... zones correspond to location of pre-snap gaps
+    let zones = {
+        "E-": {
+            x: -16,
+            y: 0
+        },
+        "D-": {
+            x: -7,
+            y: 0
+        },
+        "C-": {
+            x: -5,
+            y: 0
+        },
+        "B-": {
+            x: -3,
+            y: 0
+        },
+        "A-": {
+            x: -1,
+            y: 0
+        },
+        "A+": {
+            x: 1,
+            y: 0
+        },
+        "B+": {
+            x: 3,
+            y: 0
+        },
+        "C+": {
+            x: 5,
+            y: 0
+        },
+        "D+": {
+            x: 7,
+            y: 0
+        },
+        "E+": {
+            x: 16,
+            y: 0
+        },
+    };
+
+    //initialize arrays in zones to store blocking matchups
+    for (const ZONE in zones) {
+        zones[ZONE].blockers = [];
+        zones[ZONE].defenders = [];
+    }
+
     //
-    // OFFENSE
+    // OFFENSE setup
     //
 
     //get target zone for runner
-    let target_zone;
     let runner;
+    let run_direction;
     for (const pos in o) {
         if (o[pos].job === 'run') {
-            runner = pos;
-            target_zone = o[pos].target_zone; //FIXME future things could break if this is an array
 
+            //get runner
+            runner = pos;
             log.push('Runner is ' + pos);
-            log.push('Run is targeting zone ' + target_zone);
+
+            //get run direction    
+            if (o[runner].target_zone.indexOf('+') > 0) {
+                run_direction = 'right';
+            } else if (o[runner].target_zone.indexOf('-') > 0) {
+                run_direction = 'left';
+            }
+            log.push('Run is heading to the ' + run_direction);
+
             break; //assuming only one player has the job "run"
         }
     }
 
-    //ignoring "handoff" job for now, should check that it exists though...could be a pitch
+    //ignoring "handoff" job for now //TODO should check that it exists though...could be a pitch
 
-    //initialize object to store blocking matchups for each possible zone ... zones correspond to location of pre-snap gaps
-    const ZONES = ["E-", "D-", "C-", "B-", "A-", "A+", "B+", "C+", "D+", "E+"];
-    let x = [-16, -7, -5, -3, -1, 1, 3, 5, 7, 16]; //shortest horizontal yardage from center for each zone
-    let blocking_matchup = {};
-    for (const ZONE of ZONES) {
-        blocking_matchup[ZONE] = {};
-        blocking_matchup[ZONE].blockers = [];
-        blocking_matchup[ZONE].defenders = [];
-        blocking_matchup[ZONE].x = x.shift();
-    }
-
-    //get run blockers
+    //list possible run blockers for each zone
     let run_blockers = [];
     for (const POS in o) {
 
-        //intialize blocking matchup array
+        //intialize blocking matchup arrays
         o[POS].blocking = [];
+        o[POS].engaged_with = [];
 
         //add to rush zone if job is blocking
         if (o[POS].job === "run-block") {
             run_blockers.push(POS);
 
-            //write assignment to blocking matchup object
-            for (const ZONE of o[POS].blocking_zones) {
-                blocking_matchup[ZONE].blockers.push(POS);
-            }
+            //add blocker to zone //FIXME assumes blocker has a single zone assigned
+            zones[o[POS].blocking_zone].blockers.push(POS); //FIXME make sure blockers are assigned to a single zone, might add a "combo" type block later where they can start in one zone and move to another
         }
     }
-    log.push('Run blockers are ' + run_blockers);
 
     //
-    // DEFENSE
+    // DEFENSE setup
     //    
 
-    //get run direction
-    var run_direction;
-    if (target_zone.indexOf('+') > 0) {
-        run_direction = 'right';
-    } else if (target_zone.indexOf('-') > 0) {
-        run_direction = 'left';
-    }
-
     //list possible defenders for each rushing zone
-    for (const POS in d) {
+    let pursuit_defenders = [];
+    let zone_defenders = [];
+    for (const DEFENDER in d) {
+
+        //initialize blocking matchup arrays
+        d[DEFENDER].blocked_by = [];
+        d[DEFENDER].engaged_with = [];
+
         //get assignment based on run direction
-        const ASSIGNMENT = d[POS]['run_' + run_direction];
+        const ASSIGNMENT = d[DEFENDER]['run_' + run_direction];
 
         //get rush_zone responsibliity
         let rush_zones = [];
         if (ASSIGNMENT.job == 'fit-zones') {
+            zone_defenders.push(DEFENDER);
             rush_zones = ASSIGNMENT.rush_zones;
-            d[POS].defending_zones = rush_zones;
+        } else if (ASSIGNMENT.job == 'pursue') {
+            pursuit_defenders.push(DEFENDER);
         }
+        d[DEFENDER].defending_zones = rush_zones;
 
-        //write assignment to blocking matchup object
+        //add defender to zones
         for (const ZONE of rush_zones) {
-            blocking_matchup[ZONE].defenders.push(POS);
+            zones[ZONE].defenders.push(DEFENDER);
         }
-
-        //initialize blocking matchup array
-        d[POS].blocked_by = [];
     }
 
-    //clean up matchups so we don't have guys assigned to multiple rushing zones
+    //assign defenders to a single zone ... goal is at least 1 defender per blocker in each zone, if possible
 
     //check from sideline to sideline based upon direction of run
-    let z = ZONES;
+    let zone_order = ["E-", "D-", "C-", "B-", "A-", "A+", "B+", "C+", "D+", "E+"]; //left to right
     if (run_direction == 'right') {
-        z = z.reverse();
+        zone_order = zone_order.reverse(); //right to left
     }
 
-    //goal is at least 1 defender per blocker in each zone, if possible //TODO rewrite this to be cleaner and easier to follow
-    for (const ZONE of z) {
-        let possible_defenders = blocking_matchup[ZONE].defenders;
-        let assigned_defenders = [];
+    for (const ZONE of zone_order) {
 
-        //check each defender to see if they only have one option
+        //get possible defenders
+        let possible_defenders = zones[ZONE].defenders;
+
+        //sort possible defenders base upon number of zones they can cover (less to more) and distance if tied (closer to farther)
+        possible_defenders.sort(function (a, b) {
+            if (d[a].defending_zones.length < d[b].defending_zones.length) {
+                return -1;
+            } else if (d[a].defending_zones.length < d[b].defending_zones.length) {
+                return 1;
+            } else {
+                return dist2(d[a], zones[ZONE]) - dist2(d[b], zones[ZONE]);
+            }
+        });
+
+        //assign defenders until we match the number of blockers ... also assign defenders that have no other zones to defend
+        let assigned_defenders = [];
         for (const DEFENDER of possible_defenders) {
-            if (d[DEFENDER].defending_zones.length == 1) { //FIXME should probably check that the defender's zone matches the zone we are checking (it should, but could catch an unforseen error)
-                //add defender to array of defenders to be assigned
+            if (assigned_defenders.length < zones[ZONE].blockers.length || d[DEFENDER].defending_zones.length == 1) {
+                //add defender to assigned_defenders
                 assigned_defenders.push(DEFENDER);
 
-                //remove defender from list of possible options
-                possible_defenders.splice(possible_defenders.indexOf(DEFENDER), 1);
-            }
-        }
-
-        //see if we need to assign one of the optional multi-zone defenders
-        let num_defenders_needed = blocking_matchup[ZONE].blockers.length - assigned_defenders.length;
-        if (num_defenders_needed > 0) {
-            //see if we have more options than blockers needed
-            if (possible_defenders.length > num_defenders_needed) {
-
-                //prioritize guys with the fewest options
-                possible_defenders.sort(function (a, b) {
-                    return d[a].length - d[b].length;
-                });
-
-                //assign the first x defenders to this zone where x is equal to the number of defenders needed
-                for (let i = 0; i < possible_defenders.length; i++) {
-
-                    let defender = possible_defenders[i];
-
-                    if (i < num_defenders_needed) {
-                        //add defender to array of defenders to be assigned
-                        assigned_defenders.push(defender);
-
-                        //remove defender from list of possible options
-                        possible_defenders.splice(possible_defenders.indexOf(defender), 1);
-
-                        //update matchups
-                        for (const ZZ of d[defender].defending_zones) {
-                            if (ZZ == ZONE) {
-                                continue;
-                            }
-                            blocking_matchup[ZZ].defenders.splice(blocking_matchup[ZZ].defenders.indexOf(defender), 1);
-                        }
-
-                        //update defender
-                        d[defender].defending_zones = [ZONE];
-
-                    } else {
-                        //remove defender from list of possible options
-                        possible_defenders.splice(possible_defenders.indexOf(DEFENDER), 1);
-
-                        //update defender that isn't needed
-                        d[defender].defending_zones.splice(d[defender].defending_zones.indexOf(ZONE), 1);
-                    }
+                //remove defender from other zones
+                for (const D_ZONE of d[DEFENDER].defending_zones) {
+                    zones[D_ZONE].defenders = remove(DEFENDER, zones[D_ZONE].defenders);
                 }
+
+                //update defender
+                d[DEFENDER].defending_zones = [ZONE];
             } else {
-                //assign all remaining possible_defenders to this zone
-                for (const DEFENDER of possible_defenders) {
-                    //add defender to array of defenders to be assigned
-                    assigned_defenders.push(DEFENDER);
-
-                    //remove defender from list of possible options
-                    possible_defenders.splice(possible_defenders.indexOf(DEFENDER), 1);
-
-                    //update matchups
-                    for (const ZZ of d[DEFENDER].defending_zones) {
-                        if (ZZ == ZONE) {
-                            continue;
-                        }
-                        blocking_matchup[ZZ].defenders.splice(blocking_matchup[ZZ].defenders.indexOf(DEFENDER), 1);
-                    }
-
-                    //update defender
-                    d[DEFENDER].defending_zones = [ZONE];
-                }
-            }
-        } else {
-            //update each defender
-            for (const DEFENDER of possible_defenders) {
-                //update defender that isn't needed
-                d[DEFENDER].defending_zones.splice(d[DEFENDER].defending_zones.indexOf(ZONE), 1);
+                //remove this ZONE from the defenders list of defending zones
+                d[DEFENDER].defending_zones = remove(ZONE, d[DEFENDER].defending_zones);
             }
         }
 
-        //update matchup
-        blocking_matchup[ZONE].defenders = assigned_defenders;
-    }
+        //update defenders in zones
+        zones[ZONE].defenders = assigned_defenders;
 
-    //assign pursuit guy(s) to zone //FIXME this is duplication of the earlier code for 'fit-zones'
-    for (const POS in d) {
-        //get assignment based on run direction
-        const ASSIGNMENT = d[POS]['run_' + run_direction];
-
-        //get rush_zone responsibliity
-        let rush_zones = [];
-        if (ASSIGNMENT.job == 'pursue') {
-            rush_zones = [target_zone];
-            d[POS].defending_zones = rush_zones;
+        //add pursuit players if current zone matches runners target zone 
+        if (o[runner].target_zone == ZONE) {
+            zones[ZONE].defenders.concat(pursuit_defenders);
+            for (const DEFENDER of pursuit_defenders) {
+                d[DEFENDER].defending_zones = [ZONE]; //FIXME runner could bounce the run and the pursuit players would need to update
+            }
         }
-
-        //TODO if a guy is pursuing shouldn't be on the line, they should have some initial depth
-        //TODO intial depth is also determined by pass responsiblity
-
-        //write assignment to blocking matchup object
-        for (const ZONE of rush_zones) {
-            blocking_matchup[ZONE].defenders.push(POS);
-        }
-
-        //initialize blocking matchup array
-        d[POS].blocked_by = [];
     }
 
     //
@@ -225,55 +198,46 @@ function simulateRun(o, d) {
     // ball is snapped
     let is_play_active = true;
 
-    //FIXME make sure blockers are assigned to a single zone, might add a "combo" type block later where they can start in one zone and move to another
+    //update runners position using first step
+    o[runner].first_step_roll = roll(o[runner].first_step, o[runner].consistency);
+    o[runner] = move(o[runner], zones[o[runner].target_zone], o[runner].first_step_roll / 100);
+    
+    //update blockers and defenders using first step ... determine where player position is 1-tick (0.1 seconds) later
+    for (const ZONE in zones) {
 
-    // use first step and position to determine where player position is 1-tick (0.1 seconds) later ... will smooth this once we determine matchups
-    for (const ZONE in blocking_matchup) {
-
-        //update blockers positions
-        for (const BLOCKER of blocking_matchup[ZONE].blockers) {
+        //update blockers position using first step
+        for (const BLOCKER of zones[ZONE].blockers) {
             o[BLOCKER].first_step_roll = roll(o[BLOCKER].first_step, o[BLOCKER].consistency);
-            let dist = o[BLOCKER].first_step_roll / 100; //bounds distance between 0-1 yards
-
-            let target = { "x": blocking_matchup[ZONE].x, "y": 0 };
-            let direction = unitVector(o[BLOCKER], target);
-            o[BLOCKER].x += direction.x * dist;
-            o[BLOCKER].y += direction.y * dist;
-
-            //initialize engaged_with array
-            o[BLOCKER].engaged_with = [];
+            o[BLOCKER] = move(o[BLOCKER], zones[ZONE], o[BLOCKER].first_step_roll / 100);
         }
 
-        //update defenders positions
-        for (const DEFENDER of blocking_matchup[ZONE].defenders) {
+        //update defenders position using first step
+        for (const DEFENDER of zones[ZONE].defenders) {
             d[DEFENDER].first_step_roll = roll(d[DEFENDER].first_step, d[DEFENDER].consistency);
-            let dist = d[DEFENDER].first_step_roll / 100;
-
-            let target = { "x": blocking_matchup[ZONE].x, "y": 0 };
-            let direction = unitVector(d[DEFENDER], target);
-            d[DEFENDER].x += direction.x * dist;
-            d[DEFENDER].y += direction.y * dist;
-
-            //initialize engaged_with array
-            d[DEFENDER].engaged_with = [];
+            d[DEFENDER] = move(d[DEFENDER], zones[ZONE], d[DEFENDER].first_step_roll / 100);
         }
 
-        //sort large to small by y-pos
-        blocking_matchup[ZONE].blockers.sort(function (a, b) {
-            return o[b].y - o[a].y;
+        //sort large to small by distance to zone, small to large
+        zones[ZONE].blockers.sort(function (a, b) {
+            return dist2(o[a], zones[ZONE]) - dist2(o[b], zones[ZONE]);
         });
 
-        //sort small to large by y-pos
-        blocking_matchup[ZONE].defenders.sort(function (a, b) {
-            return d[a].y - d[b].y;
+        //sort small to large by distance to zone, small to large
+        zones[ZONE].defenders.sort(function (a, b) {
+            return dist2(d[a], zones[ZONE]) - dist2(d[b], zones[ZONE]);
         });
 
-        //matchup individual players if possible
-        for (let i = 0; i < blocking_matchup[ZONE].blockers.length; i++) {
+        //matchup individual players based on distance when possible
+        for (let i = 0; i < zones[ZONE].blockers.length; i++) {
             //check to see if we have a defender to block
-            if (blocking_matchup[ZONE].defenders.length >= i) {
-                let blocker = blocking_matchup[ZONE].blockers[i];
-                let defender = blocking_matchup[ZONE].defenders[i];
+            if (zones[ZONE].defenders.length == 0){
+                //we don't have anyone to block
+
+                //FIXME they should try to block someone in a neighboring zone ...for now have them block the pursuit guys (if they exist)
+            }else if(zones[ZONE].defenders.length >= i) {
+                //create one-on-one blocking matchups
+                let blocker = zones[ZONE].blockers[i];
+                let defender = zones[ZONE].defenders[i];
 
                 o[blocker].blocking.push(defender);
                 d[defender].blocked_by.push(blocker);
@@ -281,17 +245,12 @@ function simulateRun(o, d) {
                 log.push(blocker + ' is trying to block ' + defender);
 
                 //TODO need to fuzz location if they are close enough to collide
-
-                //let y = (o[blocker].y + d[defender].y) / 2; //FIXME this lets players teleport if they don't overlap ... think S coming from deep
-                //o[blocker].y = y;
-                //d[defender].y = y;
             } else {
-                //we have more blockers than defenders ... help with the first available matchup //FIXME breaks if I have more than a double team
-                let ii = i - blocking_matchup[ZONE].defenders.length - 1;
+                //we have more blockers than defenders ... help with the next defender in the cycle
+                let ii = i % zones[ZONE].defenders.length;
 
-                let blocker = blocking_matchup[ZONE].blockers[i];
-                let defender = blocking_matchup[ZONE].defenders[ii];
-                //let other_blocker = blocking_matchup[ZONE].blockers[ii];
+                let blocker = zones[ZONE].blockers[i];
+                let defender = zones[ZONE].defenders[ii];
 
                 o[blocker].blocking.push(defender);
                 d[defender].blocked_by.push(blocker);
@@ -299,27 +258,14 @@ function simulateRun(o, d) {
                 log.push(blocker + ' is trying to block ' + defender);
 
                 //TODO need to fuzz location if they are close enough to collide
-
-                //let y = Math.max(o[blocker].y, o[other_blocker].y);
-                //o[blocker].y = y;
-                //d[defender].y = y;
-                //o[other_blocker].y = y;
             }
         }
-    }
+    }    
 
     //TODO add a read check to see how quickly they get to their assignment ... not needed if they only have a single responsibility    
 
-    //update runners position using first step //FIXME we should do this in the update loop below
-    o[runner].first_step_roll = roll(o[runner].first_step, o[runner].consistency);
-    let dist = o[runner].first_step_roll / 100; //bounds distance between 0-1 yards
-    let target = { "x": blocking_matchup[target_zone].x, "y": 0 };
-    let direction = unitVector(o[runner], target);
-    o[runner].x += direction.x * dist;
-    o[runner].y += direction.y * dist;
-
     //get forty time of runner on this play
-    o[runner].forty_time = 5.2 - roll(o[runner].speed, o[runner].consistency) / 100;
+    o[runner].forty_time = 5.2 - roll(o[runner].speed, o[runner].consistency) / 100; // assuming 40 times are bounded between 4.2 (100 spd) and 5.2 (0 spd)
 
     //get forty time for blockers on this play
     for (const POS of run_blockers) {
@@ -328,32 +274,22 @@ function simulateRun(o, d) {
 
     //get forty time for each defenders on this play
     for (const POS in d) {
-        d[POS].forty_time = 5.2 - roll(d[POS].speed, d[POS].consistency) / 100; // assuming 40 times are bounded between 4.2 (100 spd) and 5.2 (0 spd)
+        d[POS].forty_time = 5.2 - roll(d[POS].speed, d[POS].consistency) / 100; 
     }
 
-    //step through the play at 0.1 second intervals until tackle is made or runner scores //FIXME each defender only gets 1 chance to tackle
+    //step through the play at 0.1 second intervals until tackle is made or runner scores
     let time = 0.1;
     let dt = 0.1;
-    const REACH_DIST = 0.75; //yard
+    const REACH_DIST = 0.75; //yards
     while (is_play_active) {
         //increment time
         time += 0.1;
 
         //update runner
-        let target;
-        if (o[runner].y < 0) { //if runner is behind the LOS runn should head through their assigned zone/gap
-            target = {
-                "x": blocking_matchup[target_zone].x,
-                "y": 0
-            };
-        } else {
-            target = {
-                "x": blocking_matchup[target_zone].x,
-                "y": 100
-            };
+        let target = zones[o[runner].target_zone];
+        if (o[runner].y >= 0) { //if runner is at or beyond the LOS head to the endzone
+            target.y = 100;
         }
-
-        //update runners position
         o[runner] = move(o[runner], target, dt * 40 / o[runner].forty_time);
 
         //check to see if runner has scored
@@ -363,8 +299,7 @@ function simulateRun(o, d) {
             break;
         }
 
-
-        //BLOCKERS update
+        //update blockers
         for (const BLOCKER of run_blockers) {
 
             //check to see if target defender is in range
@@ -400,8 +335,6 @@ function simulateRun(o, d) {
                         let defender = o[BLOCKER].blocking[0];
                         o[BLOCKER].engaged_with.push(defender);
                         d[defender].engaged_with.push(BLOCKER);
-
-                        //log.push(BLOCKER + ' has engaged the ' + defender);
                     }
                 }
 
@@ -417,13 +350,8 @@ function simulateRun(o, d) {
                 for (const BLOCKER of d[DEFENDER].engaged_with) {
                     if (Math.random() * 100 < roll(d[DEFENDER].shed, d[DEFENDER].consistency)) {
                         //update engaged_with arrays
-                        d[DEFENDER].engaged_with = d[DEFENDER].engaged_with.filter(function (item) { //TODO add a .remove() function for arrays
-                            return item !== BLOCKER;
-                        });
-                        o[BLOCKER].engaged_with = o[BLOCKER].engaged_with.filter(function (item) {
-                            return item !== DEFENDER;
-                        });
-                        //log.push(DEFENDER + ' has shed the block of ' + BLOCKER);
+                        d[DEFENDER].engaged_with = remove(BLOCKER,d[DEFENDER].engaged_with);
+                        o[BLOCKER].engaged_with = remove(DEFENDER, o[BLOCKER].engaged_with);
                     }
                 }
             } else {
@@ -433,7 +361,7 @@ function simulateRun(o, d) {
                     let target;
                     if (o[runner].y < 0 && d[DEFENDER].y > 0) { //if runner is behind the LOS AND defender is on other side of LOS, defender should head through their assigned zone/gap
                         target = {
-                            "x": blocking_matchup[d[DEFENDER].defending_zones[0]].x,
+                            "x": zones[d[DEFENDER].defending_zones[0]].x,
                             "y": 0
                         };
                     } else { //if runner is past the LOS OR defender has crossed into the offenses side, defender should head to the runner //TODO run to intersection point
@@ -462,13 +390,17 @@ function simulateRun(o, d) {
     return {
         offense: o,
         defense: d,
-        matchup: blocking_matchup,
+        matchups: zones,
         log: log
     }
 
 }
 
 function simulatePass(o, d) {
+    //TODO work in style of pass: quick, normal, timing, long, play-action
+
+    //FIXME need to target recievers in a more general sense
+
     //setup constants
     const SHORT_ZONE_END = 20;
     const DEEP_ZONE_START = 10;
@@ -804,3 +736,21 @@ function move(player, target, dist) {
 }
 
 //TODO put some of the physics stuff together into an object
+
+//utility function to remove an element from an array
+function remove(el, arr) {
+    arr = arr.filter(function (item) {
+        return item !== el;
+    });
+    return arr;
+}
+
+//
+// PLAYER OBJECT
+//
+
+class Player {
+    constructor() {
+
+    }
+}

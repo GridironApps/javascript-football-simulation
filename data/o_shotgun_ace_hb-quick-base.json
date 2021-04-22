@@ -1,12 +1,12 @@
 {
-    "name": "I-Form Pro, Inside Zone Right",
+    "name": "Shotgun Ace, HB Quick Base",
     "type": "run",    
-    "diagram": "https://www.madden-school.com/wp-content/plugins/playbook/playbook_images/27987_inside-zone.png",
+    "diagram": "https://www.madden-school.com/wp-content/plugins/playbook/playbook_images/27880_hb-quick-base.png",
     "formation": [
-        ["  ", "X ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "LT", "  ", "LG", "  ", "C ", "  ", "RG", "  ", "RT", "  ", "Y ", "  ", "  ", "  ", "  ", "  ", "  ", "  "],
-        ["  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "QB", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "Z ", "  "],
-        ["  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "FB", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  "],
-        ["  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "HB", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  "],
+        ["  ", "  ", "  ", "  ", "  ", "  ", "  ", "FB", "  ", "LT", "  ", "LG", "  ", "C ", "  ", "RG", "  ", "RT", "  ", "Y ", "  ", "  ", "  ", "  ", "  ", "  ", "  "],
+        ["  ", "X ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "Z ", "  "],
+        ["  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  "],
+        ["  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "QB", "  ", "HB", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  "],
         ["  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  "]
     ],
     "assignments": {
@@ -15,19 +15,19 @@
         },
         "HB": {
             "job": "run",
-            "target_zone": "B+"
+            "target_zone": "B-"
         },
         "FB": {
             "job": "run-block",
-            "blocking_zone": "B+"
+            "blocking_zone": "C-"
         },
         "X": {
             "job": "run-block",
-            "blocking_zone": "E-"
+            "blocking_zone": "D-"
         },
         "Y": {
             "job": "run-block",
-            "blocking_zone": "D+"
+            "blocking_zone": "C+"
         },
         "Z": {
             "job": "run-block",            
@@ -47,11 +47,11 @@
         },
         "RG": {
             "job": "run-block",
-            "blocking_zone": "B+"
+            "blocking_zone": "B-"
         },
         "RT": {
             "job": "run-block",            
-            "blocking_zone": "C+"
+            "blocking_zone": "B+"
         }
     }
 }

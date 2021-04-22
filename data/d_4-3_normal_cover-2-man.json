@@ -57,11 +57,11 @@
         "SLB": {
             "run_left": {
                 "job": "fit-zones",
-                "rush_zones": ["A+"]
+                "rush_zones": ["C+","B+","A+"]
             },
             "run_right": {
                 "job": "fit-zones",
-                "rush_zones": ["C+","D+"]
+                "rush_zones": ["C+","D+","E+"]
             },
             "pass": {
                 "job": "cover-man",
@@ -71,7 +71,7 @@
         "MLB": {
             "run_left": {
                 "job": "fit-zones",
-                "rush_zones": ["B-"]
+                "rush_zones": ["A-","B-","C-"]
             },
             "run_right": {
                 "job": "fit-zones",
@@ -85,7 +85,7 @@
         "WLB": {
             "run_left": {
                 "job": "fit-zones",
-                "rush_zones": ["D-"]
+                "rush_zones": ["B-","C-","D-"]
             },
             "run_right": {
                 "job": "fit-zones",
@@ -113,7 +113,7 @@
         "SS": {
             "run_left": {
                 "job": "fit-zones",
-                "rush_zones": ["C+"]
+                "rush_zones": ["A+","C+"]
             },
             "run_right": {
                 "job": "pursue"
