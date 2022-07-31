@@ -201,7 +201,7 @@ function simulateRun(o, d) {
     //update runners position using first step
     o[runner].first_step_roll = roll(o[runner].first_step, o[runner].consistency);
     o[runner] = move(o[runner], zones[o[runner].target_zone], o[runner].first_step_roll / 100);
-    
+
     //update blockers and defenders using first step ... determine where player position is 1-tick (0.1 seconds) later
     for (const ZONE in zones) {
 
@@ -230,27 +230,14 @@ function simulateRun(o, d) {
         //matchup individual players based on distance when possible
         for (let i = 0; i < zones[ZONE].blockers.length; i++) {
             //check to see if we have a defender to block
-            if (zones[ZONE].defenders.length == 0){
+            if (zones[ZONE].defenders.length == 0) {
                 //we don't have anyone to block
 
                 //FIXME they should try to block someone in a neighboring zone ...for now have them block the pursuit guys (if they exist)
-            }else if(zones[ZONE].defenders.length >= i) {
+            } else {
                 //create one-on-one blocking matchups
                 let blocker = zones[ZONE].blockers[i];
-                let defender = zones[ZONE].defenders[i];
-
-                o[blocker].blocking.push(defender);
-                d[defender].blocked_by.push(blocker);
-
-                log.push(blocker + ' is trying to block ' + defender);
-
-                //TODO need to fuzz location if they are close enough to collide
-            } else {
-                //we have more blockers than defenders ... help with the next defender in the cycle
-                let ii = i % zones[ZONE].defenders.length;
-
-                let blocker = zones[ZONE].blockers[i];
-                let defender = zones[ZONE].defenders[ii];
+                let defender = zones[ZONE].defenders[i % zones[ZONE].defenders.length]; //this allows multiple blockers per defender
 
                 o[blocker].blocking.push(defender);
                 d[defender].blocked_by.push(blocker);
@@ -260,7 +247,7 @@ function simulateRun(o, d) {
                 //TODO need to fuzz location if they are close enough to collide
             }
         }
-    }    
+    }
 
     //TODO add a read check to see how quickly they get to their assignment ... not needed if they only have a single responsibility    
 
@@ -274,7 +261,7 @@ function simulateRun(o, d) {
 
     //get forty time for each defenders on this play
     for (const POS in d) {
-        d[POS].forty_time = 5.2 - roll(d[POS].speed, d[POS].consistency) / 100; 
+        d[POS].forty_time = 5.2 - roll(d[POS].speed, d[POS].consistency) / 100;
     }
 
     //step through the play at 0.1 second intervals until tackle is made or runner scores
@@ -350,7 +337,7 @@ function simulateRun(o, d) {
                 for (const BLOCKER of d[DEFENDER].engaged_with) {
                     if (Math.random() * 100 < roll(d[DEFENDER].shed, d[DEFENDER].consistency)) {
                         //update engaged_with arrays
-                        d[DEFENDER].engaged_with = remove(BLOCKER,d[DEFENDER].engaged_with);
+                        d[DEFENDER].engaged_with = remove(BLOCKER, d[DEFENDER].engaged_with);
                         o[BLOCKER].engaged_with = remove(DEFENDER, o[BLOCKER].engaged_with);
                     }
                 }
@@ -364,8 +351,45 @@ function simulateRun(o, d) {
                             "x": zones[d[DEFENDER].defending_zones[0]].x,
                             "y": 0
                         };
-                    } else { //if runner is past the LOS OR defender has crossed into the offenses side, defender should head to the runner //TODO run to intersection point
-                        target = o[runner];
+                    } else if(o[runner].y < 0 && d[DEFENDER].y <= 0){ //defender should head to the runner and try to get a TFL
+                        target = {
+                            "x": o[runner].x,
+                            "y": o[runner].y
+                        };
+                    }else{ //runner is past the LOS, defender should try to intersect the runners path
+
+                        //initialize target
+                        target = {
+                            "x": o[runner].x,
+                            "y": o[runner].y
+                        };
+
+                        //get speed of each player
+                        let v_runner = 40 / o[runner].forty_time;
+                        let v_defender = 40 / d[DEFENDER].forty_time;
+
+                        //get initial distance to runner in x and y direction
+                        let dx = o[runner].x - d[DEFENDER].x;
+                        let dy = o[runner].y - d[DEFENDER].y;
+
+                        //get min time to close horizontal distance
+                        let t_min = Math.abs(dx) / v_defender;
+                        let diff = t_min;
+
+                        while (Math.abs(diff) > dt) {
+                            
+                            //update dy using diff
+                            dy += v_runner * diff;
+
+                            //repeat again to improve accuracy
+                            diff = Math.pow(dy * dy + dx * dx, 0.5) / v_defender - t_min;
+
+                            //update t_min
+                            t_min += diff;
+                        }
+
+                        //update target
+                        target.y += v_runner * t_min; //FIXME this can undershoot the actual needed angle
                     }
 
                     //update defenders position
